@@ -16,8 +16,8 @@ public class FixtureTest {
 	public void setUp() {
 		Fixture.of(Client.class).addTemplate("valid", new Rule(){{
 			add("id", random(Long.class, range(1L, 200L)));
-			add("name", random(new Object[]{"Anderson Parra", "Arthur Hirata"}));
-			add("nickname", random(new Object[]{"nerd", "geek"}));
+			add("name", random("Anderson Parra", "Arthur Hirata"));
+			add("nickname", random("nerd", "geek"));
 			add("email", "${nickname}@gmail.com");
 			add("birthday", Calendar.getInstance());
 		}});
