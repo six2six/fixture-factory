@@ -8,8 +8,8 @@ mvn clean install
 Use like a maven dependency on your project
 
 <dependency>
-  <groupId>br.com.bfmapper</groupId>
-  <artifactId>bfmapper</artifactId>
+  <groupId>br.com.fixturefactory</groupId>
+  <artifactId>fixture-factory</artifactId>
   <version>1.0-SNAPSHOT</version>
 </dependency>
 
