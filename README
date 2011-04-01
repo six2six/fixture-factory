@@ -1,34 +1,34 @@
 Generator fake objects from a template
 =============
 
-### Instaling
+# Instaling
 
 mvn clean install
 
 Use like a maven dependency on your project
 
-`<dependency>
+<dependency>
   <groupId>br.com.bfmapper</groupId>
   <artifactId>bfmapper</artifactId>
   <version>1.0-SNAPSHOT</version>
-</dependency>`
+</dependency>
 
-### Usage
+# Usage
 
 Writing bean template rules
 
-`Fixture.of(Client.class).addTemplate("valid", new Rule(){{
+Fixture.of(Client.class).addTemplate("valid", new Rule(){{
 	add("id", random(Long.class, range(1L, 200L)));
 	add("name", random("Anderson Parra", "Arthur Hirata", "Douglas Rodrigo"));
 	add("nickname", random("nerd", "geek"));
 	add("email", "${nickname}@amil.com.br");
 	add("birthday", Calendar.getInstance());
-}});`
+}});
 
 Request objects
 
-`Client client = Fixture.of(Client.class).gimme("valid");`
+Client client = Fixture.of(Client.class).gimme("valid");
 
-`List<Client> clients = Fixture.of(Client.class).gimme(5, "valid");`
+List<Client> clients = Fixture.of(Client.class).gimme(5, "valid");
 
 
