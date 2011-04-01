@@ -3,6 +3,7 @@ package br.com.fixturefactory;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import br.com.fixturefactory.function.FixtureFunction;
 import br.com.fixturefactory.function.Function;
 import br.com.fixturefactory.function.RandomFunction;
 import br.com.fixturefactory.function.Range;
@@ -19,6 +20,14 @@ public class Rule {
     	this.properties.add(new Property(property, function));
     }
 
+	public Function fixture(Class<?> clazz, String label) {
+    	return new FixtureFunction(clazz, label);
+    }
+
+	public Function fixture(Class<?> clazz, Integer quantity, String label) {
+    	return new FixtureFunction(clazz, label, quantity);
+    }
+	
 	public Function random(Class<?> clazz, Object... dataset) {
 		return new RandomFunction(clazz, dataset);
 	}
