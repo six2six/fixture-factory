@@ -19,16 +19,24 @@ Writing bean template rules
 
 Fixture.of(Client.class).addTemplate("valid", new Rule(){{
 	add("id", random(Long.class, range(1L, 200L)));
-	add("name", random("Anderson Parra", "Arthur Hirata", "Douglas Rodrigo"));
+	add("name", random("Anderson Parra", "Arthur Hirata"));
 	add("nickname", random("nerd", "geek"));
-	add("email", "${nickname}@amil.com.br");
+	add("email", "${nickname}@gmail.com");
 	add("birthday", Calendar.getInstance());
+	add("address", fixture(Address.class, "valid"));
 }});
 
-Request objects
+Fixture.of(Address.class).addTemplate("valid", new Rule(){{
+	add("id", random(Long.class, range(1L, 100L)));
+	add("street", random("Paulista Avenue", "Ibirapuera Avenue"));
+	add("city", "São Paulo");
+	add("state", "${city}");
+	add("country", "Brazil");
+	add("zipCode", random("06608000", "17720000"));
+}}); 
 
+Request one objects
 Client client = Fixture.of(Client.class).gimme("valid");
 
+Request list objects
 List<Client> clients = Fixture.of(Client.class).gimme(5, "valid");
-
-
