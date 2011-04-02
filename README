@@ -38,5 +38,5 @@ Fixture.of(Address.class).addTemplate("valid", new Rule(){{
 Request one objects
 Client client = Fixture.of(Client.class).gimme("valid");
 
-Request list objects
+Request n objects
 List<Client> clients = Fixture.of(Client.class).gimme(5, "valid");
