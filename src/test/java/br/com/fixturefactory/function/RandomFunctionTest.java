@@ -48,7 +48,7 @@ public class RandomFunctionTest {
 		String[] names = {"Anderson", "Arthur", "Douglas"};
 		Object value = new RandomFunction(names).generateValue();
 		Assert.assertNotNull("Generated value can not be null", value);
-		Assert.assertTrue("Generated value does not exist in the dataset", Arrays.asList(value).contains(value));
+		Assert.assertTrue("Generated value does not exist in the dataset", Arrays.asList(names).contains(value));
 	}
 
 	@Test

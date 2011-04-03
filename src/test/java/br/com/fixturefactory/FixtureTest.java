@@ -27,7 +27,7 @@ public class FixtureTest {
 		Fixture.of(Address.class).addTemplate("valid", new Rule(){{
 			add("id", random(Long.class, range(1L, 100L)));
 			add("street", random("Paulista Avenue", "Ibirapuera Avenue"));
-			add("city", "São Paulo");
+			add("city", "SÃ£o Paulo");
 			add("state", "${city}");
 			add("country", "Brazil");
 			add("zipCode", random("06608000", "17720000"));
