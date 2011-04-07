@@ -6,6 +6,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import br.com.bfgex.Gender;
+
 public class RandomFunctionTest {
 
 	@Test
@@ -69,6 +71,21 @@ public class RandomFunctionTest {
 	public void randomDoubleRangeIncorrectTest() {
 		Double start = 80.0, end = 80.0;
 		new RandomFunction(Long.class, new Range(start, end)).generateValue();
+	}
+	
+	@Test
+	public void randomFunction() {
+		Function[] functions = {new NameFunction(), new NameFunction(Gender.MALE), new NameFunction(Gender.FEMALE)};
+		Object value = new RandomFunction(functions).generateValue();
+		Assert.assertNotNull("Generated value can not be null", value);
+	}
+	
+	@Test
+	public void randomEnum() {
+		Object value = new RandomFunction(Gender.class).generateValue();
+		Assert.assertNotNull("Generated value can not be null", value);
+		Assert.assertTrue("Generated value is not a Enum", value instanceof Enum);
+
 	}
 	
 }

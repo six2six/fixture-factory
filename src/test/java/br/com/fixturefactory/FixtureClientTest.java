@@ -11,7 +11,7 @@ import org.junit.Test;
 import br.com.fixturefactory.model.Address;
 import br.com.fixturefactory.model.Client;
 
-public class FixtureTest {
+public class FixtureClientTest {
 
 	@Before
 	public void setUp() {
