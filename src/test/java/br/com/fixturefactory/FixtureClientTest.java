@@ -1,6 +1,6 @@
 package br.com.fixturefactory;
 
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -20,7 +20,7 @@ public class FixtureClientTest {
 			add("name", random("Anderson Parra", "Arthur Hirata"));
 			add("nickname", random("nerd", "geek"));
 			add("email", "${nickname}@gmail.com");
-			add("birthday", Calendar.getInstance());
+			add("birthday", beforeDate("2011-04-25", new SimpleDateFormat("yyyy-MM-dd")));
 			add("address", fixture(Address.class, "valid"));
 		}});
 		

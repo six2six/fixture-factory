@@ -1,20 +1,28 @@
 package br.com.fixturefactory;
 
+import static br.com.fixturefactory.function.DateTimeFunction.DateType.AFTER;
+import static br.com.fixturefactory.function.DateTimeFunction.DateType.BEFORE;
+import static br.com.fixturefactory.function.NameFunction.NameType.FIRST;
+import static br.com.fixturefactory.function.NameFunction.NameType.LAST;
+import static br.com.fixturefactory.util.DateTimeUtil.toCalendar;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import br.com.bfgex.Gender;
+import br.com.fixturefactory.function.DateTimeFunction;
 import br.com.fixturefactory.function.FixtureFunction;
 import br.com.fixturefactory.function.Function;
 import br.com.fixturefactory.function.NameFunction;
-import br.com.fixturefactory.function.NameFunction.Type;
 import br.com.fixturefactory.function.RandomFunction;
 import br.com.fixturefactory.function.Range;
 
 public class Rule {
 
     private Set<Property> properties = new LinkedHashSet<Property>();
-	
+
     public void add(String property, Object value) {
         this.properties.add(new Property(property, value));
     }
@@ -52,17 +60,29 @@ public class Rule {
 	}
 
 	public Function firstName() {
-		return new NameFunction(Type.FIRST);
+		return new NameFunction(FIRST);
 	}
 
 	public Function firstName(Gender gender) {
-		return new NameFunction(Type.FIRST, gender);
+		return new NameFunction(FIRST, gender);
 	}
 	
 	public Function lastName() {
-		return new NameFunction(Type.LAST);
+		return new NameFunction(LAST);
 	}
 
+	public Function beforeDate(String source, SimpleDateFormat format) {
+		return new DateTimeFunction(toCalendar(source, format), BEFORE);
+	}
+	
+	public Function afterDate(String source, SimpleDateFormat format) {
+		return new DateTimeFunction(toCalendar(source, format), AFTER);
+	}
+	
+	public Function randomDate(String startDate, String endDate, DateFormat format) {
+		return new DateTimeFunction(toCalendar(startDate, format), toCalendar(endDate, format));
+	}
+	
 	public Range range(Number start, Number end) {
 		return new Range(start, end);
 	}

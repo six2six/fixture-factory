@@ -7,7 +7,7 @@ public class NameFunction implements Function {
 
 	private Gender gender;
 	
-	private Type type;
+	private NameType type;
 	
 	public NameFunction() { }
 	
@@ -15,11 +15,11 @@ public class NameFunction implements Function {
 		this.gender = gender;
 	}
 
-	public NameFunction(Type type) {
+	public NameFunction(NameType type) {
 		this.type = type;
 	}
 
-	public NameFunction(Type type, Gender gender) {
+	public NameFunction(NameType type, Gender gender) {
 		this(type);
 		this.gender = gender;
 	}
@@ -29,10 +29,10 @@ public class NameFunction implements Function {
 	public <T> T generateValue() {
 		Object value = null;
 		
-		if (this.type != null && type == Type.FIRST) {
+		if (this.type != null && type == NameType.FIRST) {
 			value = this.gender != null ? Randgen.firstName(this.gender) : Randgen.firstName();
 			
-		} else if (this.type != null && type == Type.LAST) {
+		} else if (this.type != null && type == NameType.LAST) {
 			value = Randgen.lastName();
 			
 		} else if (this.gender != null) {
@@ -45,7 +45,7 @@ public class NameFunction implements Function {
 		return (T) value;
 	}
 
-	public enum Type {
+	public enum NameType {
 		FIRST, LAST
 	}
 	
