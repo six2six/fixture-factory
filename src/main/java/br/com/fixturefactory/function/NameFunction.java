@@ -1,7 +1,7 @@
 package br.com.fixturefactory.function;
 
 import br.com.bfgex.Gender;
-import br.com.bfgex.Randgen;
+import br.com.bfgex.RandomGen;
 
 public class NameFunction implements Function {
 
@@ -30,16 +30,16 @@ public class NameFunction implements Function {
 		Object value = null;
 		
 		if (this.type != null && type == NameType.FIRST) {
-			value = this.gender != null ? Randgen.firstName(this.gender) : Randgen.firstName();
+			value = this.gender != null ? RandomGen.firstName(this.gender) : RandomGen.firstName();
 			
 		} else if (this.type != null && type == NameType.LAST) {
-			value = Randgen.lastName();
+			value = RandomGen.lastName();
 			
 		} else if (this.gender != null) {
-			value = Randgen.name(this.gender);
+			value = RandomGen.name(this.gender);
 			
 		} else {
-			value = Randgen.name();
+			value = RandomGen.name();
 		}
 		
 		return (T) value;
