@@ -18,6 +18,7 @@ import br.com.fixturefactory.function.Function;
 import br.com.fixturefactory.function.NameFunction;
 import br.com.fixturefactory.function.RandomFunction;
 import br.com.fixturefactory.function.Range;
+import br.com.fixturefactory.function.RegexFunction;
 
 public class Rule {
 
@@ -81,6 +82,10 @@ public class Rule {
 	
 	public Function randomDate(String startDate, String endDate, DateFormat format) {
 		return new DateTimeFunction(toCalendar(startDate, format), toCalendar(endDate, format));
+	}
+
+	public Function regex(String regex) {
+		return new RegexFunction(regex);
 	}
 	
 	public Range range(Number start, Number end) {
