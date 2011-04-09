@@ -1,11 +1,11 @@
-Generator fake objects from a template
+Fixture Factory - generator to create fake objects from a template
 ============= 
 
 # Instaling
 
 mvn clean install
 
-Use like a maven dependency on your project
+Use it like a maven dependency on your project
 
 <dependency>
   <groupId>br.com.fixturefactory</groupId>
