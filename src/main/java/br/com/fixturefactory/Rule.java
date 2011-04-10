@@ -12,6 +12,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import br.com.bfgex.Gender;
+import br.com.fixturefactory.function.CalendarInterval;
+import br.com.fixturefactory.function.CalendarSequenceFunction;
 import br.com.fixturefactory.function.DateTimeFunction;
 import br.com.fixturefactory.function.FixtureFunction;
 import br.com.fixturefactory.function.Function;
@@ -19,6 +21,7 @@ import br.com.fixturefactory.function.NameFunction;
 import br.com.fixturefactory.function.RandomFunction;
 import br.com.fixturefactory.function.Range;
 import br.com.fixturefactory.function.RegexFunction;
+import br.com.fixturefactory.util.DateTimeUtil;
 
 public class Rule {
 
@@ -92,6 +95,18 @@ public class Rule {
 		return new Range(start, end);
 	}
 
+	public Function sequence(String base, DateFormat format, CalendarInterval interval) {
+		return new CalendarSequenceFunction(DateTimeUtil.toCalendar(base, format), interval);
+	}
+	
+	public CalendarInterval incrementBy(int amount, int calendarField) {
+		return new CalendarInterval(amount, calendarField);
+	}
+	
+	public CalendarInterval decrementBy(int amount, int calendarField) {
+		return new CalendarInterval(amount*(-1), calendarField);
+	}
+	
 	public Set<Property> getProperties() {
 		return properties;
 	}
