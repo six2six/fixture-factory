@@ -15,7 +15,7 @@ public class CalendarSequenceFunctionTest {
 	@Test
 	public void addOneDay() {
 		Calendar baseCalendar = DateTimeUtil.toCalendar("2011-04-09", new SimpleDateFormat("yyyy-MM-dd"));
-		CalendarSequenceFunction sequenceFunction = new CalendarSequenceFunction(baseCalendar, new CalendarInterval(1, Calendar.DAY_OF_MONTH));
+		SequenceFunction sequenceFunction = new SequenceFunction(new CalendarSequence(baseCalendar, new CalendarInterval(1, Calendar.DAY_OF_MONTH)));
 		
 		for (int i=0; i<3; i++) {
 			Calendar calendar = sequenceFunction.generateValue();
@@ -27,7 +27,7 @@ public class CalendarSequenceFunctionTest {
 	@Test
 	public void subtractOneDay() {
 		Calendar baseCalendar = DateTimeUtil.toCalendar("2011-04-09", new SimpleDateFormat("yyyy-MM-dd"));
-		CalendarSequenceFunction sequenceFunction = new CalendarSequenceFunction(baseCalendar, new CalendarInterval(-1, Calendar.DAY_OF_MONTH));
+		SequenceFunction sequenceFunction = new SequenceFunction(new CalendarSequence(baseCalendar, new CalendarInterval(-1, Calendar.DAY_OF_MONTH)));
 		
 		for (int i=0; i<3; i++) {
 			Calendar calendar = sequenceFunction.generateValue();
@@ -39,7 +39,7 @@ public class CalendarSequenceFunctionTest {
 	@Test
 	public void addThreeDays() {
 		Calendar baseCalendar = DateTimeUtil.toCalendar("2011-04-09", new SimpleDateFormat("yyyy-MM-dd"));
-		CalendarSequenceFunction sequenceFunction = new CalendarSequenceFunction(baseCalendar, new CalendarInterval(3, Calendar.DAY_OF_MONTH));
+		SequenceFunction sequenceFunction = new SequenceFunction(new CalendarSequence(baseCalendar, new CalendarInterval(3, Calendar.DAY_OF_MONTH)));
 		
 		for (int i=0; i<3; i++) {
 			Calendar calendar = sequenceFunction.generateValue();
@@ -51,7 +51,7 @@ public class CalendarSequenceFunctionTest {
 	@Test
 	public void subtractThreeDays() {
 		Calendar baseCalendar = DateTimeUtil.toCalendar("2011-04-09", new SimpleDateFormat("yyyy-MM-dd"));
-		CalendarSequenceFunction sequenceFunction = new CalendarSequenceFunction(baseCalendar, new CalendarInterval(-3, Calendar.DAY_OF_MONTH));
+		SequenceFunction sequenceFunction = new SequenceFunction(new CalendarSequence(baseCalendar, new CalendarInterval(-3, Calendar.DAY_OF_MONTH)));
 		
 		for (int i=0; i<3; i++) {
 			Calendar calendar = sequenceFunction.generateValue();

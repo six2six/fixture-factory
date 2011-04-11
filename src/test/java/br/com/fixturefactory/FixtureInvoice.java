@@ -25,12 +25,12 @@ public class FixtureInvoice {
 		}}).addTemplate("previousInvoices", new Rule() {{
 			add("id", regex("\\d{3,5}"));
 			add("ammount", random(new BigDecimal("58.67"), new BigDecimal("45.89")));
-			add("dueDate", sequence("2011-04-01", new SimpleDateFormat("yyyy-MM-dd"), decrementBy(1, Calendar.DAY_OF_MONTH)));
+			add("dueDate", sequence(startWith("2011-04-01", new SimpleDateFormat("yyyy-MM-dd"), decrementBy(1, Calendar.DAY_OF_MONTH))));
 			
 		}}).addTemplate("nextInvoices", new Rule() {{ 
 			add("id", regex("\\d{3,5}"));
 			add("ammount", random(new BigDecimal("58.67"), new BigDecimal("45.89")));
-			add("dueDate", sequence("2011-04-30", new SimpleDateFormat("yyyy-MM-dd"), incrementBy(1, Calendar.DAY_OF_MONTH)));
+			add("dueDate", sequence(startWith("2011-04-30", new SimpleDateFormat("yyyy-MM-dd"), incrementBy(1, Calendar.DAY_OF_MONTH))));
 		}});
 	}
 

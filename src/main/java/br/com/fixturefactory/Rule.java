@@ -13,14 +13,17 @@ import java.util.Set;
 
 import br.com.bfgex.Gender;
 import br.com.fixturefactory.function.CalendarInterval;
-import br.com.fixturefactory.function.CalendarSequenceFunction;
+import br.com.fixturefactory.function.CalendarSequence;
 import br.com.fixturefactory.function.DateTimeFunction;
 import br.com.fixturefactory.function.FixtureFunction;
 import br.com.fixturefactory.function.Function;
 import br.com.fixturefactory.function.NameFunction;
+import br.com.fixturefactory.function.NumberSequence;
 import br.com.fixturefactory.function.RandomFunction;
 import br.com.fixturefactory.function.Range;
 import br.com.fixturefactory.function.RegexFunction;
+import br.com.fixturefactory.function.Sequence;
+import br.com.fixturefactory.function.SequenceFunction;
 import br.com.fixturefactory.util.DateTimeUtil;
 
 public class Rule {
@@ -95,8 +98,12 @@ public class Rule {
 		return new Range(start, end);
 	}
 
-	public Function sequence(String base, DateFormat format, CalendarInterval interval) {
-		return new CalendarSequenceFunction(DateTimeUtil.toCalendar(base, format), interval);
+	public Function sequence(Sequence<?> sequence) {
+		return new SequenceFunction(sequence);
+	}
+	
+	public CalendarSequence startWith(String base, DateFormat format, CalendarInterval interval) {
+		return new CalendarSequence(DateTimeUtil.toCalendar(base, format), interval);
 	}
 	
 	public CalendarInterval incrementBy(int amount, int calendarField) {
@@ -107,8 +114,19 @@ public class Rule {
 		return new CalendarInterval(amount*(-1), calendarField);
 	}
 	
+	public Sequence<Number> startWith(Number start, int amount) {
+		return new NumberSequence(start, amount);
+	}
+	
+	public int incrementBy(int amount) {
+		return amount;
+	}
+	
+	public int decrementBy(int amount) {
+		return amount*(-1);
+	}
+	
 	public Set<Property> getProperties() {
 		return properties;
 	}
-
 }
