@@ -6,21 +6,20 @@ public class CalendarInterval implements Serializable {
 	
 	private static final long serialVersionUID = 2223542302515335884L;
 	
-	private int field;
-	private int amount;
+	private int calendarField;
+	private int value;
 
-	public CalendarInterval(int amount, int calendarField) {
+	public CalendarInterval(int interval, int calendarField) {
 		super();
-		this.field = calendarField;
-		this.amount = amount;
+		this.calendarField = calendarField;
+		this.value = interval;
 	}
 
-	public int getField() {
-		return field;
+	public int getCalendarField() {
+		return this.calendarField;
 	}
 
-	public int getAmount() {
-		return amount;
+	public int getValue() {
+		return this.value;
 	}
-	
 }

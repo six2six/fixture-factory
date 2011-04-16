@@ -25,12 +25,12 @@ public class FixtureInvoice {
 		}}).addTemplate("previousInvoices", new Rule() {{
 			add("id", regex("\\d{3,5}"));
 			add("ammount", random(new BigDecimal("58.67"), new BigDecimal("45.89")));
-			add("dueDate", sequence(startWith("2011-04-01", new SimpleDateFormat("yyyy-MM-dd"), decrementBy(1, Calendar.DAY_OF_MONTH))));
+			add("dueDate", sequenceDate("2011-04-01", new SimpleDateFormat("yyyy-MM-dd"), decrement(1).month()));
 			
-		}}).addTemplate("nextInvoices", new Rule() {{ 
+		}}).addTemplate("nextInvoices", new Rule() {{
 			add("id", regex("\\d{3,5}"));
 			add("ammount", random(new BigDecimal("58.67"), new BigDecimal("45.89")));
-			add("dueDate", sequence(startWith("2011-04-30", new SimpleDateFormat("yyyy-MM-dd"), incrementBy(1, Calendar.DAY_OF_MONTH))));
+			add("dueDate", sequenceDate("2011-04-30", increment(1).day()));
 		}});
 	}
 
@@ -48,7 +48,7 @@ public class FixtureInvoice {
 		Calendar calendar = DateTimeUtil.toCalendar("2011-04-01", new SimpleDateFormat("yyyy-MM-dd"));
 		for (Invoice invoice : invoices) {
 			Assert.assertEquals("Calendar should be equal", calendar, invoice.getDueDate());
-			calendar.add(Calendar.DAY_OF_MONTH, -1);
+			calendar.add(Calendar.MONTH, -1);
 		}
 	}
 	
