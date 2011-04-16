@@ -65,4 +65,4 @@ More helpers functions for create generic template:
 		add("lastName", lastName());
 	});
 	
-You can see more utilization on [tests](src/test/java/br/com/fixturefactory)!
+You can see more utilization on [tests](fixture-factory/tree/master/src/test/java/br/com/fixturefactory)!
