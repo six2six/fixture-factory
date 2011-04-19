@@ -1,7 +1,11 @@
 Fixture Factory - generator to create fake objects from a template
 ================================================================== 
 
-### Instaling
+### Mailing list
+
+http://groups.google.com/group/fixture-factory
+
+### Installing
 
 	$ mvn clean install
 
@@ -36,9 +40,11 @@ Writing bean template rules
 	}}); 
 
 Gimme one object of valid label
+
 	Client client = Fixture.of(Client.class).gimme("valid");
 
 Gimme N objects of valid label
+
 	List<Client> clients = Fixture.of(Client.class).gimme(5, "valid");
 
 More helpers functions for create generic template:
