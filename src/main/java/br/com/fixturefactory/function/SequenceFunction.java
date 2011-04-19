@@ -1,5 +1,7 @@
 package br.com.fixturefactory.function;
 
+import br.com.fixturefactory.base.Sequence;
+
 public class SequenceFunction implements Function {
 
 	private Sequence<?> sequence;

@@ -1,14 +1,15 @@
 package br.com.fixturefactory.function;
 
+import static junit.framework.Assert.assertEquals;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 
+import br.com.fixturefactory.base.CalendarInterval;
+import br.com.fixturefactory.base.CalendarSequence;
 import br.com.fixturefactory.util.DateTimeUtil;
-
 
 public class CalendarSequenceFunctionTest {
 
@@ -19,7 +20,7 @@ public class CalendarSequenceFunctionTest {
 		
 		for (int i=0; i<3; i++) {
 			Calendar calendar = sequenceFunction.generateValue();
-			Assert.assertEquals("Calendars should be equal", baseCalendar, calendar);
+			assertEquals("Calendars should be equal", baseCalendar, calendar);
 			baseCalendar.add(Calendar.DAY_OF_MONTH, 1);
 		}
 	}
@@ -31,7 +32,7 @@ public class CalendarSequenceFunctionTest {
 		
 		for (int i=0; i<3; i++) {
 			Calendar calendar = sequenceFunction.generateValue();
-			Assert.assertEquals("Calendars should be equal", baseCalendar, calendar);
+			assertEquals("Calendars should be equal", baseCalendar, calendar);
 			baseCalendar.add(Calendar.DAY_OF_MONTH, -1);
 		}
 	}
@@ -43,7 +44,7 @@ public class CalendarSequenceFunctionTest {
 		
 		for (int i=0; i<3; i++) {
 			Calendar calendar = sequenceFunction.generateValue();
-			Assert.assertEquals("Calendars should be equal", baseCalendar, calendar);
+			assertEquals("Calendars should be equal", baseCalendar, calendar);
 			baseCalendar.add(Calendar.DAY_OF_MONTH, 3);
 		}
 	}
@@ -55,7 +56,7 @@ public class CalendarSequenceFunctionTest {
 		
 		for (int i=0; i<3; i++) {
 			Calendar calendar = sequenceFunction.generateValue();
-			Assert.assertEquals("Calendars should be equal", baseCalendar, calendar);
+			assertEquals("Calendars should be equal", baseCalendar, calendar);
 			baseCalendar.add(Calendar.DAY_OF_MONTH, -3);
 		}
 	}

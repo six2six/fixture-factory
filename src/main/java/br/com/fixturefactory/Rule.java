@@ -12,18 +12,18 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import br.com.bfgex.Gender;
-import br.com.fixturefactory.function.CalendarInterval;
-import br.com.fixturefactory.function.CalendarSequence;
+import br.com.fixturefactory.base.CalendarInterval;
+import br.com.fixturefactory.base.CalendarSequence;
+import br.com.fixturefactory.base.Interval;
+import br.com.fixturefactory.base.Range;
+import br.com.fixturefactory.base.Sequence;
 import br.com.fixturefactory.function.DateTimeFunction;
 import br.com.fixturefactory.function.FixtureFunction;
 import br.com.fixturefactory.function.Function;
-import br.com.fixturefactory.function.Interval;
 import br.com.fixturefactory.function.NameFunction;
 import br.com.fixturefactory.function.NumberSequence;
 import br.com.fixturefactory.function.RandomFunction;
-import br.com.fixturefactory.function.Range;
 import br.com.fixturefactory.function.RegexFunction;
-import br.com.fixturefactory.function.Sequence;
 import br.com.fixturefactory.function.SequenceFunction;
 
 public class Rule {

@@ -1,4 +1,4 @@
-package br.com.fixturefactory.function;
+package br.com.fixturefactory.base;
 
 public class Range {
 

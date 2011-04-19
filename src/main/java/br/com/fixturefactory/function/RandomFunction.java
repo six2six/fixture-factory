@@ -2,6 +2,8 @@ package br.com.fixturefactory.function;
 
 import java.util.Random;
 
+import br.com.fixturefactory.base.Range;
+
 public class RandomFunction implements Function {
 
 	private Class<?> type;

@@ -1,4 +1,4 @@
-package br.com.fixturefactory.function;
+package br.com.fixturefactory.base;
 
 import java.util.Calendar;
 
@@ -9,7 +9,6 @@ public class CalendarSequence implements Sequence<Calendar> {
 	private int multiplier;
 
 	public CalendarSequence(Calendar baseCalendar, CalendarInterval interval) {
-		super();
 		this.baseCalendar = (Calendar) baseCalendar.clone();
 		this.interval = interval;
 	}

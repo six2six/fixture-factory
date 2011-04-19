@@ -1,9 +1,11 @@
 package br.com.fixturefactory;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
-
-import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,21 +39,21 @@ public class FixtureClientTest {
 	@Test
 	public void fixtureClient() {
 		Client client = Fixture.of(Client.class).gimme("valid");
-		Assert.assertNotNull("Client should not be null", client);
-		Assert.assertNotNull("Address should not be null", client.getAddress());
+		assertNotNull("Client should not be null", client);
+		assertNotNull("Address should not be null", client.getAddress());
 	}
 	
 	@Test
 	public void fixtureClientList() {
 		List<Client> clients = Fixture.of(Client.class).gimme(5, "valid");
 		
-		Assert.assertNotNull("Client list should not be null", clients);
-		Assert.assertFalse("Client list should not be empty", clients.isEmpty());
-		Assert.assertEquals("Client list size should be 5", clients.size(), 5);
+		assertNotNull("Client list should not be null", clients);
+		assertFalse("Client list should not be empty", clients.isEmpty());
+		assertEquals("Client list size should be 5", clients.size(), 5);
 		
 		for (Client client : clients) {
-			Assert.assertNotNull("Client should not be null", client);
-			Assert.assertNotNull("Address should not be null", client.getAddress());
+			assertNotNull("Client should not be null", client);
+			assertNotNull("Address should not be null", client.getAddress());
 		}
 	}
 	

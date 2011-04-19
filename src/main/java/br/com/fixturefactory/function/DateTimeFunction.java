@@ -2,6 +2,8 @@ package br.com.fixturefactory.function;
 
 import java.util.Calendar;
 
+import br.com.fixturefactory.base.Range;
+
 public class DateTimeFunction implements Function {
 
 	private RandomFunction random;

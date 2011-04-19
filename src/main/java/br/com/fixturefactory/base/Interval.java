@@ -1,4 +1,4 @@
-package br.com.fixturefactory.function;
+package br.com.fixturefactory.base;
 
 import java.util.Calendar;
 

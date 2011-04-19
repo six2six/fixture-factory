@@ -1,11 +1,13 @@
 package br.com.fixturefactory;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-
-import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,17 +39,19 @@ public class FixtureInvoice {
 	@Test
 	public void fixtureInvoice() {
 		Invoice invoice = Fixture.of(Invoice.class).gimme("valid");
-		Assert.assertNotNull("Invoice should not be null", invoice);
+		assertNotNull("Invoice should not be null", invoice);
 	}
 	
 	@Test
 	public void fixturePreviousInvoices() {
 		List<Invoice> invoices = Fixture.of(Invoice.class).gimme(3, "previousInvoices");
-		Assert.assertNotNull("Invoice list should not be null", invoices);
-		Assert.assertTrue("Invoice list should not be empty", !invoices.isEmpty());
+		assertNotNull("Invoice list should not be null", invoices);
+		assertTrue("Invoice list should not be empty", !invoices.isEmpty());
+		
 		Calendar calendar = DateTimeUtil.toCalendar("2011-04-01", new SimpleDateFormat("yyyy-MM-dd"));
+		
 		for (Invoice invoice : invoices) {
-			Assert.assertEquals("Calendar should be equal", calendar, invoice.getDueDate());
+			assertEquals("Calendar should be equal", calendar, invoice.getDueDate());
 			calendar.add(Calendar.MONTH, -1);
 		}
 	}
@@ -55,11 +59,13 @@ public class FixtureInvoice {
 	@Test
 	public void fixtureNextInvoices() {
 		List<Invoice> invoices = Fixture.of(Invoice.class).gimme(3, "nextInvoices");
-		Assert.assertNotNull("Invoice list should not be null", invoices);
-		Assert.assertTrue("Invoice list should not be empty", !invoices.isEmpty());
+		assertNotNull("Invoice list should not be null", invoices);
+		assertTrue("Invoice list should not be empty", !invoices.isEmpty());
+		
 		Calendar calendar = DateTimeUtil.toCalendar("2011-04-30", new SimpleDateFormat("yyyy-MM-dd"));
+		
 		for (Invoice invoice : invoices) {
-			Assert.assertEquals("Calendar should be equal", calendar, invoice.getDueDate());
+			assertEquals("Calendar should be equal", calendar, invoice.getDueDate());
 			calendar.add(Calendar.DAY_OF_MONTH, 1);
 		}
 	}

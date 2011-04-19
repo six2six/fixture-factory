@@ -1,6 +1,6 @@
 package br.com.fixturefactory;
 
-import junit.framework.Assert;
+import static junit.framework.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,13 +31,13 @@ public class FixtureUserTest {
 	@Test
 	public void fixtureAnyUser() {
 		User user = Fixture.of(User.class).gimme("anyValidUser");
-		Assert.assertNotNull("User should not be null", user);
+		assertNotNull("User should not be null", user);
 	}
 
 	@Test
 	public void fixtureFemaleUser() {
 		User user = Fixture.of(User.class).gimme("validFemaleUser");
-		Assert.assertNotNull("User should not be null", user);
+		assertNotNull("User should not be null", user);
 	}
 	
 }

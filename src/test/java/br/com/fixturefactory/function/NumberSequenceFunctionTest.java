@@ -1,6 +1,6 @@
 package br.com.fixturefactory.function;
 
-import junit.framework.Assert;
+import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ public class NumberSequenceFunctionTest {
 		SequenceFunction function = new SequenceFunction(new NumberSequence(0, 1));
 		
 		for (int i=0; i<3; i++) {
-			Assert.assertEquals("integers should be equal", function.generateValue(), i);
+			assertEquals("integers should be equal", function.generateValue(), i);
 		}
 	}
 	
@@ -20,7 +20,7 @@ public class NumberSequenceFunctionTest {
 		SequenceFunction function = new SequenceFunction(new NumberSequence(1L, 2));
 		
 		for (int i=1; i<=5; i=i+2) {
-			Assert.assertEquals("longs should be equal", function.generateValue(), (long) i);
+			assertEquals("longs should be equal", function.generateValue(), (long) i);
 		}
 	}
 	
@@ -29,7 +29,7 @@ public class NumberSequenceFunctionTest {
 		SequenceFunction function = new SequenceFunction(new NumberSequence(1.2f, 1));
 		
 		for (int i=1; i<=3; i++) {
-			Assert.assertEquals("floats should be equal", function.generateValue(), (float) i+(.2F));
+			assertEquals("floats should be equal", function.generateValue(), (float) i+(.2F));
 		}
 	}
 	
@@ -38,7 +38,7 @@ public class NumberSequenceFunctionTest {
 		SequenceFunction function = new SequenceFunction(new NumberSequence(1.23d, 2));
 		
 		for (int i=1; i<=5; i=i+2) {
-			Assert.assertEquals("doubles should be equal", function.generateValue(), (double) i+(.23d));
+			assertEquals("doubles should be equal", function.generateValue(), (double) i+(.23d));
 		}
 	}
 }

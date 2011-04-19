@@ -1,4 +1,4 @@
-package br.com.fixturefactory.function;
+package br.com.fixturefactory.base;
 
 import java.io.Serializable;
 
@@ -10,7 +10,6 @@ public class CalendarInterval implements Serializable {
 	private int value;
 
 	public CalendarInterval(int interval, int calendarField) {
-		super();
 		this.calendarField = calendarField;
 		this.value = interval;
 	}
