@@ -70,7 +70,8 @@ public class ReflectionUtils {
 	}
     
     public static Class<?> invokeRecursiveType(Object bean, String attribute) {
-    	return invokeRecursiveType(getTargetClass(bean.getClass()), attribute);
+    	Field field = invokeRecursiveField(bean, attribute);
+    	return field.getType();
     }
 
     public static Field invokeRecursiveField(Object bean, String attribute) {
@@ -140,7 +141,7 @@ public class ReflectionUtils {
                 targetBean = ReflectionUtils.invokeGetter(targetBean, propertyItem);
                 if(targetBean == null) {
                     try {
-                        targetBean = newInstance(invokeRecursiveType(lastBean.getClass(), propertyItem));
+                        targetBean = newInstance(invokeRecursiveType(lastBean, propertyItem));
                         ReflectionUtils.invokeSetter(lastBean, propertyItem, targetBean, true);                     
                     } catch (Exception e) {
                         throw new IllegalArgumentException("No such attribute: " + propertyItem + " declared in class " + lastBean.getClass().getCanonicalName());
