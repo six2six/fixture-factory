@@ -65,37 +65,13 @@ public class ReflectionUtils {
         ReflectionUtils.invokeSetter(bean, attribute, value, true);
     }       
     
-    public static Object prepareInvokeRecursiveSetter(Object bean, String attribute, Object value) {
-        Object targetBean = bean;
-        Object lastBean = null;
-        
-        int lastAttributeIdx = attribute.lastIndexOf(".");
-        
-        String path  = null;
-        if (lastAttributeIdx > 0) {
-            path = StringUtils.defaultIfEmpty(attribute.substring(0, lastAttributeIdx), null);
-        }
-        
-        if (path != null) {
-            for (String propertyItem : path.split("\\.")) {
-                lastBean = targetBean;
-                targetBean = ReflectionUtils.invokeGetter(targetBean, propertyItem);
-                if(targetBean == null) {
-                    try {
-                        targetBean = newInstance(invokeRecursiveType(lastBean.getClass(), propertyItem));
-                        ReflectionUtils.invokeSetter(lastBean, propertyItem, targetBean, true);                     
-                    } catch (Exception e) {
-                        throw new IllegalArgumentException("No such attribute: " + propertyItem + " declared in class " + lastBean.getClass().getCanonicalName());
-                    }
-                }
-            }
-        }
-        
-        return targetBean;
-    }
+    public static void invokeRecursiveSetter(Object bean, String attribute, Object value) {
+	    ReflectionUtils.invokeSetter(prepareInvokeRecursiveSetter(bean, attribute, value), attribute.substring(attribute.lastIndexOf(".") + 1), value, true);
+	}
     
     public static Class<?> invokeRecursiveType(Object bean, String attribute) {
-    	return invokeRecursiveType(getTargetClass(bean.getClass()), attribute);
+    	Field field = invokeRecursiveField(bean, attribute);
+    	return field.getType();
     }
 
     public static Field invokeRecursiveField(Object bean, String attribute) {
@@ -146,6 +122,35 @@ public class ReflectionUtils {
     
     public static PropertyUtilsBean getPropertyUtilsBean() {
     	return BeanUtilsBean.getInstance().getPropertyUtils();
+    }
+ 
+    private static Object prepareInvokeRecursiveSetter(Object bean, String attribute, Object value) {
+        Object targetBean = bean;
+        Object lastBean = null;
+        
+        int lastAttributeIdx = attribute.lastIndexOf(".");
+        
+        String path  = null;
+        if (lastAttributeIdx > 0) {
+            path = StringUtils.defaultIfEmpty(attribute.substring(0, lastAttributeIdx), null);
+        }
+        
+        if (path != null) {
+            for (String propertyItem : path.split("\\.")) {
+                lastBean = targetBean;
+                targetBean = ReflectionUtils.invokeGetter(targetBean, propertyItem);
+                if(targetBean == null) {
+                    try {
+                        targetBean = newInstance(invokeRecursiveType(lastBean, propertyItem));
+                        ReflectionUtils.invokeSetter(lastBean, propertyItem, targetBean, true);                     
+                    } catch (Exception e) {
+                        throw new IllegalArgumentException("No such attribute: " + propertyItem + " declared in class " + lastBean.getClass().getCanonicalName());
+                    }
+                }
+            }
+        }
+        
+        return targetBean;
     }
     
 }

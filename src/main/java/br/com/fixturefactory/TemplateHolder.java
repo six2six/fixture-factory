@@ -75,7 +75,7 @@ public class TemplateHolder {
 				}
 			}
 			
-			ReflectionUtils.invokeSetter(result, property.getName(), value);
+			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), value);
 		}
 		
 		return result;
