@@ -30,8 +30,12 @@
 			<artifactId>bfgex</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+          <groupId>com.mdimension</groupId>
+          <artifactId>jchronic</artifactId>
+          <version>0.2.4-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>

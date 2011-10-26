@@ -11,12 +11,15 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import com.mdimension.jchronic.Options;
+
 import br.com.bfgex.Gender;
 import br.com.fixturefactory.base.CalendarInterval;
 import br.com.fixturefactory.base.CalendarSequence;
 import br.com.fixturefactory.base.Interval;
 import br.com.fixturefactory.base.Range;
 import br.com.fixturefactory.base.Sequence;
+import br.com.fixturefactory.function.ChronicFunction;
 import br.com.fixturefactory.function.DateTimeFunction;
 import br.com.fixturefactory.function.FixtureFunction;
 import br.com.fixturefactory.function.Function;
@@ -112,7 +115,15 @@ public class Rule {
 	public Function sequenceDate(String base, DateFormat simpleDateFormat, CalendarInterval interval) {
 		return new SequenceFunction(new CalendarSequence(toCalendar(base, simpleDateFormat), interval));
 	}
-		
+	
+	public Function instant(String dateText) {
+	    return new ChronicFunction(dateText);
+	}
+
+    public Function instant(String dateText, Options options) {
+        return new ChronicFunction(dateText, options);
+    }
+	
 	public Interval increment(int interval) {
 		return new Interval(interval);
 	}
