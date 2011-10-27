@@ -5,7 +5,9 @@ Fixture Factory - generator to create fake objects from a template
 
 ### Installing
 
-First clone and install the [bfgex](https://github.com/douglasrodrigo/bfgex) project
+First clone and install projects:
+	[bfgex](https://github.com/douglasrodrigo/bfgex)
+	[jchronic](https://github.com/samtingleff/jchronic)
 
 Clone fixture-factory project and install in your local repository
  
@@ -16,7 +18,7 @@ Use it like a maven dependency on your project
 	<dependency>
 		<groupId>br.com.fixturefactory</groupId>
 		<artifactId>fixture-factory</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.1.0</version>
 	</dependency>
 
 ### Usage
@@ -28,7 +30,7 @@ Writing bean template rules
 		add("name", random("Anderson Parra", "Arthur Hirata"));
 		add("nickname", random("nerd", "geek"));
 		add("email", "${nickname}@gmail.com");
-		add("birthday", Calendar.getInstance());
+		add("birthday", instant("18 years ago"));
 		add("address", fixture(Address.class, "valid"));
 	}});
 
@@ -64,6 +66,7 @@ More helpers functions for create generic template:
 		add("dueDate", beforeDate("2011-04-15", new SimpleDateFormat("yyyy-MM-dd")));
 		add("payDate", afterDate("2011-04-15", new SimpleDateFormat("yyyy-MM-dd")));
 		add("birthday", randomDate("2011-04-15", "2011-11-07", new SimpleDateFormat("yyyy-MM-dd")));
+		add("cutDate", instant("now"));
 	});
 
 #### Name

@@ -4,15 +4,11 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.mdimension.jchronic.Options;
-import com.mdimension.jchronic.utils.Time;
 
 import br.com.fixturefactory.model.Address;
 import br.com.fixturefactory.model.Client;

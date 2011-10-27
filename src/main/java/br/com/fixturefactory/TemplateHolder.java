@@ -1,10 +1,12 @@
 package br.com.fixturefactory;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.fixturefactory.util.CalendarTransformer;
 import br.com.fixturefactory.util.ReflectionUtils;
 
 public class TemplateHolder {
@@ -74,11 +76,16 @@ public class TemplateHolder {
 					value = baseValue.replace(PLACE_HOLDER_START + propertyReference + PLACE_HOLDER_END, ReflectionUtils.invokeRecursiveGetter(result, propertyReference).toString());
 				}
 			}
+		
+			if (value instanceof Calendar) {
+				Class<?> fieldType = ReflectionUtils.invokeRecursiveType(result, property.getName());
+				value = new CalendarTransformer().transform(value, fieldType);
+			}
 			
 			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), value);
 		}
 		
 		return result;
 	}
-	
+
 }
