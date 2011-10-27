@@ -5,10 +5,14 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.mdimension.jchronic.Options;
+import com.mdimension.jchronic.utils.Time;
 
 import br.com.fixturefactory.model.Address;
 import br.com.fixturefactory.model.Client;
@@ -22,7 +26,7 @@ public class FixtureClientTest {
 			add("name", random("Anderson Parra", "Arthur Hirata"));
 			add("nickname", random("nerd", "geek"));
 			add("email", "${nickname}@gmail.com");
-			add("birthday", beforeDate("2011-04-25", new SimpleDateFormat("yyyy-MM-dd")));
+			add("birthday", instant("18 years ago"));
 			add("address", fixture(Address.class, "valid"));
 		}});
 		
@@ -41,6 +45,7 @@ public class FixtureClientTest {
 		Client client = Fixture.of(Client.class).gimme("valid");
 		assertNotNull("Client should not be null", client);
 		assertNotNull("Address should not be null", client.getAddress());
+		assertEquals("client birthday should be 18 years ago", client.getBirthday().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR) - 18);
 	}
 	
 	@Test

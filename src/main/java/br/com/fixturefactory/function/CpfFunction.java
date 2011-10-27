@@ -17,15 +17,15 @@ public class CpfFunction implements Function {
 	public <T> T generateValue() {
 		RandomFunction random = new RandomFunction(Integer.class, new Range(1, 9));
 
-		int a = random.generateValue();
-		int b = random.generateValue();
-		int c = random.generateValue();
-		int d = random.generateValue();
-		int e = random.generateValue();
-		int f = random.generateValue();
-		int g = random.generateValue();
-		int h = random.generateValue();
-		int i = random.generateValue();
+		Integer a = random.generateValue();
+		Integer b = random.generateValue();
+		Integer c = random.generateValue();
+		Integer d = random.generateValue();
+		Integer e = random.generateValue();
+		Integer f = random.generateValue();
+		Integer g = random.generateValue();
+		Integer h = random.generateValue();
+		Integer i = random.generateValue();
 
 		int j = (a * 10 + b * 9 + c * 8 + d * 7 + e * 6 + f * 5 + g * 4 + h * 3 + i * 2);
 		j = j % 11;
