@@ -2,7 +2,7 @@ package br.com.fixturefactory.function;
 
 import br.com.fixturefactory.base.Range;
 
-public class CpfFunction implements Function {
+public class CpfFunction implements AtomicFunction {
 
 	private boolean formatted;
 	

@@ -2,7 +2,7 @@ package br.com.fixturefactory.function;
 
 import br.com.fixturefactory.base.Sequence;
 
-public class SequenceFunction implements Function {
+public class SequenceFunction implements AtomicFunction {
 
 	private Sequence<?> sequence;
 	

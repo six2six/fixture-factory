@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 import br.com.fixturefactory.base.Range;
 
-public class DateTimeFunction implements Function {
+public class DateTimeFunction implements AtomicFunction {
 
 	private RandomFunction random;
 	

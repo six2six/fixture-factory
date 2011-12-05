@@ -2,7 +2,7 @@ package br.com.fixturefactory.function;
 
 import br.com.bfgex.RegexGen;
 
-public class RegexFunction implements Function {
+public class RegexFunction implements AtomicFunction {
 
 	private String pattern;
 	

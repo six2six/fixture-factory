@@ -3,7 +3,7 @@ package br.com.fixturefactory.function;
 import br.com.fixturefactory.Fixture;
 import br.com.fixturefactory.TemplateHolder;
 
-public class FixtureFunction implements Function {
+public class FixtureFunction implements AtomicFunction {
 
 	private Class<?> clazz;
 

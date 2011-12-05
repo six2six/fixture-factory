@@ -4,13 +4,13 @@ import java.util.Random;
 
 import br.com.fixturefactory.base.Range;
 
-public class RandomFunction implements Function {
+public class RandomFunction implements AtomicFunction {
 
 	private Class<?> type;
 	
 	private Object[] dataset;
 	
-	private Function[] functions;
+	private AtomicFunction[] functions;
 	
 	private Range range;
 	
@@ -22,7 +22,7 @@ public class RandomFunction implements Function {
 		this.dataset = dataset;
 	}
 	
-	public RandomFunction(Function[] functions) {
+	public RandomFunction(AtomicFunction[] functions) {
 		this.functions = functions;
 	}
 

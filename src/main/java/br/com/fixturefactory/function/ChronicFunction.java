@@ -4,7 +4,7 @@ import com.mdimension.jchronic.Chronic;
 import com.mdimension.jchronic.Options;
 import com.mdimension.jchronic.utils.Span;
 
-public class ChronicFunction implements Function {
+public class ChronicFunction implements AtomicFunction {
 
     private String dateText;
     

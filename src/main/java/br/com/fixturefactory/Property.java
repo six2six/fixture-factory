@@ -1,6 +1,8 @@
 package br.com.fixturefactory;
 
+import br.com.fixturefactory.function.AtomicFunction;
 import br.com.fixturefactory.function.Function;
+import br.com.fixturefactory.function.RelationFunction;
 
 public class Property {
 
@@ -25,7 +27,16 @@ public class Property {
 	}
 
 	public Object getValue() {
-		return this.value == null ? this.function.generateValue() : this.value;
+		return this.value == null ? ((AtomicFunction) this.function).generateValue() : this.value;
+	}
+	
+	public Object getValue(Object owner) {
+		return ((RelationFunction) this.function).generateValue(owner);
+	}
+	
+	
+	public boolean hasRelationFunction() {
+		return this.function instanceof RelationFunction;
 	}
 	
 }

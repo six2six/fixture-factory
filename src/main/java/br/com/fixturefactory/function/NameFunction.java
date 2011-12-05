@@ -3,7 +3,7 @@ package br.com.fixturefactory.function;
 import br.com.bfgex.Gender;
 import br.com.bfgex.RandomGen;
 
-public class NameFunction implements Function {
+public class NameFunction implements AtomicFunction {
 
 	private Gender gender;
 	

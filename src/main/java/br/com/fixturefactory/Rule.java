@@ -19,6 +19,7 @@ import br.com.fixturefactory.base.CalendarSequence;
 import br.com.fixturefactory.base.Interval;
 import br.com.fixturefactory.base.Range;
 import br.com.fixturefactory.base.Sequence;
+import br.com.fixturefactory.function.AssociationFunction;
 import br.com.fixturefactory.function.ChronicFunction;
 import br.com.fixturefactory.function.DateTimeFunction;
 import br.com.fixturefactory.function.FixtureFunction;
@@ -48,6 +49,15 @@ public class Rule {
 	public Function fixture(Class<?> clazz, Integer quantity, String label) {
     	return new FixtureFunction(clazz, label, quantity);
     }
+	
+	public Function association(Class<?> clazz, String label, String targetAttribute) {
+		return new AssociationFunction(new FixtureFunction(clazz, label), targetAttribute);
+	}
+	
+	public Function association(Class<?> clazz, Integer quantity, String label, String targetAttribute) {
+		return new AssociationFunction(new FixtureFunction(clazz, label, quantity), targetAttribute);
+	}
+
 	
 	public Function random(Class<?> clazz, Object... dataset) {
 		return new RandomFunction(clazz, dataset);

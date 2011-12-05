@@ -66,7 +66,7 @@ public class TemplateHolder {
 		Object result = ReflectionUtils.newInstance(this.clazz);
 		
 		for (Property property : rule.getProperties()) {
-			Object value = property.getValue();
+			Object value = property.hasRelationFunction() ? property.getValue(result) : property.getValue();
 			
 			if (value instanceof String) {
 				String baseValue = (String) value;
