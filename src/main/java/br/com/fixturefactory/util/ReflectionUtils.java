@@ -1,5 +1,6 @@
 package br.com.fixturefactory.util;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
 
@@ -100,13 +101,15 @@ public class ReflectionUtils {
 
     @SuppressWarnings("unchecked")
     public static <T> T newInstance(Class<?> clazz) {
-        T instance = null;
+        Object instance = null;
         try {
-            instance = (T) clazz.newInstance();
+            Constructor<?> constructor = clazz.getDeclaredConstructor((Class<?>[])null);
+            constructor.setAccessible(true);
+            instance = constructor.newInstance((Object[])null);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
-        return instance;
+        return (T) instance;
     }
     
     public static Class<?> getTargetClass(Class<?> clazz) {
