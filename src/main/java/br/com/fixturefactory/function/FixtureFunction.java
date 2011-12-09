@@ -28,4 +28,12 @@ public class FixtureFunction implements AtomicFunction {
 		return (T) (quantity != null ? templateHolder.gimme(quantity, label) : templateHolder.gimme(label));
 	}
 
+	public void setClazz(Class<?> clazz) {
+		this.clazz = clazz;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	
 }

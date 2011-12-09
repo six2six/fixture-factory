@@ -14,8 +14,8 @@ public class FixtureCircularReferenceTest {
 	public void setUp() {
 		Fixture.of(Order.class).addTemplate("valid", new Rule(){{
 			add("id", random(Long.class, range(1L, 200L)));
-			add("items", association(Item.class, 3, "valid", "order"));
-			add("payment", association(Payment.class, "valid", "order"));
+			add("items", has(3).of(Item.class, "valid"));
+			add("payment", one(Payment.class, "valid"));
 		}});
 
 		Fixture.of(Item.class).addTemplate("valid", new Rule(){{
@@ -25,7 +25,6 @@ public class FixtureCircularReferenceTest {
 		Fixture.of(Payment.class).addTemplate("valid", new Rule(){{
 			add("id", random(Long.class, range(1L, 200L)));
 		}});
-		
 	}
 	
 	@Test

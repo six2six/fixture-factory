@@ -29,6 +29,7 @@ import br.com.fixturefactory.function.NumberSequence;
 import br.com.fixturefactory.function.RandomFunction;
 import br.com.fixturefactory.function.RegexFunction;
 import br.com.fixturefactory.function.SequenceFunction;
+import br.com.fixturefactory.util.Chainable;
 
 public class Rule {
 
@@ -50,14 +51,13 @@ public class Rule {
     	return new FixtureFunction(clazz, label, quantity);
     }
 	
-	public Function association(Class<?> clazz, String label, String targetAttribute) {
-		return new AssociationFunction(new FixtureFunction(clazz, label), targetAttribute);
+	public Chainable has(int quantity) {
+		return new AssociationFunction(new FixtureFunction(null, null, quantity));
 	}
 	
-	public Function association(Class<?> clazz, Integer quantity, String label, String targetAttribute) {
-		return new AssociationFunction(new FixtureFunction(clazz, label, quantity), targetAttribute);
+	public AssociationFunction one(Class<?> clazz, String label) {
+		return new AssociationFunction(new FixtureFunction(clazz, label));
 	}
-
 	
 	public Function random(Class<?> clazz, Object... dataset) {
 		return new RandomFunction(clazz, dataset);
