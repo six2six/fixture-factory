@@ -14,6 +14,8 @@ public class Client implements Serializable {
 	private Calendar birthday;
 	private Address address;
 	
+	private Client() { }
+	
 	public Long getId() {
 		return id;
 	}
