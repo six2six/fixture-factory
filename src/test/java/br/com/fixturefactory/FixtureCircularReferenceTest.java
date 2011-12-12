@@ -43,5 +43,16 @@ public class FixtureCircularReferenceTest {
 		
 		assertTrue("payment one-to-one relationship should have the same reference", order == order.getPayment().getOrder());
 	}
+	
+	@Test
+	public void circularReferenceEspecifyProperty() {
+		Order order = Fixture.of(Order.class).gimme("otherValid");
+		
+		for (Item item : order.getItems()) {
+			assertTrue("order relationship with item should have the same reference", item.getOrder() == order);
+		}
+		
+		assertTrue("payment one-to-one relationship should have the same reference", order == order.getPayment().getOrder());
+	}
 
 }
