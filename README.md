@@ -18,7 +18,7 @@ Use it like a maven dependency on your project
 	<dependency>
 		<groupId>br.com.fixturefactory</groupId>
 		<artifactId>fixture-factory</artifactId>
-		<version>1.1.0</version>
+		<version>1.2.1</version>
 	</dependency>
 
 ### Usage
@@ -52,6 +52,22 @@ Gimme N objects of valid label
 	List<Client> clients = Fixture.of(Client.class).gimme(5, "valid");
 
 More helpers functions for create generic template:
+
+#### Relationship (one-to-one and one-to-many)
+
+	Fixture.of(Order.class).addTemplate("valid", new Rule(){{
+		add("id", random(Long.class, range(1L, 200L)));
+		add("items", has(3).of(Item.class, "valid"));
+		add("payment", one(Payment.class, "valid"));
+	}});
+
+	Fixture.of(Item.class).addTemplate("valid", new Rule(){{
+		add("productId", random(Integer.class, range(1L, 200L)));
+	}});
+
+	Fixture.of(Payment.class).addTemplate("valid", new Rule(){{
+		add("id", random(Long.class, range(1L, 200L)));
+	}});
 
 #### Regex
 
