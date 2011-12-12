@@ -59,6 +59,10 @@ public class Rule {
 		return new AssociationFunction(new FixtureFunction(clazz, label));
 	}
 	
+	public Function one(Class<?> clazz, String label, String targetAttribute) {
+		return new AssociationFunction(new FixtureFunction(clazz, label), targetAttribute);
+	}
+	
 	public Function random(Class<?> clazz, Object... dataset) {
 		return new RandomFunction(clazz, dataset);
 	}

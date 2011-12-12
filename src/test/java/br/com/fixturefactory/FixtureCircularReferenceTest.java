@@ -1,6 +1,6 @@
 package br.com.fixturefactory;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,6 +18,12 @@ public class FixtureCircularReferenceTest {
 			add("payment", one(Payment.class, "valid"));
 		}});
 
+		Fixture.of(Order.class).addTemplate("otherValid", new Rule(){{
+			add("id", random(Long.class, range(1L, 200L)));
+			add("items", has(3).of(Item.class, "valid"));
+			add("payment", one(Payment.class, "valid", "order"));
+		}});
+		
 		Fixture.of(Item.class).addTemplate("valid", new Rule(){{
 			add("productId", random(Integer.class, range(1L, 200L)));
 		}});
@@ -32,10 +38,10 @@ public class FixtureCircularReferenceTest {
 		Order order = Fixture.of(Order.class).gimme("valid");
 		
 		for (Item item : order.getItems()) {
-			Assert.assertTrue("order relationship with item should have the same reference", item.getOrder() == order);
+			assertTrue("order relationship with item should have the same reference", item.getOrder() == order);
 		}
 		
-		Assert.assertTrue("payment one-to-one relationship should have the same reference", order == order.getPayment().getOrder());
+		assertTrue("payment one-to-one relationship should have the same reference", order == order.getPayment().getOrder());
 	}
 
 }
