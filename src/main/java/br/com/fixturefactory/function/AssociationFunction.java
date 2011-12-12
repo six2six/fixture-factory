@@ -59,9 +59,20 @@ public class AssociationFunction implements RelationFunction, Chainable {
 
 	@Override
 	public Function of(Class<?> clazz, String label) {
+		this.configureFixtureFunction(clazz, label);
+		return this;
+	}
+
+	@Override
+	public Function of(Class<?> clazz, String label, String targetAttribute) {
+		this.configureFixtureFunction(clazz, label);
+		this.targetAttribute = targetAttribute;
+		return this;
+	}
+	
+	private void configureFixtureFunction(Class<?> clazz, String label) {
 		ReflectionUtils.invokeRecursiveSetter(fixtureFunction, "clazz", clazz);
 		ReflectionUtils.invokeRecursiveSetter(fixtureFunction, "label", label);
-		return this;
 	}
 	
 }

@@ -20,7 +20,7 @@ public class FixtureCircularReferenceTest {
 
 		Fixture.of(Order.class).addTemplate("otherValid", new Rule(){{
 			add("id", random(Long.class, range(1L, 200L)));
-			add("items", has(3).of(Item.class, "valid"));
+			add("items", has(3).of(Item.class, "valid", "order"));
 			add("payment", one(Payment.class, "valid", "order"));
 		}});
 		
