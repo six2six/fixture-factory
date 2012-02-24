@@ -40,8 +40,18 @@ public class AssociationFunction implements RelationFunction, Chainable {
 	}
 	
 	private void setField(Object target, Object value) {
-		String fieldName = StringUtils.isBlank(targetAttribute)? this.getField(target.getClass(), value.getClass()).getName() : targetAttribute;
-		ReflectionUtils.invokeRecursiveSetter(target, fieldName, value);
+	    String fieldName = targetAttribute;
+
+	    if (StringUtils.isBlank(targetAttribute)) {
+	        Field field = this.getField(target.getClass(), value.getClass());
+	        if (field != null) {
+	            fieldName = field.getName();
+	        }
+	    }
+
+	    if (!StringUtils.isBlank(fieldName)) {
+	        ReflectionUtils.invokeRecursiveSetter(target, fieldName, value);
+	    }
 	}
 	
 	private Field getField(Class<?> clazz, Class<?> fieldType) {
