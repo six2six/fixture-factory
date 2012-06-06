@@ -65,7 +65,7 @@ public class ObjectFactory {
 		for (Property property : rule.getProperties()) {
 			Class<?> fieldType = ReflectionUtils.invokeRecursiveType(result, property.getName());
 			
-			Object value = property.hasRelationFunction() || fieldType.getEnclosingClass() != null ?
+			Object value = property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType) ?
 					property.getValue(result) : property.getValue();
 			
 			
