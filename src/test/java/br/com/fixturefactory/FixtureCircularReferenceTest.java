@@ -35,7 +35,7 @@ public class FixtureCircularReferenceTest {
 	
 	@Test
 	public void circularReference() {
-		Order order = Fixture.of(Order.class).gimme("valid");
+		Order order = Fixture.from(Order.class).gimme("valid");
 		
 		for (Item item : order.getItems()) {
 			assertTrue("order relationship with item should have the same reference", item.getOrder() == order);
@@ -46,7 +46,7 @@ public class FixtureCircularReferenceTest {
 	
 	@Test
 	public void circularReferenceEspecifyProperty() {
-		Order order = Fixture.of(Order.class).gimme("otherValid");
+		Order order = Fixture.from(Order.class).gimme("otherValid");
 		
 		for (Item item : order.getItems()) {
 			assertTrue("order relationship with item should have the same reference", item.getOrder() == order);

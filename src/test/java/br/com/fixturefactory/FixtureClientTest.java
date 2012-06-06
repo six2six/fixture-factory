@@ -38,7 +38,7 @@ public class FixtureClientTest {
 	
 	@Test
 	public void fixtureClient() {
-		Client client = Fixture.of(Client.class).gimme("valid");
+		Client client = Fixture.from(Client.class).gimme("valid");
 		assertNotNull("Client should not be null", client);
 		assertNotNull("Address should not be null", client.getAddress());
 		assertEquals("client birthday should be 18 years ago", client.getBirthday().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR) - 18);
@@ -46,7 +46,7 @@ public class FixtureClientTest {
 	
 	@Test
 	public void fixtureClientList() {
-		List<Client> clients = Fixture.of(Client.class).gimme(5, "valid");
+		List<Client> clients = Fixture.from(Client.class).gimme(5, "valid");
 		
 		assertNotNull("Client list should not be null", clients);
 		assertFalse("Client list should not be empty", clients.isEmpty());

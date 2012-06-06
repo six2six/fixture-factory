@@ -30,13 +30,13 @@ public class FixtureUserTest {
 
 	@Test
 	public void fixtureAnyUser() {
-		User user = Fixture.of(User.class).gimme("anyValidUser");
+		User user = Fixture.from(User.class).gimme("anyValidUser");
 		assertNotNull("User should not be null", user);
 	}
 
 	@Test
 	public void fixtureFemaleUser() {
-		User user = Fixture.of(User.class).gimme("validFemaleUser");
+		User user = Fixture.from(User.class).gimme("validFemaleUser");
 		assertNotNull("User should not be null", user);
 	}
 	

@@ -38,13 +38,13 @@ public class FixtureInvoice {
 
 	@Test
 	public void fixtureInvoice() {
-		Invoice invoice = Fixture.of(Invoice.class).gimme("valid");
+		Invoice invoice = Fixture.from(Invoice.class).gimme("valid");
 		assertNotNull("Invoice should not be null", invoice);
 	}
 	
 	@Test
 	public void fixturePreviousInvoices() {
-		List<Invoice> invoices = Fixture.of(Invoice.class).gimme(3, "previousInvoices");
+		List<Invoice> invoices = Fixture.from(Invoice.class).gimme(3, "previousInvoices");
 		assertNotNull("Invoice list should not be null", invoices);
 		assertTrue("Invoice list should not be empty", !invoices.isEmpty());
 		
@@ -58,7 +58,7 @@ public class FixtureInvoice {
 	
 	@Test
 	public void fixtureNextInvoices() {
-		List<Invoice> invoices = Fixture.of(Invoice.class).gimme(3, "nextInvoices");
+		List<Invoice> invoices = Fixture.from(Invoice.class).gimme(3, "nextInvoices");
 		assertNotNull("Invoice list should not be null", invoices);
 		assertTrue("Invoice list should not be empty", !invoices.isEmpty());
 		

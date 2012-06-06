@@ -1,9 +1,9 @@
 package br.com.fixturefactory.function;
 
 import br.com.fixturefactory.Fixture;
-import br.com.fixturefactory.TemplateHolder;
+import br.com.fixturefactory.ObjectFactory;
 
-public class FixtureFunction implements AtomicFunction {
+public class FixtureFunction implements AtomicFunction, RelationFunction {
 
 	private Class<?> clazz;
 
@@ -24,8 +24,18 @@ public class FixtureFunction implements AtomicFunction {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T generateValue() {
-		TemplateHolder templateHolder = Fixture.of(clazz);
-		return (T) (quantity != null ? templateHolder.gimme(quantity, label) : templateHolder.gimme(label));
+		return (T) generate(Fixture.from(clazz));
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> T generateValue(Object owner) {
+		return (T) generate(new ObjectFactory(Fixture.of(clazz), owner));
+	}
+	
+	@SuppressWarnings("unchecked")
+	private <T> T generate(ObjectFactory objectFactory) {
+		return (T) (quantity != null ? objectFactory.gimme(quantity, label) : objectFactory.gimme(label));
 	}
 
 	public void setClazz(Class<?> clazz) {
@@ -35,5 +45,6 @@ public class FixtureFunction implements AtomicFunction {
 	public void setLabel(String label) {
 		this.label = label;
 	}
+
 	
 }

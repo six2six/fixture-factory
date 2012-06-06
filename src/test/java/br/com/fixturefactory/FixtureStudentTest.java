@@ -40,7 +40,7 @@ public class FixtureStudentTest {
 
 	@Test
 	public void fixtureAnyStudent() {
-		Student student = Fixture.of(Student.class).gimme("valid");
+		Student student = Fixture.from(Student.class).gimme("valid");
 		assertNotNull("Student should not be null", student);
 		assertNotNull("Students id should not be null", student.getId());
 		assertTrue("Students it should be 1", student.getId() == 1);
@@ -48,7 +48,7 @@ public class FixtureStudentTest {
 	
 	@Test
 	public void fixtureFemaleStudent() {
-		Student student = Fixture.of(Student.class).gimme("validFemaleStudent");
+		Student student = Fixture.from(Student.class).gimme("validFemaleStudent");
 		assertNotNull("Female Student should not be null", student);
 		assertNotNull("Students id should not be null", student.getId());
 		assertTrue("Students it should be 1", student.getId() == 200);
@@ -56,8 +56,8 @@ public class FixtureStudentTest {
 	
 	@Test
 	public void fixtureSharedSequence() {
-		Student oneStudent = Fixture.of(Student.class).gimme("sharedSequence");
-		Student otherStudent = Fixture.of(Student.class).gimme("otherSharedSequence");
+		Student oneStudent = Fixture.from(Student.class).gimme("sharedSequence");
+		Student otherStudent = Fixture.from(Student.class).gimme("otherSharedSequence");
 		
 		assertTrue("Students id should be 1", oneStudent.getId() == 1L);
 		assertTrue("otherStudes id should be 2", otherStudent.getId() == 2L);

@@ -20,7 +20,7 @@ public class FixtureXMLTransactionTest {
 
 	@Test
 	public void fixtureValidTransaction() {
-		XMLTransaction transaction = Fixture.of(XMLTransaction.class).gimme("validTransaction");
+		XMLTransaction transaction = Fixture.from(XMLTransaction.class).gimme("validTransaction");
 		assertNotNull("User should not be null", transaction);
 	}
 	

@@ -27,7 +27,7 @@ public class AssociationFunction implements RelationFunction, Chainable {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T generateValue(Object owner) {
-		Object target = fixtureFunction.generateValue();
+		Object target = fixtureFunction.generateValue(owner);
 		
 		if (target instanceof Collection<?>) {
 			for (Object item : (Collection<?>) target) {
@@ -43,7 +43,7 @@ public class AssociationFunction implements RelationFunction, Chainable {
 	    String fieldName = targetAttribute;
 
 	    if (StringUtils.isBlank(targetAttribute)) {
-	        Field field = this.getField(target.getClass(), value.getClass());
+	        Field field = this.getAssignableField(target.getClass(), value.getClass());
 	        if (field != null) {
 	            fieldName = field.getName();
 	        }
@@ -54,11 +54,11 @@ public class AssociationFunction implements RelationFunction, Chainable {
 	    }
 	}
 	
-	private Field getField(Class<?> clazz, Class<?> fieldType) {
+	private Field getAssignableField(Class<?> clazz, Class<?> fieldType) {
 		Field searchdField = null;
 		
 		for (Field field : clazz.getDeclaredFields()) {
-			if (ClassUtils.isAssignable(field.getType(), fieldType)) {
+			if (ClassUtils.isAssignable(field.getType(), fieldType) && !field.isSynthetic()) {
 				searchdField = field;
 				break;
 			}
