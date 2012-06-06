@@ -55,7 +55,7 @@ public class ObjectFactory {
 
 	private Object createObject(Rule rule) {
 		Object result;
-		if (owner == null || !owner.getClass().equals(templateHolder.getClazz().getEnclosingClass()))  {
+		if (owner == null || !ReflectionUtils.isInnerClass(templateHolder.getClazz()))  {
 			result = ReflectionUtils.newInstance(templateHolder.getClazz());	
 		} else {
 			result = ReflectionUtils.newInnerClassInstance(templateHolder.getClazz(), owner);	

@@ -2,6 +2,7 @@ package br.com.fixturefactory.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
@@ -170,6 +171,10 @@ public class ReflectionUtils {
         }
         
         return targetBean;
+    }
+    
+    public static boolean isInnerClass(Class<?> clazz) {
+    	return clazz.getEnclosingClass() != null && !Modifier.isStatic(clazz.getModifiers());
     }
     
 }
