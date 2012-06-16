@@ -43,13 +43,13 @@ Writing bean template rules
 		add("zipCode", random("06608000", "17720000"));
 	}}); 
 
-Gimme one object of valid label
+Gimme one object from valid label
 
-	Client client = Fixture.of(Client.class).gimme("valid");
+	Client client = Fixture.from(Client.class).gimme("valid");
 
-Gimme N objects of valid label
+Gimme N objects from valid label
 
-	List<Client> clients = Fixture.of(Client.class).gimme(5, "valid");
+	List<Client> clients = Fixture.from(Client.class).gimme(5, "valid");
 
 More helpers functions for create generic template:
 
@@ -72,8 +72,8 @@ More helpers functions for create generic template:
 #### Regex
 
 	Fixture.of(Any.class).addTemplate("valid", new Rule(){{
-	        add("id", regex("\\d{3,5}"));
-	        add("phoneNumber", regex("(\\d{2})-(\\d{4})-(\\d{4})"));
+	  add("id", regex("\\d{3,5}"));
+	  add("phoneNumber", regex("(\\d{2})-(\\d{4})-(\\d{4})"));
 	});
 
 #### Date
