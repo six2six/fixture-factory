@@ -4,6 +4,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
@@ -71,15 +73,15 @@ public class ReflectionUtils {
 	    ReflectionUtils.invokeSetter(prepareInvokeRecursiveSetter(bean, attribute, value), attribute.substring(attribute.lastIndexOf(".") + 1), value, true);
 	}
     
-    public static Class<?> invokeRecursiveType(Object bean, String attribute) {
-    	Field field = invokeRecursiveField(bean, attribute);
+    public static Class<?> invokeRecursiveType(Class<?> clazz, String attribute) {
+    	Field field = invokeRecursiveField(clazz, attribute);
     	return field.getType();
     }
 
-    public static Field invokeRecursiveField(Object bean, String attribute) {
+    public static Field invokeRecursiveField(Class<?> clazz, String attribute) {
         Field field = null;
         Class<?> superClass = null;
-        Class<?> targetBeanClass = getTargetClass(bean.getClass());
+        Class<?> targetBeanClass = getTargetClass(clazz);
         
         for (String propertyItem : attribute.split("\\.")) {
             do {
@@ -161,7 +163,7 @@ public class ReflectionUtils {
                 targetBean = ReflectionUtils.invokeGetter(targetBean, propertyItem);
                 if(targetBean == null) {
                     try {
-                        targetBean = newInstance(invokeRecursiveType(lastBean, propertyItem));
+                        targetBean = newInstance(invokeRecursiveType(lastBean.getClass(), propertyItem));
                         ReflectionUtils.invokeSetter(lastBean, propertyItem, targetBean, true);                     
                     } catch (Exception e) {
                         throw new IllegalArgumentException("No such attribute: " + propertyItem + " declared in class " + lastBean.getClass().getCanonicalName());
@@ -177,4 +179,18 @@ public class ReflectionUtils {
     	return clazz.getEnclosingClass() != null && !Modifier.isStatic(clazz.getModifiers());
     }
     
+    @SuppressWarnings("unchecked")
+	public static <T,U> Collection<U> map(Collection<T> collection, String propertyName) {
+    	Collection<U> map = null; 
+	    try {
+	         map = (Collection<U>) collection.getClass().newInstance();    
+        } catch (Exception e) {
+            map = new ArrayList<U>();
+        }
+	    
+    	for (T item : collection) {
+    		map.add((U) ReflectionUtils.invokeGetter(item, propertyName, true));
+		};
+		return map;
+    }
 }
