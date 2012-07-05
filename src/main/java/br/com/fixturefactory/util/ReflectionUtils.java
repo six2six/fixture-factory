@@ -6,6 +6,9 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import net.vidageek.mirror.dsl.Mirror;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
@@ -129,7 +132,13 @@ public class ReflectionUtils {
     	return (T) instance;
     }
     
-    
+    public static <T> T newInstance(Class<T> target, List<Object> parameters) {
+		if (parameters.size() > 0) {
+			return new Mirror().on(target).invoke().constructor().withArgs(parameters.toArray());			
+		} else {
+			return new Mirror().on(target).invoke().constructor().withoutArgs();
+		}
+	}
     
     public static Class<?> getTargetClass(Class<?> clazz) {
         if (isCglibProxy(clazz) || Proxy.isProxyClass(clazz)) {

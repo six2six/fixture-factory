@@ -79,60 +79,15 @@ public class ObjectFactory {
 			}
 		}
 		
-		Object result = instantiate(templateHolder.getClazz(), getActualParameterValues(parameterNames, parameters));
+		Object result = ReflectionUtils.newInstance(templateHolder.getClazz(), new ConstructorParameterProcessor(parameters).apply(parameterNames));
 		
 		for (Property property : deferredProperties) {
-			Class<?> fieldType = ReflectionUtils.invokeRecursiveType(result.getClass(), property.getName());
-			Object value = property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType) ?
-					property.getValue(result) : property.getValue();
-			
-			if (value instanceof String) {
-				String baseValue = (String) value;
-				int start = baseValue.indexOf(PLACE_HOLDER_START);
-				if (start >= 0) {
-					String propertyReference = baseValue.substring(start + PLACE_HOLDER_START.length(), baseValue.indexOf(PLACE_HOLDER_END));
-					value = baseValue.replace(PLACE_HOLDER_START + propertyReference + PLACE_HOLDER_END, ReflectionUtils.invokeRecursiveGetter(result, propertyReference).toString());
-				}
-			}
-			
-			if (value instanceof Calendar) {
-				value = new CalendarTransformer().transform(value, fieldType);
-			}
-			
-			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), value);
+			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), new PropertyProcessor(result).apply(property));
 		}
+		
 		return result;
 	}
 
-	private List<Object> getActualParameterValues(List<String> parameterNames, Map<String, Object> parameters) {
-		List<Object> parameterValues = new ArrayList<Object>();
-		
-		if (owner != null && ReflectionUtils.isInnerClass(templateHolder.getClazz()))  {
-			parameterValues.add(owner);	
-		}
-		
-		for (String parameterName : parameterNames) {
-			Object value = parameters.get(parameterName);
-
-			if (value instanceof String) {
-				String baseValue = (String) value;
-				int start = baseValue.indexOf(PLACE_HOLDER_START);
-				if (start >= 0) {
-					String propertyReference = baseValue.substring(start + PLACE_HOLDER_START.length(), baseValue.indexOf(PLACE_HOLDER_END));
-					value = baseValue.replace(PLACE_HOLDER_START + propertyReference + PLACE_HOLDER_END, parameters.get(propertyReference).toString());
-				}
-			}
-			
-			if (value instanceof Calendar) {
-				Class<?> fieldType = ReflectionUtils.invokeRecursiveType(templateHolder.getClazz(), parameterName);
-				value = new CalendarTransformer().transform(value, fieldType);
-			}
-			
-			parameterValues.add(value);
-		}
-		return parameterValues;
-	}
-	
 	private <T> List<String> resolveConstructorParameterNames(Class<T> target, Set<Property> properties) {
 		MirrorList<Constructor<T>> constructors = new Mirror().on(target).reflectAll().constructors();
 
@@ -143,21 +98,83 @@ public class ObjectFactory {
 		Collection<String> propertyNames = ReflectionUtils.map(properties, "name");
 		
 		for (Constructor<T> constructor : constructors) {
-			String[] parameterNames = paranamer.lookupParameterNames(constructor, false);
-			if (propertyNames.containsAll(Arrays.asList(parameterNames))) {
-				if (args.size() < parameterNames.length) {
-					args = Arrays.asList(parameterNames);
-				}
+			List<String> parameterNames = Arrays.asList(paranamer.lookupParameterNames(constructor, false));
+			if (args.size() < parameterNames.size() && propertyNames.containsAll(parameterNames)) {
+				args = parameterNames;
 			}
 		}
 		return args;
 	}
 	
-	public <T> T instantiate(Class<T> target, List<	Object> parameters) {
-		if (parameters.size() > 0) {
-			return new Mirror().on(target).invoke().constructor().withArgs(parameters.toArray());			
-		} else {
-			return new Mirror().on(target).invoke().constructor().withoutArgs();
-		}		
+	protected abstract class ValueProcessor {
+		protected abstract String getPropertyReferenceValue(String propertyReference);
+		
+		protected Object process(Object baseValue, Class<?> fieldType) {
+			Object value = baseValue;
+			if (baseValue instanceof String) {
+				String stringValue = (String) baseValue;
+				int start = stringValue.indexOf(PLACE_HOLDER_START);
+				if (start >= 0) {
+					String propertyReference = stringValue.substring(start + PLACE_HOLDER_START.length(), stringValue.indexOf(PLACE_HOLDER_END));
+					String referenceValue = getPropertyReferenceValue(propertyReference);
+					value = stringValue.replace(PLACE_HOLDER_START + propertyReference + PLACE_HOLDER_END, referenceValue);
+				}
+			}
+			if (value instanceof Calendar) {
+				value = new CalendarTransformer().transform(value, fieldType);
+			}
+			
+			return value;
+		}
+	}
+	
+	private class ConstructorParameterProcessor extends ValueProcessor {
+		private final Map<String, Object> parameters;
+		
+		private ConstructorParameterProcessor(final Map<String, Object> parameters) {
+			this.parameters = parameters;
+		}
+		
+		private List<Object> apply(List<String> parameterNames) {
+			List<Object> parameterValues = new ArrayList<Object>();
+			
+			if (owner != null && ReflectionUtils.isInnerClass(templateHolder.getClazz()))  {
+				parameterValues.add(owner);	
+			}
+			
+			for (String parameterName : parameterNames) {
+				Class<?> fieldType = ReflectionUtils.invokeRecursiveType(templateHolder.getClazz(), parameterName);
+				Object value = parameters.get(parameterName);
+
+				parameterValues.add(process(value, fieldType));
+			}
+			return parameterValues;
+		}
+
+		@Override
+		protected String getPropertyReferenceValue(String propertyReference) {
+			return parameters.get(propertyReference).toString();
+		}
+	}
+	
+	private class PropertyProcessor extends ValueProcessor {
+		private final Object result;
+		
+		private PropertyProcessor(final Object result) {
+			this.result = result;
+		}
+		
+		private Object apply(Property property) {
+			Class<?> fieldType = ReflectionUtils.invokeRecursiveType(result.getClass(), property.getName());
+			Object value = property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType) ?
+					property.getValue(result) : property.getValue();
+			
+			return process(value, fieldType);
+		}
+		
+		@Override
+		protected String getPropertyReferenceValue(String propertyReference) {
+			return ReflectionUtils.invokeRecursiveGetter(result, propertyReference).toString();
+		}
 	}
 }
