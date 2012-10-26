@@ -12,24 +12,24 @@ public class Immutable {
 	
 	private Date date;
 	
+	private Address address;
+	
 	private ImmutableInner immutableInner;
 	
 	public Immutable(String propertyA, Long propertyB) {
-		this.propertyA = propertyA;
-		this.propertyB = propertyB;
-		this.propertyC = "default";
+		this(propertyA, propertyB, "default", null, null);
 	}
 	
-	public Immutable(Long propertyB, String propertyC) {
-		this.propertyA = "default";
-		this.propertyB = propertyB;
-		this.propertyC = propertyC;
+	public Immutable(Long propertyB, String propertyC, Address address) {
+		this("default", propertyB, propertyC, null, address);
 	}
 
-	public Immutable(String propertyA, Long propertyB, String propertyC, Date date) {
-		this(propertyA, propertyB);
+	public Immutable(String propertyA, Long propertyB, String propertyC, Date date, Address address) {
+		this.propertyA = propertyA;
+		this.propertyB = propertyB;
 		this.propertyC = propertyC;
 		this.date = date;
+		this.address = address;
 	}
 
 	public String getPropertyA() {
@@ -66,5 +66,9 @@ public class Immutable {
 
 	public Date getDate() {
 		return date;
+	}
+
+	public Address getAddress() {
+		return address;
 	}
 }

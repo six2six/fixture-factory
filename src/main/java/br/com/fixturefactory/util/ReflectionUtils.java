@@ -6,6 +6,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import net.vidageek.mirror.dsl.Mirror;
@@ -107,17 +108,17 @@ public class ReflectionUtils {
 
     @SuppressWarnings("unchecked")
     public static <T> T newInstance(Class<?> clazz) {
-        Object instance = null;
-        try {
-            Constructor<?> constructor = clazz.getDeclaredConstructor((Class<?>[])null);
-            constructor.setAccessible(true);
-            instance = constructor.newInstance((Object[])null);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-        return (T) instance;
+        return (T) newInstance(clazz, Collections.emptyList());
     }
 
+    public static <T> T newInstance(Class<T> target, List<Object> parameters) {
+		if (parameters.size() > 0) {
+			return new Mirror().on(target).invoke().constructor().withArgs(parameters.toArray());			
+		} else {
+			return new Mirror().on(target).invoke().constructor().withoutArgs();
+		}
+	}
+    
     @SuppressWarnings("unchecked")
     public static <T> T newInnerClassInstance(Class<?> clazz, Object owner) {
     	Object instance = null;
@@ -131,14 +132,6 @@ public class ReflectionUtils {
 
     	return (T) instance;
     }
-    
-    public static <T> T newInstance(Class<T> target, List<Object> parameters) {
-		if (parameters.size() > 0) {
-			return new Mirror().on(target).invoke().constructor().withArgs(parameters.toArray());			
-		} else {
-			return new Mirror().on(target).invoke().constructor().withoutArgs();
-		}
-	}
     
     public static Class<?> getTargetClass(Class<?> clazz) {
         if (isCglibProxy(clazz) || Proxy.isProxyClass(clazz)) {

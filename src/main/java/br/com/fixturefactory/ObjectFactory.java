@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.vidageek.mirror.dsl.Mirror;
 import net.vidageek.mirror.list.dsl.MirrorList;
@@ -21,8 +23,7 @@ import com.thoughtworks.paranamer.Paranamer;
 
 public class ObjectFactory {
 
-	private static final String PLACE_HOLDER_START = "${";
-	private static final String PLACE_HOLDER_END = "}";
+	private static final Pattern PLACEHOLDER = Pattern.compile(".*?(\\$\\{([^\\}]+)\\}).*");
 	
 	private TemplateHolder templateHolder;
 	
@@ -69,7 +70,7 @@ public class ObjectFactory {
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		List<Property> deferredProperties = new ArrayList<Property>();
 		
-		List<String> parameterNames = resolveConstructorParameterNames(templateHolder.getClazz(), rule.getProperties());
+		List<String> parameterNames = lookupConstructorParameterNames(templateHolder.getClazz(), rule.getProperties());
 		
 		for (Property property : rule.getProperties()) {
 			if (parameterNames.contains(property.getName())) {
@@ -88,7 +89,7 @@ public class ObjectFactory {
 		return result;
 	}
 
-	private <T> List<String> resolveConstructorParameterNames(Class<T> target, Set<Property> properties) {
+	private <T> List<String> lookupConstructorParameterNames(Class<T> target, Set<Property> properties) {
 		MirrorList<Constructor<T>> constructors = new Mirror().on(target).reflectAll().constructors();
 
 		List<String> args = Collections.emptyList();
@@ -107,24 +108,21 @@ public class ObjectFactory {
 	}
 	
 	protected abstract class ValueProcessor {
-		protected abstract String getPropertyReferenceValue(String propertyReference);
+		protected abstract String getValue(String name);
 		
 		protected Object process(Object baseValue, Class<?> fieldType) {
-			Object value = baseValue;
+			Object result = baseValue;
 			if (baseValue instanceof String) {
-				String stringValue = (String) baseValue;
-				int start = stringValue.indexOf(PLACE_HOLDER_START);
-				if (start >= 0) {
-					String propertyReference = stringValue.substring(start + PLACE_HOLDER_START.length(), stringValue.indexOf(PLACE_HOLDER_END));
-					String referenceValue = getPropertyReferenceValue(propertyReference);
-					value = stringValue.replace(PLACE_HOLDER_START + propertyReference + PLACE_HOLDER_END, referenceValue);
+				Matcher matcher = PLACEHOLDER.matcher((String) baseValue);
+				if (matcher.matches()) {
+					result = ((String) baseValue).replace(matcher.group(1), getValue(matcher.group(2)));				
 				}
 			}
-			if (value instanceof Calendar) {
-				value = new CalendarTransformer().transform(value, fieldType);
+			if (baseValue instanceof Calendar) {
+				result = new CalendarTransformer().transform(baseValue, fieldType);
 			}
 			
-			return value;
+			return result;
 		}
 	}
 	
@@ -152,8 +150,8 @@ public class ObjectFactory {
 		}
 
 		@Override
-		protected String getPropertyReferenceValue(String propertyReference) {
-			return parameters.get(propertyReference).toString();
+		protected String getValue(String parameterName) {
+			return parameters.get(parameterName).toString();
 		}
 	}
 	
@@ -173,8 +171,8 @@ public class ObjectFactory {
 		}
 		
 		@Override
-		protected String getPropertyReferenceValue(String propertyReference) {
-			return ReflectionUtils.invokeRecursiveGetter(result, propertyReference).toString();
+		protected String getValue(String propertyName) {
+			return ReflectionUtils.invokeRecursiveGetter(result, propertyName).toString();
 		}
 	}
 }
