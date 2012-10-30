@@ -17,6 +17,10 @@ public class TemplateHolder {
 		rules.put(label, rule);
 		return this;
 	}
+	
+	public ExtendedTemplateHolder addTemplate(String baseTemplateLabel) {
+		return new ExtendedTemplateHolder(this, baseTemplateLabel);
+	}
 
 	public Class<?> getClazz() {
 		return clazz;
@@ -25,6 +29,4 @@ public class TemplateHolder {
 	public Map<String, Rule> getRules() {
 		return rules;
 	}
-	
-
 }
