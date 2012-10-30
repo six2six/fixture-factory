@@ -18,8 +18,8 @@ public class TemplateHolder {
 		return this;
 	}
 	
-	public void addExtendedTemplate(String baseTemplateLabel, String label, Rule extendedRule) {
-		rules.put(label, new Rule(rules.get(baseTemplateLabel), extendedRule));
+	public ExtendedTemplateHolder addTemplate(String baseTemplateLabel) {
+		return new ExtendedTemplateHolder(this, baseTemplateLabel);
 	}
 
 	public Class<?> getClazz() {

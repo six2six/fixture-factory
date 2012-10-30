@@ -35,7 +35,7 @@ public class FixtureClientTest {
 			add("zipCode", random("06608000", "17720000"));
 		}});
 		
-		Fixture.of(Address.class).addExtendedTemplate("valid", "valid-augusta", new Rule(){{
+		Fixture.of(Address.class).addTemplate("valid").inherits("valid-augusta", new Rule(){{
 			add("street", "Augusta Street");
 		}});
 	}
