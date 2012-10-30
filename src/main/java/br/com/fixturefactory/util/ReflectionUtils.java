@@ -112,27 +112,6 @@ public class ReflectionUtils {
         }
         return (T) instance;
     }
-    
-    @SuppressWarnings("unchecked")
-    public static <T> T newInstance(Class<?> clazz, Object... params) {
-        Object instance = null;
-        try {
-            Constructor<?> constructor = clazz.getDeclaredConstructor(getClasses(params));
-            constructor.setAccessible(true);
-            instance = constructor.newInstance(params);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-        return (T) instance;
-    }
-    
-    private static Class<?>[] getClasses(Object... params) {
-    	Class<?>[] classes = new Class<?>[params.length];
-    	for(int i = 0; i < params.length; i ++) {
-    		classes[i] = params[i].getClass();
-    	}
-    	return classes;
-    }
 
     @SuppressWarnings("unchecked")
     public static <T> T newInnerClassInstance(Class<?> clazz, Object owner) {
