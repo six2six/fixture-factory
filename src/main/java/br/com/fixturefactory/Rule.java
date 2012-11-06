@@ -11,8 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import com.mdimension.jchronic.Options;
-
 import br.com.bfgex.Gender;
 import br.com.fixturefactory.base.CalendarInterval;
 import br.com.fixturefactory.base.CalendarSequence;
@@ -30,6 +28,9 @@ import br.com.fixturefactory.function.RandomFunction;
 import br.com.fixturefactory.function.RegexFunction;
 import br.com.fixturefactory.function.SequenceFunction;
 import br.com.fixturefactory.util.Chainable;
+import br.com.fixturefactory.util.ReflectionUtils;
+
+import com.mdimension.jchronic.Options;
 
 public class Rule {
 
@@ -122,6 +123,12 @@ public class Rule {
 	public Function sequence(Number startWith, int incrementBy) {
 		return new SequenceFunction(new NumberSequence(startWith, incrementBy));
 	}
+	
+	public Function sequence(Class<? extends Number> clazz) {
+		Number number = ReflectionUtils.newInstance(clazz, "1");
+		return new SequenceFunction(new NumberSequence(number, 1));
+	}
+	
 	public Function sequenceDate(String base, CalendarInterval interval) {
 		return this.sequenceDate(base, new SimpleDateFormat("yyyy-MM-dd"), interval);
 	}
