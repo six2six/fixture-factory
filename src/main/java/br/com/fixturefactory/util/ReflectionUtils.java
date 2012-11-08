@@ -56,6 +56,8 @@ public class ReflectionUtils {
     public static <T> void invokeSetter(Object bean, String attribute, Object value, boolean fail){
         try {
             getPropertyUtilsBean().setProperty(bean, attribute, value);
+        } catch(NoSuchMethodException e) {
+        	setFieldValue(bean, attribute, value);
         } catch (Exception ex){
             if(fail) {
                 throw new IllegalArgumentException("No such attribute: " + attribute);
@@ -70,6 +72,31 @@ public class ReflectionUtils {
     public static void invokeRecursiveSetter(Object bean, String attribute, Object value) {
 	    ReflectionUtils.invokeSetter(prepareInvokeRecursiveSetter(bean, attribute, value), attribute.substring(attribute.lastIndexOf(".") + 1), value, true);
 	}
+    
+    public static void setFieldValue(Object bean, String attribute, Object value) {
+    	try {
+    		Field field = getRecursiveField(bean.getClass(), attribute);
+	    	field.setAccessible(true);
+	    	field.set(bean, value);
+	    	field.setAccessible(false);
+    	} catch(NoSuchFieldException e) {
+    		throw new IllegalArgumentException("No such field: " + attribute);
+    	} catch(Exception e) {
+    		throw new IllegalArgumentException("Cannot set field '" + attribute + "' value");
+    	}
+    }
+    
+    private static Field getRecursiveField(Class<?> clazz, String attribute) throws NoSuchFieldException {
+    	try {
+	    	return clazz.getDeclaredField(attribute);
+    	} catch(NoSuchFieldException e) {
+	    	if(clazz.getSuperclass().equals(Object.class)) {
+	    		throw e;
+	    	} else {
+	    		return getRecursiveField(clazz.getSuperclass(), attribute);
+	    	}
+	    }
+    }
     
     public static Class<?> invokeRecursiveType(Object bean, String attribute) {
     	Field field = invokeRecursiveField(bean, attribute);
