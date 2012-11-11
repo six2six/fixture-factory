@@ -38,6 +38,15 @@ public class FixtureImmutableTest {
 			.addTemplate("immutable", new Rule() {{ 
 				add("propertyD", regex("\\w{8}"));
 			}});
+		
+		Fixture.of(Address.class).addTemplate("valid", new Rule(){{
+			add("id", random(Long.class, range(1L, 100L)));
+			add("street", random("Paulista Avenue", "Ibirapuera Avenue"));
+			add("city", "São Paulo");
+			add("state", "${city}");
+			add("country", "Brazil");
+			add("zipCode", random("06608000", "17720000"));
+		}});
 	}
 	
 	@Test
