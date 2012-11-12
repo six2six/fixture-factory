@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +15,9 @@ import net.vidageek.mirror.dsl.Mirror;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang.StringUtils;
+
+import com.thoughtworks.paranamer.AdaptiveParanamer;
+import com.thoughtworks.paranamer.Paranamer;
 
 public class ReflectionUtils {
 
@@ -118,6 +122,20 @@ public class ReflectionUtils {
 			return new Mirror().on(target).invoke().constructor().withoutArgs();
 		}
 	}
+    
+    public static <T> List<String> filterConstructorParameterNames(Class<T> target, Collection<String> names) {
+		List<String> result = Collections.emptyList();
+		Paranamer paranamer = new AdaptiveParanamer();
+		
+		for (Constructor<T> constructor : new Mirror().on(target).reflectAll().constructors()) {
+			List<String> constructorParameterNames = Arrays.asList(paranamer.lookupParameterNames(constructor, false));
+			if (result.size() < constructorParameterNames.size() && names.containsAll(constructorParameterNames)) {
+				result = constructorParameterNames;
+			}
+		}
+		
+		return result;
+    }
     
     @SuppressWarnings("unchecked")
     public static <T> T newInnerClassInstance(Class<?> clazz, Object owner) {

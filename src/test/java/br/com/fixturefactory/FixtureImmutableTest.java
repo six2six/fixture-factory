@@ -82,5 +82,6 @@ public class FixtureImmutableTest {
 		assertEquals(result.getPropertyA() + " based", result.getPropertyC());
 		assertNotNull(result.getDate());
 		assertNotNull(result.getAddress());
+		assertEquals(result.getAddress().getCity(), result.getAddress().getState());
 	}
 }

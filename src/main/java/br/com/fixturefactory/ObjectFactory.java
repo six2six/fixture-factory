@@ -1,11 +1,8 @@
 package br.com.fixturefactory;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,13 +10,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.vidageek.mirror.dsl.Mirror;
-import net.vidageek.mirror.list.dsl.MirrorList;
 import br.com.fixturefactory.util.CalendarTransformer;
 import br.com.fixturefactory.util.ReflectionUtils;
-
-import com.thoughtworks.paranamer.AdaptiveParanamer;
-import com.thoughtworks.paranamer.Paranamer;
 
 public class ObjectFactory {
 
@@ -37,7 +29,6 @@ public class ObjectFactory {
 		this.templateHolder = templateHolder;
 		this.owner = owner;
 	}
-	
 	
 	@SuppressWarnings("unchecked")
 	public <T> T gimme(String label) {
@@ -67,44 +58,54 @@ public class ObjectFactory {
 	}
 
 	private Object createObject(Rule rule) {
-		Map<String, Object> parameters = new HashMap<String, Object>();
+		Map<String, Object> constructorArguments = new HashMap<String, Object>();
 		List<Property> deferredProperties = new ArrayList<Property>();
 		
 		List<String> parameterNames = lookupConstructorParameterNames(templateHolder.getClazz(), rule.getProperties());
 		
 		for (Property property : rule.getProperties()) {
 			if (parameterNames.contains(property.getName())) {
-				parameters.put(property.getName(), property.getValue());
+				constructorArguments.put(property.getName(), property.getValue());
 			} else {
 				deferredProperties.add(property);
 			}
 		}
 		
-		Object result = ReflectionUtils.newInstance(templateHolder.getClazz(), new ConstructorParameterProcessor(parameters).apply(parameterNames));
+		Object result = ReflectionUtils.newInstance(templateHolder.getClazz(), processConstructorArguments(parameterNames, constructorArguments));
 		
 		for (Property property : deferredProperties) {
-			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), new PropertyProcessor(result).apply(property));
+			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), processPropertyValue(result, property));
 		}
 		
 		return result;
 	}
-
-	private <T> List<String> lookupConstructorParameterNames(Class<T> target, Set<Property> properties) {
-		MirrorList<Constructor<T>> constructors = new Mirror().on(target).reflectAll().constructors();
-
-		List<String> args = Collections.emptyList();
+	
+	private List<Object> processConstructorArguments(List<String> parameterNames, Map<String, Object> arguments) {
+		List<Object> values = new ArrayList<Object>();
 		
-		Paranamer paranamer = new AdaptiveParanamer();
-		
-		Collection<String> propertyNames = ReflectionUtils.map(properties, "name");
-		
-		for (Constructor<T> constructor : constructors) {
-			List<String> parameterNames = Arrays.asList(paranamer.lookupParameterNames(constructor, false));
-			if (args.size() < parameterNames.size() && propertyNames.containsAll(parameterNames)) {
-				args = parameterNames;
-			}
+		if (owner != null && ReflectionUtils.isInnerClass(templateHolder.getClazz()))  {
+			values.add(owner);	
 		}
-		return args;
+		
+		ConstructorArgumentProcessor valueProcessor = new ConstructorArgumentProcessor(arguments);
+		for (String parameterName : parameterNames) {
+			Class<?> fieldType = ReflectionUtils.invokeRecursiveType(templateHolder.getClazz(), parameterName);
+			values.add(valueProcessor.process(arguments.get(parameterName), fieldType));
+		}
+		return values;
+	}
+
+	private Object processPropertyValue(Object object, Property property) {
+		Class<?> fieldType = ReflectionUtils.invokeRecursiveType(object.getClass(), property.getName());
+		Object value = property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType) ?
+				property.getValue(object) : property.getValue();
+		
+		return new PropertyProcessor(object).process(value, fieldType);
+	}
+	
+	private <T> List<String> lookupConstructorParameterNames(Class<T> target, Set<Property> properties) {
+		Collection<String> propertyNames = ReflectionUtils.map(properties, "name");
+		return ReflectionUtils.filterConstructorParameterNames(target, propertyNames);
 	}
 	
 	protected abstract class ValueProcessor {
@@ -126,27 +127,11 @@ public class ObjectFactory {
 		}
 	}
 	
-	private class ConstructorParameterProcessor extends ValueProcessor {
+	private class ConstructorArgumentProcessor extends ValueProcessor {
 		private final Map<String, Object> parameters;
 		
-		private ConstructorParameterProcessor(final Map<String, Object> parameters) {
+		private ConstructorArgumentProcessor(final Map<String, Object> parameters) {
 			this.parameters = parameters;
-		}
-		
-		private List<Object> apply(List<String> parameterNames) {
-			List<Object> parameterValues = new ArrayList<Object>();
-			
-			if (owner != null && ReflectionUtils.isInnerClass(templateHolder.getClazz()))  {
-				parameterValues.add(owner);	
-			}
-			
-			for (String parameterName : parameterNames) {
-				Class<?> fieldType = ReflectionUtils.invokeRecursiveType(templateHolder.getClazz(), parameterName);
-				Object value = parameters.get(parameterName);
-
-				parameterValues.add(process(value, fieldType));
-			}
-			return parameterValues;
 		}
 
 		@Override
@@ -161,15 +146,7 @@ public class ObjectFactory {
 		private PropertyProcessor(final Object result) {
 			this.result = result;
 		}
-		
-		private Object apply(Property property) {
-			Class<?> fieldType = ReflectionUtils.invokeRecursiveType(result.getClass(), property.getName());
-			Object value = property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType) ?
-					property.getValue(result) : property.getValue();
-			
-			return process(value, fieldType);
-		}
-		
+
 		@Override
 		protected String getValue(String propertyName) {
 			return ReflectionUtils.invokeRecursiveGetter(result, propertyName).toString();
