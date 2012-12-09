@@ -8,8 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.fixturefactory.model.Address;
+import br.com.fixturefactory.model.City;
 import br.com.fixturefactory.model.Immutable;
 import br.com.fixturefactory.model.Immutable.ImmutableInner;
+import br.com.fixturefactory.model.Route;
+import br.com.fixturefactory.model.RouteId;
 
 public class FixtureImmutableTest {
 
@@ -47,10 +50,23 @@ public class FixtureImmutableTest {
 			add("country", "Brazil");
 			add("zipCode", random("06608000", "17720000"));
 		}});
+		
+        Fixture.of(Route.class).addTemplate("valid", new Rule() {{
+    		add("id", one(RouteId.class, "valid"));
+            add("cities", has(2).of(City.class, "valid"));
+        }});
+        
+        Fixture.of(RouteId.class).addTemplate("valid", new Rule() {{
+        	add("value", 1L);
+        }});
+        
+        Fixture.of(City.class).addTemplate("valid", new Rule() {{
+            add("name", regex("\\w{8}"));
+        }});
 	}
 	
 	@Test
-	public void createImmutableObjectWithPartialConstructorStringAndLong() {
+	public void shouldCreateImmutableObjectUsingPartialConstructor() {
 		Immutable result = Fixture.from(Immutable.class).gimme("twoParameterConstructor");
 		
 		assertNotNull(result.getPropertyA());
@@ -62,7 +78,7 @@ public class FixtureImmutableTest {
 	}
 
 	@Test
-	public void createImmutableObjectWithPartialConstructorLongAndString() {
+	public void shouldCreateImmutableObjectUsingAnotherPartialConstructor() {
 		Immutable result = Fixture.from(Immutable.class).gimme("threeParameterConstructor");
 		
 		assertEquals("default", result.getPropertyA());
@@ -74,7 +90,7 @@ public class FixtureImmutableTest {
 	}
 	
 	@Test
-	public void createImmutableObjectWithFullConstructor() {
+	public void shouldCreateImmutableObjectUsingFullConstructor() {
 		Immutable result = Fixture.from(Immutable.class).gimme("fullConstructor");
 		
 		assertNotNull(result.getPropertyA());
@@ -83,5 +99,12 @@ public class FixtureImmutableTest {
 		assertNotNull(result.getDate());
 		assertNotNull(result.getAddress());
 		assertEquals(result.getAddress().getCity(), result.getAddress().getState());
+	}
+	
+	@Test
+	public void shouldWorkWhenReceivingRelationsInTheConstructor() {
+		Route route = Fixture.from(Route.class).gimme("valid");
+		assertEquals(Long.valueOf(1L), route.getId().getValue());
+		assertNotNull(route.getCities().get(0).getName());
 	}
 }
