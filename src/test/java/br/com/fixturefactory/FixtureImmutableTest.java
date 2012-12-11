@@ -1,8 +1,12 @@
 package br.com.fixturefactory;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.either;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,13 +55,23 @@ public class FixtureImmutableTest {
 			add("zipCode", random("06608000", "17720000"));
 		}});
 		
-        Fixture.of(Route.class).addTemplate("valid", new Rule() {{
-    		add("id", one(RouteId.class, "valid"));
-            add("cities", has(2).of(City.class, "valid"));
+        Fixture.of(Route.class)
+        	.addTemplate("valid", new Rule() {{
+        		add("id", one(RouteId.class, "valid"));
+        		add("cities", has(2).of(City.class, "valid"));
+        	}})
+        	.addTemplate("chainedId", new Rule() {{
+        		add("id.value", 2L);
+        		add("cities", has(2).of(City.class, "valid"));
         }});
         
         Fixture.of(RouteId.class).addTemplate("valid", new Rule() {{
         	add("value", 1L);
+        }});
+        
+        Fixture.of(RoutePlanner.class).addTemplate("chainedRoutePlanner", new Rule() {{
+            add("route.id.value", random(3L, 4L));
+            add("route.cities", has(2).of(City.class, "valid"));
         }});
         
         Fixture.of(City.class).addTemplate("valid", new Rule() {{
@@ -107,4 +121,18 @@ public class FixtureImmutableTest {
 		assertEquals(Long.valueOf(1L), route.getId().getValue());
 		assertNotNull(route.getCities().get(0).getName());
 	}
+	
+    @Test 
+    public void shouldWorkWhenChainingProperties() { 
+        Route route = Fixture.from(Route.class).gimme("chainedId"); 
+        assertEquals(Long.valueOf(2L), route.getId().getValue());
+        assertNotNull(route.getCities().get(0).getName()); 
+    }
+    
+    @Test
+    public void shouldWorkWhenChainingPropertiesUsingRelations() {
+        RoutePlanner routePlanner = Fixture.from(RoutePlanner.class).gimme("chainedRoutePlanner");
+        assertThat(routePlanner.getRoute().getId().getValue(), is(either(equalTo(3L)).or(equalTo(4L))));
+        assertNotNull(routePlanner.getRoute().getCities().get(0).getName());
+    }
 }

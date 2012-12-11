@@ -64,7 +64,7 @@ public class ObjectFactory {
 		List<String> parameterNames = lookupConstructorParameterNames(templateHolder.getClazz(), rule.getProperties());
 		
 		for (Property property : rule.getProperties()) {
-			if (parameterNames.contains(property.getName())) {
+			if (parameterNames.contains(property.getRootAttribute())) {
 				constructorArguments.put(property.getName(), property.getValue());
 			} else {
 				deferredProperties.add(property);
@@ -89,10 +89,25 @@ public class ObjectFactory {
 		
 		ConstructorArgumentProcessor valueProcessor = new ConstructorArgumentProcessor(arguments);
 		for (String parameterName : parameterNames) {
-			Class<?> fieldType = ReflectionUtils.invokeRecursiveType(templateHolder.getClazz(), parameterName);
-			values.add(valueProcessor.process(arguments.get(parameterName), fieldType));
+			Class<?> fieldType = ReflectionUtils.getAttributeType(templateHolder.getClazz(), parameterName);
+			Object result = arguments.get(parameterName);
+			if (result == null) {
+				result = processChainedProperty(parameterName, fieldType, arguments);	
+			}
+			values.add(valueProcessor.process(result, fieldType));
 		}
 		return values;
+	}
+
+	private Object processChainedProperty(String parameterName, Class<?> fieldType, Map<String, Object> arguments) {
+		Rule rule = new Rule();
+		for (final String argument : arguments.keySet()) {
+			int index = argument.indexOf(".");
+			if (index > 0 && argument.substring(0, index).equals(parameterName)) {
+				rule.add(argument.substring(index+1), arguments.get(argument));
+			}
+		}
+		return new ObjectFactory(new TemplateHolder(fieldType)).createObject(rule);
 	}
 
 	private Object processPropertyValue(Object object, Property property) {
@@ -104,7 +119,7 @@ public class ObjectFactory {
 	}
 	
 	private <T> List<String> lookupConstructorParameterNames(Class<T> target, Set<Property> properties) {
-		Collection<String> propertyNames = ReflectionUtils.map(properties, "name");
+		Collection<String> propertyNames = ReflectionUtils.map(properties, "rootAttribute");
 		return ReflectionUtils.filterConstructorParameterNames(target, propertyNames);
 	}
 	
