@@ -15,7 +15,7 @@ import org.junit.Test;
 import br.com.fixturefactory.model.Invoice;
 import br.com.fixturefactory.util.DateTimeUtil;
 
-public class FixtureInvoice {
+public class FixtureInvoiceTest {
 
 	@Before
 	public void setUp() {
