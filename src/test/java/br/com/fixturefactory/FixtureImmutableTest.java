@@ -62,15 +62,18 @@ public class FixtureImmutableTest {
         	}})
         	.addTemplate("chainedId", new Rule() {{
         		add("id.value", 2L);
+        		add("id.seq", 200L);
         		add("cities", has(2).of(City.class, "valid"));
         }});
         
         Fixture.of(RouteId.class).addTemplate("valid", new Rule() {{
         	add("value", 1L);
+        	add("seq", 100L);
         }});
         
         Fixture.of(RoutePlanner.class).addTemplate("chainedRoutePlanner", new Rule() {{
             add("route.id.value", random(3L, 4L));
+            add("route.id.seq", random(300L, 400L));
             add("route.cities", has(2).of(City.class, "valid"));
         }});
         
@@ -119,6 +122,7 @@ public class FixtureImmutableTest {
 	public void shouldWorkWhenReceivingRelationsInTheConstructor() {
 		Route route = Fixture.from(Route.class).gimme("valid");
 		assertEquals(Long.valueOf(1L), route.getId().getValue());
+		assertEquals(Long.valueOf(100L), route.getId().getSeq());
 		assertNotNull(route.getCities().get(0).getName());
 	}
 	
@@ -126,6 +130,7 @@ public class FixtureImmutableTest {
     public void shouldWorkWhenChainingProperties() { 
         Route route = Fixture.from(Route.class).gimme("chainedId"); 
         assertEquals(Long.valueOf(2L), route.getId().getValue());
+        assertEquals(Long.valueOf(200L), route.getId().getSeq());
         assertNotNull(route.getCities().get(0).getName()); 
     }
     
@@ -133,6 +138,7 @@ public class FixtureImmutableTest {
     public void shouldWorkWhenChainingPropertiesUsingRelations() {
         RoutePlanner routePlanner = Fixture.from(RoutePlanner.class).gimme("chainedRoutePlanner");
         assertThat(routePlanner.getRoute().getId().getValue(), is(either(equalTo(3L)).or(equalTo(4L))));
+        assertThat(routePlanner.getRoute().getId().getSeq(), is(either(equalTo(300L)).or(equalTo(400L))));
         assertNotNull(routePlanner.getRoute().getCities().get(0).getName());
     }
 }

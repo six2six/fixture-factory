@@ -191,7 +191,12 @@ public class ReflectionUtils {
                 targetBean = ReflectionUtils.invokeGetter(targetBean, propertyItem);
                 if(targetBean == null) {
                     try {
-                        targetBean = newInstance(invokeRecursiveType(lastBean.getClass(), propertyItem));
+                        Class<?> type = invokeRecursiveType(lastBean.getClass(), propertyItem);
+                        List<Object> args = new ArrayList<Object>();
+                        if (isInnerClass(type)) {
+                            args.add(lastBean);
+                        }
+                        targetBean = newInstance(type, args);
                         ReflectionUtils.invokeSetter(lastBean, propertyItem, targetBean, true);                     
                     } catch (Exception e) {
                         throw new IllegalArgumentException("No such attribute: " + propertyItem + " declared in class " + lastBean.getClass().getCanonicalName());
