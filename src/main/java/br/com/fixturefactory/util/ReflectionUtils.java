@@ -145,20 +145,6 @@ public class ReflectionUtils {
 		return result;
     }
     
-    @SuppressWarnings("unchecked")
-    public static <T> T newInnerClassInstance(Class<?> clazz, Object owner) {
-    	Object instance = null;
-    	try {
-    		Constructor<?> constructor = clazz.getDeclaredConstructor(owner.getClass());
-    		constructor.setAccessible(true);
-    		instance = constructor.newInstance(owner);
-    	} catch (Exception e) {
-    		throw new IllegalArgumentException(e);
-    	}
-
-    	return (T) instance;
-    }
-    
     public static Class<?> getTargetClass(Class<?> clazz) {
         if (isCglibProxy(clazz) || Proxy.isProxyClass(clazz)) {
             clazz = clazz.getSuperclass();

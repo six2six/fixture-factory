@@ -63,7 +63,7 @@ public class FixtureImmutableTest {
         	.addTemplate("chainedId", new Rule() {{
         		add("id.value", 2L);
         		add("id.seq", 200L);
-        		add("cities", has(2).of(City.class, "valid"));
+        		add("cities", fixture(City.class, 2, "valid"));
         }});
         
         Fixture.of(RouteId.class).addTemplate("valid", new Rule() {{

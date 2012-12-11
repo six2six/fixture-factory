@@ -1,21 +1,15 @@
 package br.com.fixturefactory;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import br.com.fixturefactory.util.CalendarTransformer;
 import br.com.fixturefactory.util.ReflectionUtils;
 
 public class ObjectFactory {
-
-	private static final Pattern PLACEHOLDER = Pattern.compile(".*?(\\$\\{([^\\}]+)\\}).*");
 	
 	private TemplateHolder templateHolder;
 	
@@ -121,50 +115,5 @@ public class ObjectFactory {
 	private <T> List<String> lookupConstructorParameterNames(Class<T> target, Set<Property> properties) {
 		Collection<String> propertyNames = ReflectionUtils.map(properties, "rootAttribute");
 		return ReflectionUtils.filterConstructorParameterNames(target, propertyNames);
-	}
-	
-	protected abstract class ValueProcessor {
-		protected abstract String getValue(String name);
-		
-		protected Object process(Object baseValue, Class<?> fieldType) {
-			Object result = baseValue;
-			if (baseValue instanceof String) {
-				Matcher matcher = PLACEHOLDER.matcher((String) baseValue);
-				if (matcher.matches()) {
-					result = ((String) baseValue).replace(matcher.group(1), getValue(matcher.group(2)));				
-				}
-			}
-			if (baseValue instanceof Calendar) {
-				result = new CalendarTransformer().transform(baseValue, fieldType);
-			}
-			
-			return result;
-		}
-	}
-	
-	private class ConstructorArgumentProcessor extends ValueProcessor {
-		private final Map<String, Object> parameters;
-		
-		private ConstructorArgumentProcessor(final Map<String, Object> parameters) {
-			this.parameters = parameters;
-		}
-
-		@Override
-		protected String getValue(String parameterName) {
-			return parameters.get(parameterName).toString();
-		}
-	}
-	
-	private class PropertyProcessor extends ValueProcessor {
-		private final Object result;
-		
-		private PropertyProcessor(final Object result) {
-			this.result = result;
-		}
-
-		@Override
-		protected String getValue(String propertyName) {
-			return ReflectionUtils.invokeRecursiveGetter(result, propertyName).toString();
-		}
 	}
 }
