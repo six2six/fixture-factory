@@ -1,8 +1,6 @@
-package br.com.fixturefactory;
+package br.com.fixturefactory.model;
 
 import java.io.Serializable;
-
-import br.com.fixturefactory.model.Route;
 
 public class RoutePlanner implements Serializable {
 

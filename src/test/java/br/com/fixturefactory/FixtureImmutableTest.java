@@ -17,6 +17,7 @@ import br.com.fixturefactory.model.Immutable;
 import br.com.fixturefactory.model.Immutable.ImmutableInner;
 import br.com.fixturefactory.model.Route;
 import br.com.fixturefactory.model.RouteId;
+import br.com.fixturefactory.model.RoutePlanner;
 
 public class FixtureImmutableTest {
 
