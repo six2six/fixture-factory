@@ -9,6 +9,7 @@ import org.junit.Test;
 import br.com.bfgex.Gender;
 import br.com.fixturefactory.base.Sequence;
 import br.com.fixturefactory.function.NumberSequence;
+import br.com.fixturefactory.model.Address;
 import br.com.fixturefactory.model.Student;
 
 public class FixtureStudentTest {
@@ -21,12 +22,22 @@ public class FixtureStudentTest {
 			add("lastName", lastName());
 			add("gender", random(Gender.class));
 			add("idCardNumber", "12345");
+			add("addresses", set(has(2).of(Address.class, "valid")));
 		}}
 		).addTemplate("validFemaleStudent", new Rule(){{
 			add("id", sequence(200L, 2));
 			add("firstName", firstName(Gender.FEMALE));
 			add("lastName", lastName());
 			add("gender", Gender.FEMALE);
+		}});
+		
+		Fixture.of(Address.class).addTemplate("valid", new Rule(){{
+			add("id", random(Long.class, range(1L, 100L)));
+			add("street", random("Paulista Avenue", "Ibirapuera Avenue"));
+			add("city", "São Paulo");
+			add("state", "${city}");
+			add("country", "Brazil");
+			add("zipCode", random("06608000", "17720000"));
 		}});
 		
 		final Sequence<Number> numberSequence = new NumberSequence(1L, 1);
