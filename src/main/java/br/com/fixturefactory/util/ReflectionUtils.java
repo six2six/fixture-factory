@@ -81,17 +81,8 @@ public class ReflectionUtils {
 	    ReflectionUtils.invokeSetter(prepareInvokeRecursiveSetter(bean, attribute, value), attribute.substring(attribute.lastIndexOf(".") + 1), value, true);
 	}
     
-    public static Class<?> getAttributeType(Class<?> clazz, String attribute) {
-        try {
-            return new Mirror().on(clazz).reflect().field(attribute).getType();
-        } catch (Exception e) {
-            throw new IllegalArgumentException("No such attribute: " + attribute);
-        }
-    }
-    
     public static Class<?> invokeRecursiveType(Class<?> clazz, String attribute) {
-    	Field field = invokeRecursiveField(clazz, attribute);
-    	return field.getType();
+    	return invokeRecursiveField(clazz, attribute).getType();
     }
 
     public static Field invokeRecursiveField(Class<?> clazz, String attribute) {

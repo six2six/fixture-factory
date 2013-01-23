@@ -83,7 +83,7 @@ public class ObjectFactory {
 		
 		ConstructorArgumentProcessor valueProcessor = new ConstructorArgumentProcessor(arguments);
 		for (String parameterName : parameterNames) {
-			Class<?> fieldType = ReflectionUtils.getAttributeType(templateHolder.getClazz(), parameterName);
+			Class<?> fieldType = ReflectionUtils.invokeRecursiveType(templateHolder.getClazz(), parameterName);
 			Object result = arguments.get(parameterName);
 			if (result == null) {
 				result = processChainedProperty(parameterName, fieldType, arguments);	
