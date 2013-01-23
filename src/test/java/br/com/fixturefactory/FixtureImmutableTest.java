@@ -12,6 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.fixturefactory.model.Address;
+import br.com.fixturefactory.model.Attribute;
+import br.com.fixturefactory.model.Child;
 import br.com.fixturefactory.model.City;
 import br.com.fixturefactory.model.Immutable;
 import br.com.fixturefactory.model.Immutable.ImmutableInner;
@@ -81,6 +83,20 @@ public class FixtureImmutableTest {
         Fixture.of(City.class).addTemplate("valid", new Rule() {{
             add("name", regex("\\w{8}"));
         }});
+        
+        Fixture.of(Attribute.class).addTemplate("valid", new Rule() {{ 
+        	add("value", regex("\\w{8}"));
+        }});
+        
+        Fixture.of(Child.class).addTemplate("valid", new Rule() {{
+        	add("childAttribute", regex("\\w{16}"));
+        	add("parentAttribute", one(Attribute.class, "valid"));
+        }});
+        
+        Fixture.of(Child.class).addTemplate("chained", new Rule() {{
+            add("childAttribute", regex("\\w{16}"));
+            add("parentAttribute.value", regex("\\w{8}"));
+        }});        
 	}
 	
 	@Test
@@ -141,5 +157,19 @@ public class FixtureImmutableTest {
         assertThat(routePlanner.getRoute().getId().getValue(), is(either(equalTo(3L)).or(equalTo(4L))));
         assertThat(routePlanner.getRoute().getId().getSeq(), is(either(equalTo(300L)).or(equalTo(400L))));
         assertNotNull(routePlanner.getRoute().getCities().get(0).getName());
+    }
+
+    @Test
+    public void shouldWorkWithInheritance() {
+        Child child = Fixture.from(Child.class).gimme("valid");
+    	assertThat(child.getParentAttribute().getValue().length(), is(8));
+    	assertThat(child.getChildAttribute().length(), is(16));
+    }
+    
+    @Test
+    public void shouldWorkWhenChainingInheritedProperty() {
+        Child child = Fixture.from(Child.class).gimme("chained");
+        assertThat(child.getParentAttribute().getValue().length(), is(8));
+        assertThat(child.getChildAttribute().length(), is(16));
     }
 }

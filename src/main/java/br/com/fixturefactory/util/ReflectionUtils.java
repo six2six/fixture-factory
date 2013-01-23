@@ -83,7 +83,7 @@ public class ReflectionUtils {
     
     public static Class<?> getAttributeType(Class<?> clazz, String attribute) {
         try {
-            return getTargetClass(clazz).getDeclaredField(attribute).getType();
+            return new Mirror().on(clazz).reflect().field(attribute).getType();
         } catch (Exception e) {
             throw new IllegalArgumentException("No such attribute: " + attribute);
         }
