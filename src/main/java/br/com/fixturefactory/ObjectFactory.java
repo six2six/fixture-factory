@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import br.com.fixturefactory.function.AtomicFunction;
+import br.com.fixturefactory.function.RandomFunction;
 import br.com.fixturefactory.util.CalendarTransformer;
 import br.com.fixturefactory.util.ReflectionUtils;
 
@@ -39,13 +41,23 @@ public class ObjectFactory {
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> gimme(Integer quantity, String label) {
+		
+		List<T> results = new ArrayList<T>(quantity);
 		Rule rule = templateHolder.getRules().get(label);
 		
+		if(templateHolder.getClazz().isEnum()){
+			AtomicFunction function = new RandomFunction(templateHolder.getClazz());
+			for (int i = 0; i < quantity; i++) {
+				results.add((T) function.generateValue());
+			}
+			
+			return results;
+		}
+
 		if (rule == null) {
 			throw new IllegalArgumentException("No such label: " + label);
 		}
-
-		List<T> results = new ArrayList<T>(quantity);
+		
 		for (int i = 0; i < quantity; i++) {
 			results.add((T) this.createObject(rule));
 		}	

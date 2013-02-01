@@ -84,5 +84,11 @@ public class AssociationFunction implements RelationFunction, Chainable {
 		ReflectionUtils.invokeRecursiveSetter(fixtureFunction, "clazz", clazz);
 		ReflectionUtils.invokeRecursiveSetter(fixtureFunction, "label", label);
 	}
+
+	@Override
+	public Function of(Class<? extends Enum<?>> clazz) {
+		ReflectionUtils.invokeRecursiveSetter(fixtureFunction, "clazz", clazz);
+		return this;
+	}
 	
 }
