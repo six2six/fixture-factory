@@ -11,8 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import com.mdimension.jchronic.Options;
-
 import br.com.bfgex.Gender;
 import br.com.fixturefactory.base.CalendarInterval;
 import br.com.fixturefactory.base.CalendarSequence;
@@ -28,8 +26,12 @@ import br.com.fixturefactory.function.NameFunction;
 import br.com.fixturefactory.function.NumberSequence;
 import br.com.fixturefactory.function.RandomFunction;
 import br.com.fixturefactory.function.RegexFunction;
+import br.com.fixturefactory.function.RelationFunction;
 import br.com.fixturefactory.function.SequenceFunction;
+import br.com.fixturefactory.function.SetCastFunction;
 import br.com.fixturefactory.util.Chainable;
+
+import com.mdimension.jchronic.Options;
 
 public class Rule {
 
@@ -144,6 +146,12 @@ public class Rule {
 
     public Function instant(String dateText, Options options) {
         return new ChronicFunction(dateText, options);
+    }
+    
+    public Function set(Function function) {
+    	if(!(function instanceof RelationFunction)) throw new IllegalArgumentException("only supports RelationFunction");
+    	
+    	return new SetCastFunction((RelationFunction) function);
     }
 	
 	public Interval increment(int interval) {
