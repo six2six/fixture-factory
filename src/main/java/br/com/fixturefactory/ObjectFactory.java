@@ -68,6 +68,9 @@ public class ObjectFactory {
 			Object value = property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType) ?
 					property.getValue(result) : property.getValue();
 			
+			if (Number.class.isAssignableFrom(fieldType) && value instanceof String) {
+				value = ReflectionUtils.parseObjectFromString(value.toString(), fieldType);
+			}
 			
 			if (value instanceof String) {
 				String baseValue = (String) value;

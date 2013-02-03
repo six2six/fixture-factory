@@ -177,4 +177,12 @@ public class ReflectionUtils {
     	return clazz.getEnclosingClass() != null && !Modifier.isStatic(clazz.getModifiers());
     }
     
+    public static <T> T parseObjectFromString(String s, Class<T> clazz) {
+        try {
+        	return clazz.getConstructor(new Class[] {String.class }).newInstance(s);
+        } catch(Exception e) {
+        	throw new IllegalArgumentException("Cannot parse '" + s + "' to class " + clazz.getName());
+        }
+    }
+    
 }

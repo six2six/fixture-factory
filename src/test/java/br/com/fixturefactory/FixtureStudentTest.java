@@ -26,6 +26,12 @@ public class FixtureStudentTest {
 			add("firstName", firstName(Gender.FEMALE));
 			add("lastName", lastName());
 			add("gender", Gender.FEMALE);
+		}}
+		).addTemplate("validMaleStudent", new Rule() {{
+			add("id", regex("\\d{3,5}"));
+			add("firstName", firstName(Gender.MALE));
+			add("lastName", lastName());
+			add("gender", Gender.MALE);
 		}});
 		
 		final Sequence<Number> numberSequence = new NumberSequence(1L, 1);
@@ -52,6 +58,13 @@ public class FixtureStudentTest {
 		assertNotNull("Female Student should not be null", student);
 		assertNotNull("Students id should not be null", student.getId());
 		assertTrue("Students it should be 1", student.getId() == 200);
+	}
+	
+	@Test
+	public void fixtureMaleStudent() {
+		Student student = Fixture.from(Student.class).gimme("validMaleStudent");
+		assertNotNull("Male Student should not be null", student);
+		assertNotNull("Students id should not be null", student.getId());
 	}
 	
 	@Test
