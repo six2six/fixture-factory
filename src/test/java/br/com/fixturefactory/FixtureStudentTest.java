@@ -20,6 +20,7 @@ public class FixtureStudentTest {
 			add("firstName", firstName());
 			add("lastName", lastName());
 			add("gender", random(Gender.class));
+			add("idCardNumber", "12345");
 		}}
 		).addTemplate("validFemaleStudent", new Rule(){{
 			add("id", sequence(200L, 2));
@@ -43,6 +44,7 @@ public class FixtureStudentTest {
 		Student student = Fixture.from(Student.class).gimme("valid");
 		assertNotNull("Student should not be null", student);
 		assertNotNull("Students id should not be null", student.getId());
+		assertNotNull("Students idCardNumber should not be null", student.getIdCardNumber());
 		assertTrue("Students it should be 1", student.getId() == 1);
 	}
 	
