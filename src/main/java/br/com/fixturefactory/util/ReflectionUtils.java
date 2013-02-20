@@ -68,7 +68,7 @@ public class ReflectionUtils {
             getPropertyUtilsBean().setProperty(bean, attribute, value);
         } catch (Exception ex){
             if(fail) {
-                throw new IllegalArgumentException("No such attribute: " + attribute);
+                throw new IllegalArgumentException(bean.getClass().getCanonicalName() + "-> No such attribute: " + attribute + "[" + value.getClass().getName() + "]");
             }
         }   
     }
