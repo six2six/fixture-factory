@@ -44,10 +44,18 @@ public class Rule {
     	this.properties.add(new Property(property, function));
     }
 
+    /**
+     * @deprecated use {@link one(clazz, label)} instead.
+     */
+    @Deprecated
 	public Function fixture(Class<?> clazz, String label) {
     	return new FixtureFunction(clazz, label);
     }
 
+    /**
+     * @deprecated use {@link has(quantity).of(clazz, label)} instead.
+     */
+    @Deprecated
 	public Function fixture(Class<?> clazz, Integer quantity, String label) {
     	return new FixtureFunction(clazz, label, quantity);
     }

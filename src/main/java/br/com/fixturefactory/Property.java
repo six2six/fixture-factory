@@ -38,5 +38,9 @@ public class Property {
 	public boolean hasRelationFunction() {
 		return this.function instanceof RelationFunction;
 	}
-	
+
+	public String getRootAttribute() {
+	    int index = this.name.indexOf(".");
+		return index > 0 ? this.name.substring(0, index) : this.name;
+	}
 }
