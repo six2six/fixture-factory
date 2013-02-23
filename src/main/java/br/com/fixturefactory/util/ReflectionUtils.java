@@ -114,28 +114,7 @@ public class ReflectionUtils {
         return (T) newInstance(clazz, Collections.emptyList());
     }
     
-    @SuppressWarnings("unchecked")
-    public static <T> T newInstance(Class<?> clazz, Object... params) {
-        Object instance = null;
-        try {
-            Constructor<?> constructor = clazz.getDeclaredConstructor(getClasses(params));
-            constructor.setAccessible(true);
-            instance = constructor.newInstance(params);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
-        return (T) instance;
-    }
-    
-    private static Class<?>[] getClasses(Object... params) {
-        Class<?>[] classes = new Class<?>[params.length];
-        for(int i = 0; i < params.length; i ++) {
-        classes[i] = params[i].getClass();
-        }
-        return classes;
-       }
-
-    public static <T> T newInstance(Class<T> target, List<Object> parameters) {
+    public static <T> T newInstance(Class<T> target, List<? extends Object> parameters) {
 		if (parameters.size() > 0) {
 			return new Mirror().on(target).invoke().constructor().withArgs(parameters.toArray());			
 		} else {
@@ -214,7 +193,7 @@ public class ReflectionUtils {
 	public static <T,U> Collection<U> map(Collection<T> collection, String propertyName) {
     	Collection<U> map = null; 
 	    try {
-	         map = (Collection<U>) collection.getClass().newInstance();    
+	         map = collection.getClass().newInstance();    
         } catch (Exception e) {
             map = new ArrayList<U>();
         }

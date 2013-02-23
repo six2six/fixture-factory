@@ -8,6 +8,7 @@ import static br.com.fixturefactory.util.DateTimeUtil.toCalendar;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -133,7 +134,7 @@ public class Rule {
 	}
 	
 	public Function sequence(Class<? extends Number> clazz) {
-		Number number = ReflectionUtils.newInstance(clazz, "1");
+		Number number = ReflectionUtils.newInstance(clazz, Arrays.asList("1"));
 		return new SequenceFunction(new NumberSequence(number, 1));
 	}
 	
