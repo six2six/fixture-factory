@@ -1,5 +1,6 @@
 package br.com.fixturefactory;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -16,10 +17,13 @@ abstract class ValueProcessor {
     
     public Object process(Object baseValue, Class<?> fieldType) {
         Object result = baseValue;
+        
         if (baseValue instanceof String) {
             Matcher matcher = PLACEHOLDER.matcher((String) baseValue);
             if (matcher.matches()) {
                 result = ((String) baseValue).replace(matcher.group(1), getValue(matcher.group(2)));                
+            } else if(Number.class.isAssignableFrom(fieldType)) {
+            	result = ReflectionUtils.newInstance(fieldType, Arrays.asList(baseValue));
             }
         }
         if (baseValue instanceof Calendar) {
