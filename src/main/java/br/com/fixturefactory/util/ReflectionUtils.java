@@ -113,8 +113,8 @@ public class ReflectionUtils {
     public static <T> T newInstance(Class<?> clazz) {
         return (T) newInstance(clazz, Collections.emptyList());
     }
-
-    public static <T> T newInstance(Class<T> target, List<Object> parameters) {
+    
+    public static <T> T newInstance(Class<T> target, List<? extends Object> parameters) {
 		if (parameters.size() > 0) {
 			return new Mirror().on(target).invoke().constructor().withArgs(parameters.toArray());			
 		} else {
@@ -193,7 +193,7 @@ public class ReflectionUtils {
 	public static <T,U> Collection<U> map(Collection<T> collection, String propertyName) {
     	Collection<U> map = null; 
 	    try {
-	         map = (Collection<U>) collection.getClass().newInstance();    
+	         map = collection.getClass().newInstance();    
         } catch (Exception e) {
             map = new ArrayList<U>();
         }
