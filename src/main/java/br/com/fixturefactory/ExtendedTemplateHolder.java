@@ -1,16 +1,20 @@
 package br.com.fixturefactory;
 
 public class ExtendedTemplateHolder {
+	private final String label;
 	private final TemplateHolder templateHolder;
-	private final Rule baseTemplateRule;
 	
-	public ExtendedTemplateHolder(TemplateHolder templateHolder, String baseTemplateLabel) {
+	public ExtendedTemplateHolder(TemplateHolder templateHolder, String label) {
 		this.templateHolder = templateHolder;
-		this.baseTemplateRule = templateHolder.getRules().get(baseTemplateLabel);
+		this.label = label;
 	}
 	
-	public TemplateHolder inherits(String label, Rule extendedRule) {
-		templateHolder.getRules().put(label, new Rule(baseTemplateRule, extendedRule));
+	public TemplateHolder inherits(String baseTemplateLabel, Rule extendedRule) {
+		Rule baseRule = templateHolder.getRules().get(baseTemplateLabel);
+		
+		if(baseRule == null) throw new IllegalArgumentException(templateHolder.getClazz().getName() + "-> No such template '" + baseTemplateLabel + "' to be inherited.");
+		
+		templateHolder.getRules().put(label, new Rule(baseRule, extendedRule));
 		return templateHolder;
 	}
 }

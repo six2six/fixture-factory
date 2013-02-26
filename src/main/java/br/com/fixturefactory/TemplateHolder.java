@@ -18,8 +18,8 @@ public class TemplateHolder {
 		return this;
 	}
 	
-	public ExtendedTemplateHolder addTemplate(String baseTemplateLabel) {
-		return new ExtendedTemplateHolder(this, baseTemplateLabel);
+	public ExtendedTemplateHolder addTemplate(String label) {
+		return new ExtendedTemplateHolder(this, label);
 	}
 
 	public Class<?> getClazz() {
