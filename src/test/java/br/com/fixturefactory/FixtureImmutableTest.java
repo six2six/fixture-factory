@@ -29,20 +29,20 @@ public class FixtureImmutableTest {
 			.addTemplate("twoParameterConstructor", new Rule() {{
 				add("propertyA", regex("\\w{8}"));
 				add("propertyB", random(1000L, 2000L));
-				add("immutableInner", fixture(ImmutableInner.class, "immutable"));
+				add("immutableInner", one(ImmutableInner.class, "immutable"));
 			}})
 			.addTemplate("threeParameterConstructor", new Rule() {{
 				add("propertyB", random(1000L, 2000L));
 				add("propertyC", regex("\\w{8}"));
-				add("immutableInner", fixture(ImmutableInner.class, "immutable"));
-				add("address", fixture(Address.class, "valid"));
+				add("immutableInner", one(ImmutableInner.class, "immutable"));
+				add("address", one(Address.class, "valid"));
 			}})
 			.addTemplate("fullConstructor", new Rule() {{
 				add("propertyA", regex("\\w{8}"));
 				add("propertyB", random(1000L, 2000L));
 				add("propertyC", "${propertyA} based");
 				add("date", instant("now"));
-				add("address", fixture(Address.class, "valid"));
+				add("address", one(Address.class, "valid"));
 			}});
 		Fixture.of(ImmutableInner.class)
 			.addTemplate("immutable", new Rule() {{ 
@@ -66,7 +66,7 @@ public class FixtureImmutableTest {
         	.addTemplate("chainedId", new Rule() {{
         		add("id.value", 2L);
         		add("id.seq", 200L);
-        		add("cities", fixture(City.class, 2, "valid"));
+        		add("cities", has(2).of(City.class, "valid"));
         }});
         
         Fixture.of(RouteId.class).addTemplate("valid", new Rule() {{

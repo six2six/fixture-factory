@@ -23,7 +23,7 @@ public class FixtureClientTest {
 			add("nickname", random("nerd", "geek"));
 			add("email", "${nickname}@gmail.com");
 			add("birthday", instant("18 years ago"));
-			add("address", fixture(Address.class, "valid"));
+			add("address", one(Address.class, "valid"));
 		}});
 		
 		Fixture.of(Address.class).addTemplate("valid", new Rule(){{

@@ -14,7 +14,7 @@ public class FixtureInnerClassTest {
 	@Before
 	public void setUp() {
 		Fixture.of(Owner.class).addTemplate("valid", new Rule(){{
-			add("inner", fixture(Owner.Inner.class, "valid"));
+			add("inner", one(Owner.Inner.class, "valid"));
 		}});
 
 		Fixture.of(Owner.class).addTemplate("chained", new Rule(){{
