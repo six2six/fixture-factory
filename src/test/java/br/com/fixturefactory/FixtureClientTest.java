@@ -34,6 +34,10 @@ public class FixtureClientTest {
 			add("country", "Brazil");
 			add("zipCode", random("06608000", "17720000"));
 		}});
+		
+		Fixture.of(Address.class).addTemplate("valid-augusta").inherits("valid", new Rule(){{
+			add("street", "Augusta Street");
+		}});
 	}
 	
 	@Test
@@ -42,6 +46,13 @@ public class FixtureClientTest {
 		assertNotNull("Client should not be null", client);
 		assertNotNull("Address should not be null", client.getAddress());
 		assertEquals("client birthday should be 18 years ago", client.getBirthday().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR) - 18);
+	}
+	
+	@Test
+	public void fixtureAddress() {
+		Address address = Fixture.from(Address.class).gimme("valid-augusta");
+		assertNotNull("Address should not be null", address.getId());
+		assertEquals("Augusta Street", address.getStreet());
 	}
 	
 	@Test

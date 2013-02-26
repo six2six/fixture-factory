@@ -35,6 +35,16 @@ import com.mdimension.jchronic.Options;
 
 public class Rule {
 
+	public Rule() {}
+
+	public Rule(Rule baseRule, Rule extendedRule) {
+		properties = new LinkedHashSet<Property>(baseRule.getProperties());
+		for(Property property : extendedRule.getProperties()) {
+			properties.remove(property);
+			properties.add(property);
+		}
+	}
+	
     private Set<Property> properties = new LinkedHashSet<Property>();
 
     public void add(String property, Object value) {
