@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import br.com.fixturefactory.util.Chainable;
 import br.com.fixturefactory.util.ReflectionUtils;
 
-public class AssociationFunction implements RelationFunction, Chainable {
+public class AssociationFunction implements AtomicFunction, RelationFunction, Chainable {
 
 	private FixtureFunction fixtureFunction;
 	
@@ -25,18 +25,23 @@ public class AssociationFunction implements RelationFunction, Chainable {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	public <T> T generateValue() {
+		return fixtureFunction.generateValue();
+	}
+	
+	@Override
 	public <T> T generateValue(Object owner) {
-		Object target = fixtureFunction.generateValue(owner);
+		T target = fixtureFunction.generateValue(owner);
 		
 		if (target instanceof Collection<?>) {
 			for (Object item : (Collection<?>) target) {
-				this.setField(item, owner);			}
+				this.setField(item, owner);			
+			}
 		} else {
 			this.setField(target, owner);
 		}
 		
-		return (T) target;
+		return target;
 	}
 	
 	private void setField(Object target, Object value) {

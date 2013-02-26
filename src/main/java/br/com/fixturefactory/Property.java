@@ -39,6 +39,11 @@ public class Property {
 		return this.function instanceof RelationFunction;
 	}
 
+	public String getRootAttribute() {
+		int index = this.name.indexOf(".");
+		return index > 0 ? this.name.substring(0, index) : this.name;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

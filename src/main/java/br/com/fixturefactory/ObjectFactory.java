@@ -1,16 +1,15 @@
 package br.com.fixturefactory;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import br.com.fixturefactory.util.CalendarTransformer;
 import br.com.fixturefactory.util.ReflectionUtils;
 
 public class ObjectFactory {
-
-	private static final String PLACE_HOLDER_START = "${";
-	private static final String PLACE_HOLDER_END = "}";
 	
 	private TemplateHolder templateHolder;
 	
@@ -24,7 +23,6 @@ public class ObjectFactory {
 		this.templateHolder = templateHolder;
 		this.owner = owner;
 	}
-	
 	
 	@SuppressWarnings("unchecked")
 	public <T> T gimme(String label) {
@@ -54,37 +52,68 @@ public class ObjectFactory {
 	}
 
 	private Object createObject(Rule rule) {
-		Object result;
-		if (owner == null || !ReflectionUtils.isInnerClass(templateHolder.getClazz()))  {
-			result = ReflectionUtils.newInstance(templateHolder.getClazz());	
-		} else {
-			result = ReflectionUtils.newInnerClassInstance(templateHolder.getClazz(), owner);	
-		}
+		Map<String, Object> constructorArguments = new HashMap<String, Object>();
+		List<Property> deferredProperties = new ArrayList<Property>();
 		
+		List<String> parameterNames = lookupConstructorParameterNames(templateHolder.getClazz(), rule.getProperties());
 		
 		for (Property property : rule.getProperties()) {
-			Class<?> fieldType = ReflectionUtils.invokeRecursiveType(result, property.getName());
-			
-			Object value = property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType) ?
-					property.getValue(result) : property.getValue();
-			
-			
-			if (value instanceof String) {
-				String baseValue = (String) value;
-				int start = baseValue.indexOf(PLACE_HOLDER_START);
-				if (start >= 0) {
-					String propertyReference = baseValue.substring(start + PLACE_HOLDER_START.length(), baseValue.indexOf(PLACE_HOLDER_END));
-					value = baseValue.replace(PLACE_HOLDER_START + propertyReference + PLACE_HOLDER_END, ReflectionUtils.invokeRecursiveGetter(result, propertyReference).toString());
-				}
+			if (parameterNames.contains(property.getRootAttribute())) {
+				constructorArguments.put(property.getName(), property.getValue());
+			} else {
+				deferredProperties.add(property);
 			}
+		}
 		
-			if (value instanceof Calendar) {
-				value = new CalendarTransformer().transform(value, fieldType);
-			}
-			
-			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), value);
+		Object result = ReflectionUtils.newInstance(templateHolder.getClazz(), processConstructorArguments(parameterNames, constructorArguments));
+		
+		for (Property property : deferredProperties) {
+			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), processPropertyValue(result, property));
 		}
 		
 		return result;
+	}
+	
+	private List<Object> processConstructorArguments(List<String> parameterNames, Map<String, Object> arguments) {
+		List<Object> values = new ArrayList<Object>();
+		
+		if (owner != null && ReflectionUtils.isInnerClass(templateHolder.getClazz()))  {
+			values.add(owner);	
+		}
+		
+		ConstructorArgumentProcessor valueProcessor = new ConstructorArgumentProcessor(arguments);
+		for (String parameterName : parameterNames) {
+			Class<?> fieldType = ReflectionUtils.invokeRecursiveType(templateHolder.getClazz(), parameterName);
+			Object result = arguments.get(parameterName);
+			if (result == null) {
+				result = processChainedProperty(parameterName, fieldType, arguments);	
+			}
+			values.add(valueProcessor.process(result, fieldType));
+		}
+		return values;
+	}
+
+	private Object processChainedProperty(String parameterName, Class<?> fieldType, Map<String, Object> arguments) {
+		Rule rule = new Rule();
+		for (final String argument : arguments.keySet()) {
+			int index = argument.indexOf(".");
+			if (index > 0 && argument.substring(0, index).equals(parameterName)) {
+				rule.add(argument.substring(index+1), arguments.get(argument));
+			}
+		}
+		return new ObjectFactory(new TemplateHolder(fieldType)).createObject(rule);
+	}
+
+	private Object processPropertyValue(Object object, Property property) {
+		Class<?> fieldType = ReflectionUtils.invokeRecursiveType(object.getClass(), property.getName());
+		Object value = property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType) ?
+				property.getValue(object) : property.getValue();
+		
+		return new PropertyProcessor(object).process(value, fieldType);
+	}
+	
+	private <T> List<String> lookupConstructorParameterNames(Class<T> target, Set<Property> properties) {
+		Collection<String> propertyNames = ReflectionUtils.map(properties, "rootAttribute");
+		return ReflectionUtils.filterConstructorParameterNames(target, propertyNames);
 	}
 }

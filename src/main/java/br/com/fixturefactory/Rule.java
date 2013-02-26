@@ -8,10 +8,10 @@ import static br.com.fixturefactory.util.DateTimeUtil.toCalendar;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import com.mdimension.jchronic.Options;
 import br.com.bfgex.Gender;
 import br.com.fixturefactory.base.CalendarInterval;
 import br.com.fixturefactory.base.CalendarSequence;
@@ -29,6 +29,9 @@ import br.com.fixturefactory.function.RandomFunction;
 import br.com.fixturefactory.function.RegexFunction;
 import br.com.fixturefactory.function.SequenceFunction;
 import br.com.fixturefactory.util.Chainable;
+import br.com.fixturefactory.util.ReflectionUtils;
+
+import com.mdimension.jchronic.Options;
 
 public class Rule {
 
@@ -52,10 +55,18 @@ public class Rule {
     	this.properties.add(new Property(property, function));
     }
 
+    /**
+     * @deprecated use {@link one(clazz, label)} instead.
+     */
+    @Deprecated
 	public Function fixture(Class<?> clazz, String label) {
     	return new FixtureFunction(clazz, label);
     }
 
+    /**
+     * @deprecated use {@link has(quantity).of(clazz, label)} instead.
+     */
+    @Deprecated
 	public Function fixture(Class<?> clazz, Integer quantity, String label) {
     	return new FixtureFunction(clazz, label, quantity);
     }
@@ -131,6 +142,12 @@ public class Rule {
 	public Function sequence(Number startWith, int incrementBy) {
 		return new SequenceFunction(new NumberSequence(startWith, incrementBy));
 	}
+	
+	public Function sequence(Class<? extends Number> clazz) {
+		Number number = ReflectionUtils.newInstance(clazz, Arrays.asList("1"));
+		return new SequenceFunction(new NumberSequence(number, 1));
+	}
+	
 	public Function sequenceDate(String base, CalendarInterval interval) {
 		return this.sequenceDate(base, new SimpleDateFormat("yyyy-MM-dd"), interval);
 	}

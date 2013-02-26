@@ -5,9 +5,8 @@ Fixture Factory - generator to create fake objects from a template
 
 ### Installing
 
-First clone and install projects:
+First clone and install project:
 	[bfgex](https://github.com/douglasrodrigo/bfgex)
-	[jchronic](https://github.com/samtingleff/jchronic)
 
 Clone fixture-factory project and install in your local repository
  
@@ -18,7 +17,7 @@ Use it like a maven dependency on your project
 	<dependency>
 		<groupId>br.com.fixturefactory</groupId>
 		<artifactId>fixture-factory</artifactId>
-		<version>1.2.1</version>
+		<version>2.0.0</version>
 	</dependency>
 
 ### Usage

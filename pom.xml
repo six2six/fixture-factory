@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.fixturefactory</groupId>
 	<artifactId>fixture-factory</artifactId>
-	<version>2.0.0</version>
+	<version>2.1.0</version>
 	<name>fixture-factory</name>
 	<packaging>jar</packaging>
 
@@ -31,10 +31,21 @@
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-          <groupId>com.mdimension</groupId>
+          <groupId>com.rubiconproject.oss</groupId>
           <artifactId>jchronic</artifactId>
-          <version>0.2.4-SNAPSHOT</version>
+          <version>0.2.6</version>
 		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.paranamer</groupId>
+			<artifactId>paranamer</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>net.vidageek</groupId>
+			<artifactId>mirror</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
