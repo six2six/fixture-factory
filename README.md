@@ -42,8 +42,7 @@ Writing bean template rules
 		add("zipCode", random("06608000", "17720000"));
 	}}); 
 	
-Creating a new template based on another existing template
-Using this you can override the definition for a property
+Creating a new template based on another existing template. Using this you can override the definition for a property
 
 	Fixture.of(Address.class).addTemplate("valid-augusta").inherits("valid", new Rule(){{
 		add("street", "Augusta Street");
