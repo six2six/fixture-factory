@@ -65,10 +65,10 @@ public class ReflectionUtils {
     
     public static <T> void invokeSetter(Object bean, String attribute, Object value, boolean fail){
         try {
-            getPropertyUtilsBean().setProperty(bean, attribute, value);
+            new Mirror().on(bean).set().field(attribute).withValue(value);
         } catch (Exception ex){
             if(fail) {
-                throw new IllegalArgumentException(bean.getClass().getCanonicalName() + "-> No such attribute: " + attribute + "[" + value.getClass().getName() + "]");
+                throw new IllegalArgumentException(bean.getClass().getName() + "-> No such attribute: " + attribute + "[" + value.getClass().getName() + "]");
             }
         }   
     }
@@ -103,7 +103,7 @@ public class ReflectionUtils {
         }
         
         if (field == null) {
-            throw new IllegalArgumentException("Field " + attribute + " doesn't exists");
+            throw new IllegalArgumentException(clazz.getName() + "-> Field " + attribute + " doesn't exists");
         }
         
         return field;
