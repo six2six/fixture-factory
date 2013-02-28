@@ -12,6 +12,7 @@ public class Student implements Serializable {
 	private String firstName;
 	private String lastName;
 	private Gender gender;
+	private String idCardNumber;
 
 	public Long getId() {
 		return id;
@@ -37,6 +38,9 @@ public class Student implements Serializable {
 	}
 	public void setGender(Gender gender) {
 		this.gender = gender;
+	}
+	public String getIdCardNumber() {
+		return idCardNumber;
 	}
 	
 }

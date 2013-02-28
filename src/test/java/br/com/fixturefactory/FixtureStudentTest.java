@@ -20,6 +20,7 @@ public class FixtureStudentTest {
 			add("firstName", firstName());
 			add("lastName", lastName());
 			add("gender", random(Gender.class));
+			add("idCardNumber", regex("\\d{6}"));
 		}}
 		).addTemplate("validFemaleStudent", new Rule(){{
 			add("id", sequence(200L, 2));
