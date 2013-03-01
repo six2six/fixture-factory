@@ -4,26 +4,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.com.fixturefactory.loader.FixtureFactoryLoader;
 import br.com.fixturefactory.model.Owner;
 
 public class FixtureInnerClassTest {
 
-	@Before
-	public void setUp() {
-		Fixture.of(Owner.class).addTemplate("valid", new Rule(){{
-			add("inner", one(Owner.Inner.class, "valid"));
-		}});
-
-		Fixture.of(Owner.class).addTemplate("chained", new Rule(){{
-		    add("inner.id", "333");
-		}});
-
-		Fixture.of(Owner.Inner.class).addTemplate("valid", new Rule(){{
-			add("id", "222");
-		}});
+	@BeforeClass
+	public static void setUp() {
+		FixtureFactoryLoader.loadTemplates("br.com.fixturefactory.template");
 	}
 	
 	@Test
