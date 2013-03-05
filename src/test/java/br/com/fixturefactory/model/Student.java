@@ -1,6 +1,7 @@
 package br.com.fixturefactory.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import br.com.bfgex.Gender;
 
@@ -13,6 +14,7 @@ public class Student implements Serializable {
 	private String lastName;
 	private Gender gender;
 	private String idCardNumber;
+	private Set<Address> addresses;
 
 	public Long getId() {
 		return id;
@@ -41,6 +43,12 @@ public class Student implements Serializable {
 	}
 	public String getIdCardNumber() {
 		return idCardNumber;
+	}
+	public Set<Address> getAddresses() {
+		return addresses;
+	}
+	public void setAddresses(Set<Address> addresses) {
+		this.addresses = addresses;
 	}
 	
 }
