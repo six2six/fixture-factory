@@ -11,6 +11,8 @@ import br.com.fixturefactory.util.ReflectionUtils;
 
 public class ObjectFactory {
 	
+	private static final String NO_SUCH_LABEL_MESSAGE = "%s-> No such label: %s";
+	
 	private TemplateHolder templateHolder;
 	
 	private Object owner;
@@ -29,7 +31,7 @@ public class ObjectFactory {
 		Rule rule = templateHolder.getRules().get(label);
 		 	
 		if (rule == null) {
-			throw new IllegalArgumentException("No such label: " + label);
+			throw new IllegalArgumentException(String.format(NO_SUCH_LABEL_MESSAGE, templateHolder.getClazz().getName(), label));
 		}
 
 		return (T) this.createObject(rule);
@@ -40,7 +42,7 @@ public class ObjectFactory {
 		Rule rule = templateHolder.getRules().get(label);
 		
 		if (rule == null) {
-			throw new IllegalArgumentException("No such label: " + label);
+			throw new IllegalArgumentException(String.format(NO_SUCH_LABEL_MESSAGE, templateHolder.getClazz().getName(), label));
 		}
 
 		List<T> results = new ArrayList<T>(quantity);
