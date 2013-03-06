@@ -1,7 +1,5 @@
 package br.com.fixturefactory;
 
-import java.awt.List;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
@@ -35,12 +33,8 @@ abstract class ValueProcessor {
         if (baseValue instanceof Calendar) {
             result = new CalendarTransformer().transform(baseValue, fieldType);
         }
-        if(baseValue instanceof Collection && !fieldType.isAssignableFrom(baseValue.getClass())) {
-        	if(Set.class.isAssignableFrom(fieldType)) {
-        		result = new HashSet((Collection) baseValue);
-        	} else if(List.class.isAssignableFrom(fieldType)) {
-        		result = new ArrayList((Collection) baseValue);
-        	}
+        if(baseValue instanceof Collection && Set.class.isAssignableFrom(fieldType)) {
+        	result = new HashSet((Collection) baseValue);
         }
         
         return result;
