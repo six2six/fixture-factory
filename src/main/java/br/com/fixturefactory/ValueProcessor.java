@@ -2,7 +2,10 @@ package br.com.fixturefactory;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,7 +18,8 @@ abstract class ValueProcessor {
     
     protected abstract String getValue(String name);
     
-    public Object process(Object baseValue, Class<?> fieldType) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	public Object process(Object baseValue, Class<?> fieldType) {
         Object result = baseValue;
         
         if (baseValue instanceof String) {
@@ -28,6 +32,9 @@ abstract class ValueProcessor {
         }
         if (baseValue instanceof Calendar) {
             result = new CalendarTransformer().transform(baseValue, fieldType);
+        }
+        if(baseValue instanceof Collection && Set.class.isAssignableFrom(fieldType)) {
+        	result = new HashSet((Collection) baseValue);
         }
         
         return result;
