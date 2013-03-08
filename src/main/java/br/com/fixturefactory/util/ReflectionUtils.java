@@ -22,6 +22,7 @@ import com.thoughtworks.paranamer.Paranamer;
 public class ReflectionUtils {
 
     public static final String CGLIB_CLASS_SEPARATOR = "$$";
+    private static final String NO_SUCH_ATTRIBUTE_MESSAGE = "%s-> No such attribute: %s[%s]";
     
     @SuppressWarnings("unchecked")
     public static <T> T cast(Object source){
@@ -68,7 +69,7 @@ public class ReflectionUtils {
             new Mirror().on(bean).set().field(attribute).withValue(value);
         } catch (Exception ex){
             if(fail) {
-                throw new IllegalArgumentException(bean.getClass().getName() + "-> No such attribute: " + attribute + "[" + value.getClass().getName() + "]");
+                throw new IllegalArgumentException(String.format(NO_SUCH_ATTRIBUTE_MESSAGE, bean.getClass().getName(), attribute, value.getClass().getName()));
             }
         }   
     }
@@ -103,7 +104,7 @@ public class ReflectionUtils {
         }
         
         if (field == null) {
-            throw new IllegalArgumentException(clazz.getName() + "-> Field " + attribute + " doesn't exists");
+            throw new IllegalArgumentException(String.format("%s-> Field %s doesn't exists", clazz.getName(), attribute));
         }
         
         return field;
@@ -167,8 +168,8 @@ public class ReflectionUtils {
                 lastBean = targetBean;
                 targetBean = ReflectionUtils.invokeGetter(targetBean, propertyItem);
                 if(targetBean == null) {
+                	Class<?> type = invokeRecursiveType(lastBean.getClass(), propertyItem);
                     try {
-                        Class<?> type = invokeRecursiveType(lastBean.getClass(), propertyItem);
                         List<Object> args = new ArrayList<Object>();
                         if (isInnerClass(type)) {
                             args.add(lastBean);
@@ -176,7 +177,7 @@ public class ReflectionUtils {
                         targetBean = newInstance(type, args);
                         ReflectionUtils.invokeSetter(lastBean, propertyItem, targetBean, true);                     
                     } catch (Exception e) {
-                        throw new IllegalArgumentException("No such attribute: " + propertyItem + " declared in class " + lastBean.getClass().getCanonicalName());
+                        throw new IllegalArgumentException(String.format(NO_SUCH_ATTRIBUTE_MESSAGE, lastBean.getClass().getName(), propertyItem, type.getName()));
                     }
                 }
             }
