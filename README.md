@@ -1,9 +1,9 @@
 Fixture Factory - generator to create fake objects from a template
 ================================================================== 
 
-### [Mailing list](http://groups.google.com/group/fixture-factory)
+## [Mailing list](http://groups.google.com/group/fixture-factory)
 
-### Installing
+## Installing
 
 First clone and install project:
 	[bfgex](https://github.com/douglasrodrigo/bfgex)
@@ -20,7 +20,7 @@ Use it like a maven dependency on your project
 		<version>2.1.0</version>
 	</dependency>
 
-### Usage
+## Usage
 
 Writing bean template rules
 
@@ -58,7 +58,7 @@ Gimme N objects from valid label
 
 More helpers functions for create generic template:
 
-#### Relationship (one-to-one and one-to-many)
+### Relationship (one-to-one and one-to-many)
 
 	Fixture.of(Order.class).addTemplate("valid", new Rule(){{
 		add("id", random(Long.class, range(1L, 200L)));
@@ -74,14 +74,14 @@ More helpers functions for create generic template:
 		add("id", random(Long.class, range(1L, 200L)));
 	}});
 
-#### Regex
+### Regex
 
 	Fixture.of(Any.class).addTemplate("valid", new Rule(){{
 	  add("id", regex("\\d{3,5}"));
 	  add("phoneNumber", regex("(\\d{2})-(\\d{4})-(\\d{4})"));
 	});
 
-#### Date
+### Date
 
 	Fixture.of(Any.class).addTemplate("valid", new Rule(){{
 		add("dueDate", beforeDate("2011-04-15", new SimpleDateFormat("yyyy-MM-dd")));
@@ -90,7 +90,7 @@ More helpers functions for create generic template:
 		add("cutDate", instant("now"));
 	});
 
-#### Name
+### Name
 
 	Fixture.of(Any.class).addTemplate("valid", new Rule(){{
 		add("firstName", firstName());
@@ -98,3 +98,8 @@ More helpers functions for create generic template:
 	});
 	
 You can see more utilization on [tests](fixture-factory/tree/master/src/test/java/br/com/fixturefactory)!
+
+## License
+
+Fixture-Factory is released under the Apache 2.0 license. See the LICENSE file included with the distribution for details.
+
