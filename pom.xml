@@ -4,9 +4,55 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.fixturefactory</groupId>
 	<artifactId>fixture-factory</artifactId>
-	<version>2.1.0</version>
-	<name>fixture-factory</name>
 	<packaging>jar</packaging>
+	<name>fixture-factory</name>
+	<version>2.1.0</version>
+	<description>generator to create fake objects from a template</description>
+	<url>https://github.com/aparra/fixture-factory</url>
+	
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>	    
+	</licenses>
+	
+	<scm>
+		<url>https://github.com/aparra/fixture-factory</url>
+		<connection>scm:git:git://github.com/aparra/fixture-factory</connection>
+		<developerConnection>scm:git:git@github.com:aparra/fixture-factory.git</developerConnection>
+	</scm>
+	
+	<developers>
+		<developer>
+			<id>nykolaslima</id>
+			<name>Nykolas Laurentino de Lima</name>
+			<email>nykolas.lima@gmail.com</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>-3</timezone>
+		</developer>
+		<developer>
+			<id>aparra</id>
+			<name>Anderson Parra</name>
+			<email>ander.pp@gmail.com</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>-3</timezone>
+		</developer>
+		<developer>
+			<id>ahirata</id>
+			<name>Arthur Hirata</name>
+			<email>arthur_hirata@yahoo.com.br</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>-3</timezone>
+		</developer>
+	</developers>
 
 	<dependencies>
 		<dependency>
