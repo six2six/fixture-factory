@@ -18,6 +18,12 @@
 		</license>	    
 	</licenses>
 	
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+	
 	<scm>
 		<url>https://github.com/aparra/fixture-factory</url>
 		<connection>scm:git:git://github.com/aparra/fixture-factory</connection>
