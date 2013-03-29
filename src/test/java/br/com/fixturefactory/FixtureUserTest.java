@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import br.com.bfgex.Gender;
 import br.com.fixturefactory.model.User;
+import br.com.fixturefactory.model.UserType;
 
 public class FixtureUserTest {
 
@@ -18,6 +19,7 @@ public class FixtureUserTest {
 			add("password", "madona");
 			add("gender", random(Gender.class));
 			add("email", "${login}@gmail.com");
+			add("userTypes", has(2).of(UserType.class));
 		}}
 		).addTemplate("validFemaleUser", new Rule(){{
 			add("name", name(Gender.FEMALE));
