@@ -17,7 +17,7 @@ public class EnumFixtureFunction implements AtomicFunction {
 	public <T> T generateValue() {
 		List<T> results = new ArrayList<T>();
 		AtomicFunction function = new RandomFunction(clazz);
-		for(int i = 0; i < quantity; i++) {
+		for (int i = 0; i < quantity; i++) {
 			results.add((T) function.generateValue());
 		}
 		

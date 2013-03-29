@@ -38,7 +38,7 @@ public class AssociationFunction implements AtomicFunction, RelationFunction, Ch
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T generateValue() {
-		if(clazz.isEnum()) {
+		if (clazz.isEnum()) {
 			return new EnumFixtureFunction((Class<? extends Enum<?>>) clazz, quantity).generateValue();
 		} else {
 			return getFixtureFunction().generateValue();
@@ -83,7 +83,7 @@ public class AssociationFunction implements AtomicFunction, RelationFunction, Ch
 	}
 	
 	private FixtureFunction getFixtureFunction() {
-		if(quantity != null) {
+		if (quantity != null) {
 			return new FixtureFunction(clazz, label, quantity);
 		} else {
 			return new FixtureFunction(clazz, label);
@@ -92,7 +92,7 @@ public class AssociationFunction implements AtomicFunction, RelationFunction, Ch
 	
 	@SuppressWarnings("unchecked")
 	private <T> T generateFunctionValue(Object owner) {
-		if(clazz.isEnum()) {
+		if (clazz.isEnum()) {
 			return new EnumFixtureFunction((Class<? extends Enum<?>>) clazz, quantity).generateValue();
 		} else {
 			return getFixtureFunction().generateValue(owner);
