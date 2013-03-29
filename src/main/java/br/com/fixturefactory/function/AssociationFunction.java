@@ -37,12 +37,12 @@ public class AssociationFunction implements AtomicFunction, RelationFunction, Ch
 
 	@Override
 	public <T> T generateValue() {
-		return getFixtureFunction().generateValue();
+		return new FixtureFunction(clazz, label, quantity).generateValue();
 	}
 	
 	@Override
 	public <T> T generateValue(Object owner) {
-		T target = getFixtureFunction().generateValue(owner);
+		T target = new FixtureFunction(clazz, label, quantity).generateValue(owner);
 		
 		if (target instanceof Collection<?>) {
 			for (Object item : (Collection<?>) target) {
@@ -73,14 +73,6 @@ public class AssociationFunction implements AtomicFunction, RelationFunction, Ch
 	@Override
 	public Function of(Class<? extends Enum<?>> clazz) {
 		return new EnumFunction(clazz, quantity);
-	}
-	
-	private FixtureFunction getFixtureFunction() {
-		if (quantity != null) {
-			return new FixtureFunction(clazz, label, quantity);
-		} else {
-			return new FixtureFunction(clazz, label);
-		}
 	}
 	
 	private void setField(Object target, Object value) {
