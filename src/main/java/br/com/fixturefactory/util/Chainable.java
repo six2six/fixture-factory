@@ -8,6 +8,6 @@ public interface Chainable {
 	
 	Function of(Class<?> clazz, String label, String targetAttribute);
 
-	Function of(Class<? extends Enum<?>> class1);
+	Function of(Class<? extends Enum<?>> clazz);
 	
 }

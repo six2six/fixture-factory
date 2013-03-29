@@ -3,11 +3,11 @@ package br.com.fixturefactory.function;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnumFixtureFunction implements AtomicFunction {
+public class EnumFunction implements AtomicFunction {
 	public Class<? extends Enum<?>> clazz;
 	public int quantity;
 	
-	public EnumFixtureFunction(Class<? extends Enum<?>> clazz, int quantity) {
+	public EnumFunction(Class<? extends Enum<?>> clazz, int quantity) {
 		this.clazz = clazz;
 		this.quantity = quantity;
 	}

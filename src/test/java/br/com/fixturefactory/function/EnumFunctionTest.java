@@ -8,11 +8,11 @@ import org.junit.Test;
 
 import br.com.fixturefactory.model.UserType;
 
-public class EnumFixtureFunctionTest {
+public class EnumFunctionTest {
 	
 	@Test
 	public void shouldGenerateRandomEnumValues() {
-		List<UserType> userTypes = new EnumFixtureFunction(UserType.class, 2).generateValue();
+		List<UserType> userTypes = new EnumFunction(UserType.class, 2).generateValue();
 		
 		assertEquals(2, userTypes.size());
 	}
