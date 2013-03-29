@@ -37,14 +37,5 @@ public class FixtureFunction implements AtomicFunction, RelationFunction {
 	private <T> T generate(ObjectFactory objectFactory) {
 		return (T) (quantity != null ? objectFactory.gimme(quantity, label) : objectFactory.gimme(label));
 	}
-
-	public void setClazz(Class<?> clazz) {
-		this.clazz = clazz;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
 	
 }

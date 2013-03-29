@@ -11,27 +11,38 @@ import br.com.fixturefactory.util.ReflectionUtils;
 
 public class AssociationFunction implements AtomicFunction, RelationFunction, Chainable {
 
-	private FixtureFunction fixtureFunction;
-	
 	private String targetAttribute;
-	
-	public AssociationFunction(FixtureFunction fixtureFunction) {
-		this.fixtureFunction = fixtureFunction;
+	private Class<?> clazz;
+	private String label;
+	private Integer quantity;
+
+	public AssociationFunction(Integer quantity) {
+		this.quantity = quantity;
 	}
 	
-	public AssociationFunction(FixtureFunction fixtureFunction, String targetAttribute) {
-		this(fixtureFunction);
+	public AssociationFunction(Class<?> clazz, String label) {
+		this.clazz = clazz;
+		this.label = label;
+	}
+	
+	public AssociationFunction(Class<?> clazz, String label, String targetAttribute) {
+		this.clazz = clazz;
+		this.label = label;
+		this.targetAttribute = targetAttribute;
+	}
+	
+	public AssociationFunction(String targetAttribute) {
 		this.targetAttribute = targetAttribute;
 	}
 
 	@Override
 	public <T> T generateValue() {
-		return fixtureFunction.generateValue();
+		return new FixtureFunction(clazz, label, quantity).generateValue();
 	}
 	
 	@Override
 	public <T> T generateValue(Object owner) {
-		T target = fixtureFunction.generateValue(owner);
+		T target = new FixtureFunction(clazz, label, quantity).generateValue(owner);
 		
 		if (target instanceof Collection<?>) {
 			for (Object item : (Collection<?>) target) {
@@ -42,6 +53,26 @@ public class AssociationFunction implements AtomicFunction, RelationFunction, Ch
 		}
 		
 		return target;
+	}
+	
+	@Override
+	public Function of(Class<?> clazz, String label) {
+		this.clazz = clazz;
+		this.label = label;
+		return this;
+	}
+	
+	@Override
+	public Function of(Class<?> clazz, String label, String targetAttribute) {
+		this.clazz = clazz;
+		this.label = label;
+		this.targetAttribute = targetAttribute;
+		return this;
+	}
+	
+	@Override
+	public Function of(Class<? extends Enum<?>> clazz) {
+		return new EnumFunction(clazz, quantity);
 	}
 	
 	private void setField(Object target, Object value) {
@@ -70,24 +101,6 @@ public class AssociationFunction implements AtomicFunction, RelationFunction, Ch
 		}
 		
 		return searchdField;
-	}
-
-	@Override
-	public Function of(Class<?> clazz, String label) {
-		this.configureFixtureFunction(clazz, label);
-		return this;
-	}
-
-	@Override
-	public Function of(Class<?> clazz, String label, String targetAttribute) {
-		this.configureFixtureFunction(clazz, label);
-		this.targetAttribute = targetAttribute;
-		return this;
-	}
-	
-	private void configureFixtureFunction(Class<?> clazz, String label) {
-		ReflectionUtils.invokeRecursiveSetter(fixtureFunction, "clazz", clazz);
-		ReflectionUtils.invokeRecursiveSetter(fixtureFunction, "label", label);
 	}
 	
 }

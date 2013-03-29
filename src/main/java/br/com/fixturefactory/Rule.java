@@ -72,15 +72,15 @@ public class Rule {
     }
 	
 	public Chainable has(int quantity) {
-		return new AssociationFunction(new FixtureFunction(null, null, quantity));
+		return new AssociationFunction(quantity);
 	}
 	
 	public AssociationFunction one(Class<?> clazz, String label) {
-		return new AssociationFunction(new FixtureFunction(clazz, label));
+		return new AssociationFunction(clazz, label);
 	}
 	
 	public Function one(Class<?> clazz, String label, String targetAttribute) {
-		return new AssociationFunction(new FixtureFunction(clazz, label), targetAttribute);
+		return new AssociationFunction(clazz, label, targetAttribute);
 	}
 	
 	public Function random(Class<?> clazz, Object... dataset) {
