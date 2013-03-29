@@ -9,29 +9,40 @@ import org.apache.commons.lang.StringUtils;
 import br.com.fixturefactory.util.Chainable;
 import br.com.fixturefactory.util.ReflectionUtils;
 
-public class AssociationFunction implements AtomicFunction, RelationFunction, Chainable {
+public class AssociationFunction implements AtomicRelationFunction, Chainable {
 
-	private FixtureFunction fixtureFunction;
-	
 	private String targetAttribute;
-	
-	public AssociationFunction(FixtureFunction fixtureFunction) {
-		this.fixtureFunction = fixtureFunction;
+	private Class<?> clazz;
+	private String label;
+	private Integer quantity;
+
+	public AssociationFunction(Integer quantity) {
+		this.quantity = quantity;
 	}
 	
-	public AssociationFunction(FixtureFunction fixtureFunction, String targetAttribute) {
-		this(fixtureFunction);
+	public AssociationFunction(Class<?> clazz, String label) {
+		this.clazz = clazz;
+		this.label = label;
+	}
+	
+	public AssociationFunction(Class<?> clazz, String label, String targetAttribute) {
+		this.clazz = clazz;
+		this.label = label;
+		this.targetAttribute = targetAttribute;
+	}
+	
+	public AssociationFunction(String targetAttribute) {
 		this.targetAttribute = targetAttribute;
 	}
 
 	@Override
 	public <T> T generateValue() {
-		return fixtureFunction.generateValue();
+		return getFunction().generateValue();
 	}
 	
 	@Override
 	public <T> T generateValue(Object owner) {
-		T target = fixtureFunction.generateValue(owner);
+		T target = getFunction().generateValue(owner);
 		
 		if (target instanceof Collection<?>) {
 			for (Object item : (Collection<?>) target) {
@@ -42,6 +53,19 @@ public class AssociationFunction implements AtomicFunction, RelationFunction, Ch
 		}
 		
 		return target;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private AtomicRelationFunction getFunction() {
+		if(clazz.isEnum()) {
+			return new EnumFixtureFunction((Class<? extends Enum<?>>) clazz, quantity);
+		} else {
+			if(quantity != null) {
+				return new FixtureFunction(clazz, label, quantity);
+			} else {
+				return new FixtureFunction(clazz, label);
+			}
+		}
 	}
 	
 	private void setField(Object target, Object value) {
@@ -74,20 +98,24 @@ public class AssociationFunction implements AtomicFunction, RelationFunction, Ch
 
 	@Override
 	public Function of(Class<?> clazz, String label) {
-		this.configureFixtureFunction(clazz, label);
+		this.clazz = clazz;
+		this.label = label;
 		return this;
 	}
 
 	@Override
 	public Function of(Class<?> clazz, String label, String targetAttribute) {
-		this.configureFixtureFunction(clazz, label);
+		this.clazz = clazz;
+		this.label = label;
 		this.targetAttribute = targetAttribute;
 		return this;
 	}
 	
-	private void configureFixtureFunction(Class<?> clazz, String label) {
-		ReflectionUtils.invokeRecursiveSetter(fixtureFunction, "clazz", clazz);
-		ReflectionUtils.invokeRecursiveSetter(fixtureFunction, "label", label);
+	@Override
+	public Function of(Class<? extends Enum<?>> clazz) {
+		this.clazz = clazz;
+		
+		return this;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package br.com.fixturefactory.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import br.com.bfgex.Gender;
 
@@ -13,6 +14,7 @@ public class User implements Serializable {
 	private String password;
 	private Gender gender;
 	private String email;
+	private List<UserType> userTypes;
 	
 	public String getName() {
 		return name;
@@ -43,6 +45,12 @@ public class User implements Serializable {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public List<UserType> getUserTypes() {
+		return userTypes;
+	}
+	public void setUserTypes(List<UserType> userTypes) {
+		this.userTypes = userTypes;
 	}
 	
 }
