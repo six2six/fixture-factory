@@ -3,7 +3,7 @@ package br.com.fixturefactory.function;
 import br.com.fixturefactory.Fixture;
 import br.com.fixturefactory.ObjectFactory;
 
-public class FixtureFunction implements AtomicRelationFunction {
+public class FixtureFunction implements AtomicFunction, RelationFunction {
 
 	private Class<?> clazz;
 

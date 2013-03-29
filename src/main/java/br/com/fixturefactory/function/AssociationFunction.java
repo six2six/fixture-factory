@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import br.com.fixturefactory.util.Chainable;
 import br.com.fixturefactory.util.ReflectionUtils;
 
-public class AssociationFunction implements AtomicRelationFunction, Chainable {
+public class AssociationFunction implements AtomicFunction, RelationFunction, Chainable {
 
 	private String targetAttribute;
 	private Class<?> clazz;
@@ -35,14 +35,19 @@ public class AssociationFunction implements AtomicRelationFunction, Chainable {
 		this.targetAttribute = targetAttribute;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T generateValue() {
-		return getFunction().generateValue();
+		if(clazz.isEnum()) {
+			return new EnumFixtureFunction((Class<? extends Enum<?>>) clazz, quantity).generateValue();
+		} else {
+			return getFixtureFunction().generateValue();
+		}
 	}
 	
 	@Override
 	public <T> T generateValue(Object owner) {
-		T target = getFunction().generateValue(owner);
+		T target = generateFunctionValue(owner);
 		
 		if (target instanceof Collection<?>) {
 			for (Object item : (Collection<?>) target) {
@@ -56,15 +61,41 @@ public class AssociationFunction implements AtomicRelationFunction, Chainable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private AtomicRelationFunction getFunction() {
+	public <T> T generateFunctionValue(Object owner) {
 		if(clazz.isEnum()) {
-			return new EnumFixtureFunction((Class<? extends Enum<?>>) clazz, quantity);
+			return new EnumFixtureFunction((Class<? extends Enum<?>>) clazz, quantity).generateValue();
 		} else {
-			if(quantity != null) {
-				return new FixtureFunction(clazz, label, quantity);
-			} else {
-				return new FixtureFunction(clazz, label);
-			}
+			return getFixtureFunction().generateValue(owner);
+		}
+	}
+	
+	@Override
+	public Function of(Class<?> clazz, String label) {
+		this.clazz = clazz;
+		this.label = label;
+		return this;
+	}
+	
+	@Override
+	public Function of(Class<?> clazz, String label, String targetAttribute) {
+		this.clazz = clazz;
+		this.label = label;
+		this.targetAttribute = targetAttribute;
+		return this;
+	}
+	
+	@Override
+	public Function of(Class<? extends Enum<?>> clazz) {
+		this.clazz = clazz;
+		
+		return this;
+	}
+	
+	private FixtureFunction getFixtureFunction() {
+		if(quantity != null) {
+			return new FixtureFunction(clazz, label, quantity);
+		} else {
+			return new FixtureFunction(clazz, label);
 		}
 	}
 	
@@ -94,28 +125,6 @@ public class AssociationFunction implements AtomicRelationFunction, Chainable {
 		}
 		
 		return searchdField;
-	}
-
-	@Override
-	public Function of(Class<?> clazz, String label) {
-		this.clazz = clazz;
-		this.label = label;
-		return this;
-	}
-
-	@Override
-	public Function of(Class<?> clazz, String label, String targetAttribute) {
-		this.clazz = clazz;
-		this.label = label;
-		this.targetAttribute = targetAttribute;
-		return this;
-	}
-	
-	@Override
-	public Function of(Class<? extends Enum<?>> clazz) {
-		this.clazz = clazz;
-		
-		return this;
 	}
 	
 }
