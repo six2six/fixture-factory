@@ -9,8 +9,10 @@ First clone and install project:
 	[bfgex](https://github.com/douglasrodrigo/bfgex)
 
 Clone fixture-factory project and install in your local repository
+ 	<pre>
  	$ git clone git@github.com:aparra/fixture-factory.git
 	$ mvn clean install
+	</pre>
 
 Use it like a maven dependency on your project
 
