@@ -16,7 +16,7 @@ Clone fixture-factory project and install in your local repository
 Use it like a maven dependency on your project
 
 	<dependency>
-		<groupId>br.com.fixturefactory</groupId>
+		<groupId>br.com.fixture-factory</groupId>
 		<artifactId>fixture-factory</artifactId>
 		<version>2.1.0</version>
 	</dependency>
