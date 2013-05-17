@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import br.com.bfgex.Gender;
+import br.com.six2six.bfgex.Gender;
 import br.com.six2six.fixturefactory.base.CalendarInterval;
 import br.com.six2six.fixturefactory.base.CalendarSequence;
 import br.com.six2six.fixturefactory.base.Interval;

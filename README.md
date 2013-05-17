@@ -6,7 +6,7 @@ Fixture Factory - generator to create fake objects from a template
 ## Installing
 
 First clone and install project:
-	[bfgex](https://github.com/douglasrodrigo/bfgex)
+	[bfgex](https://github.com/six2six/bfgex)
 
 Clone fixture-factory project and install in your local repository
 

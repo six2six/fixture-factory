@@ -3,7 +3,7 @@ package br.com.six2six.fixturefactory.model;
 import java.io.Serializable;
 import java.util.Set;
 
-import br.com.bfgex.Gender;
+import br.com.six2six.bfgex.Gender;
 
 public class Student implements Serializable {
 

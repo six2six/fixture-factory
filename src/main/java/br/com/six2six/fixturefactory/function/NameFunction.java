@@ -1,7 +1,7 @@
 package br.com.six2six.fixturefactory.function;
 
-import br.com.bfgex.Gender;
-import br.com.bfgex.RandomGen;
+import br.com.six2six.bfgex.Gender;
+import br.com.six2six.bfgex.RandomGen;
 
 public class NameFunction implements AtomicFunction {
 

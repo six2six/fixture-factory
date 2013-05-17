@@ -1,6 +1,6 @@
 package br.com.six2six.fixturefactory.function;
 
-import br.com.bfgex.RegexGen;
+import br.com.six2six.bfgex.RegexGen;
 
 public class RegexFunction implements AtomicFunction {
 

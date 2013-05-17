@@ -5,7 +5,7 @@ import static junit.framework.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.bfgex.Gender;
+import br.com.six2six.bfgex.Gender;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.model.User;
