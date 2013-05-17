@@ -3,6 +3,8 @@ Fixture Factory - generator to create fake objects from a template
 
 ## [Mailing list](http://groups.google.com/group/fixture-factory)
 
+## Official repo was moved to [six2six/fixture-factory](https://github.com/six2six/fixture-factory)
+
 ## Installing
 
 First clone and install project:
