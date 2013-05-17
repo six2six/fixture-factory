@@ -10,7 +10,7 @@ First clone and install project:
 
 Clone fixture-factory project and install in your local repository
 
-	$ git clone git@github.com:aparra/fixture-factory.git
+	$ git clone git@github.com:six2six/fixture-factory.git
 	$ mvn clean install
 
 Use it like a maven dependency on your project
