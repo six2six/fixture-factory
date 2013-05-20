@@ -8,7 +8,7 @@
 	<name>fixture-factory</name>
 	<version>2.1.0</version>
 	<description>generator to create fake objects from a template</description>
-	<url>https://github.com/six2six/fixture-factory</url>
+	<url>https://github.com/aparra/fixture-factory</url>
 	
 	<licenses>
 		<license>
@@ -25,9 +25,9 @@
 	</parent>
 	
 	<scm>
-		<url>https://github.com/six2six/fixture-factory</url>
-		<connection>scm:git:git://github.com/six2six/fixture-factory</connection>
-		<developerConnection>scm:git:git@github.com:six2six/fixture-factory.git</developerConnection>
+		<url>https://github.com/aparra/fixture-factory</url>
+		<connection>scm:git:git://github.com/aparra/fixture-factory</connection>
+		<developerConnection>scm:git:git@github.com:aparra/fixture-factory.git</developerConnection>
 	</scm>
 	
 	<developers>
