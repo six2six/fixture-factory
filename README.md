@@ -1,7 +1,11 @@
 Fixture Factory - generator to create fake objects from a template
 ================================================================== 
 
-## [Mailing list](http://groups.google.com/group/fixture-factory)
+## Contributing
+
+Want to contribute with code, documentation or bug report?
+
+Do that by [joining the mailing lists](http://groups.google.com/group/fixture-factory) on Google Groups. 
 
 ## Installing
 
