@@ -5,7 +5,7 @@
 	<artifactId>fixture-factory</artifactId>
 	<packaging>jar</packaging>
 	<name>fixture-factory</name>
-	<version>2.1.0</version>
+	<version>2.1.1-SNAPSHOT</version>
 	<description>generator to create fake objects from a template</description>
 	<url>https://github.com/aparra/fixture-factory</url>
 	
