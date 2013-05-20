@@ -5,20 +5,6 @@ Fixture Factory - generator to create fake objects from a template
 
 ## Installing
 
-First clone and install project (bfgex's manual install is required until we deploy it to maven central repository):
-	[bfgex](https://github.com/six2six/bfgex)
-	
-	$ git clone git@github.com:six2six/bfgex.git
-	$ cd bfgex
-	$ git fetch -t
-	$ git checkout 1.0
-	$ mvn clean install
-
-Clone fixture-factory project and install in your local repository
-
-	$ git clone git@github.com:six2six/fixture-factory.git
-	$ mvn clean install
-
 Use it like a maven dependency on your project
 
 	<dependency>
