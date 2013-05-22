@@ -1,12 +1,6 @@
 Fixture Factory - generator to create fake objects from a template
 ================================================================== 
 
-## Contributing
-
-Want to contribute with code, documentation or bug report?
-
-Do this by [joining the mailing list](http://groups.google.com/group/fixture-factory) on Google Groups. 
-
 ## Installing
 
 Use it like a maven dependency on your project
@@ -95,6 +89,24 @@ More helpers functions for create generic template:
 	});
 	
 You can see more utilization on [tests](fixture-factory/tree/master/src/test/java/br/com/fixturefactory)!
+
+## Contributing
+
+Want to contribute with code, documentation or bug report?
+
+Do this by [joining the mailing list](http://groups.google.com/group/fixture-factory) on Google Groups. 
+
+## Credits
+
+Fixture-Factory was written by:
+
+* [Anderson Parra](https://github.com/aparra)
+* [Arthur Hirata](https://github.com/ahirata)
+* [Douglas Rodrigo](https://github.com/douglasrodrigo)
+
+with contributions from several author:
+
+* [Nykolas Lima](https://github.com/nykolaslima)
 
 ## License
 
