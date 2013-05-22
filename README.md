@@ -104,7 +104,7 @@ Fixture-Factory was written by:
 * [Arthur Hirata](https://github.com/ahirata)
 * [Douglas Rodrigo](https://github.com/douglasrodrigo)
 
-with contributions from several author:
+with contributions from several authors, including:
 
 * [Nykolas Lima](https://github.com/nykolaslima)
 
