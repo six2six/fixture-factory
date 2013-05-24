@@ -1,5 +1,7 @@
 Fixture Factory - generator to create fake objects from a template
-================================================================== 
+==================================================================
+
+[![Build Status](https://travis-ci.org/six2six/fixture-factory.png?branch=master)](https://travis-ci.org/six2six/fixture-factory)
 
 ## Installing
 
@@ -31,14 +33,14 @@ Writing bean template rules
 		add("state", "${city}");
 		add("country", "Brazil");
 		add("zipCode", random("06608000", "17720000"));
-	}}); 
-	
+	}});
+
 Creating a new template based on another existing template. Using this you can override the definition for a property
 
 	Fixture.of(Address.class).addTemplate("valid-augusta").inherits("valid", new Rule(){{
 		add("street", "Augusta Street");
 	}});
-	
+
 Gimme one object from valid label
 
 	Client client = Fixture.from(Client.class).gimme("valid");
@@ -87,14 +89,14 @@ More helpers functions for create generic template:
 		add("firstName", firstName());
 		add("lastName", lastName());
 	});
-	
+
 You can see more utilization on [tests](fixture-factory/tree/master/src/test/java/br/com/fixturefactory)!
 
 ## Contributing
 
 Want to contribute with code, documentation or bug report?
 
-Do this by [joining the mailing list](http://groups.google.com/group/fixture-factory) on Google Groups. 
+Do this by [joining the mailing list](http://groups.google.com/group/fixture-factory) on Google Groups.
 
 ## Credits
 
