@@ -1,38 +1,19 @@
 package br.com.six2six.fixturefactory;
 
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
+
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.com.six2six.fixturefactory.Fixture;
-import br.com.six2six.fixturefactory.Rule;
+import br.com.fixturefactory.loader.FixtureFactoryLoader;
 import br.com.six2six.fixturefactory.model.Item;
 import br.com.six2six.fixturefactory.model.Order;
-import br.com.six2six.fixturefactory.model.Payment;
 
 public class FixtureCircularReferenceTest {
 
-	@Before
-	public void setUp() {
-		Fixture.of(Order.class).addTemplate("valid", new Rule(){{
-			add("id", random(Long.class, range(1L, 200L)));
-			add("items", has(3).of(Item.class, "valid"));
-			add("payment", one(Payment.class, "valid"));
-		}});
-
-		Fixture.of(Order.class).addTemplate("otherValid", new Rule(){{
-			add("id", random(Long.class, range(1L, 200L)));
-			add("items", has(3).of(Item.class, "valid", "order"));
-			add("payment", one(Payment.class, "valid", "order"));
-		}});
-		
-		Fixture.of(Item.class).addTemplate("valid", new Rule(){{
-			add("productId", random(Integer.class, range(1L, 200L)));
-		}});
-
-		Fixture.of(Payment.class).addTemplate("valid", new Rule(){{
-			add("id", random(Long.class, range(1L, 200L)));
-		}});
+	@BeforeClass
+	public static void setUp() {
+		FixtureFactoryLoader.loadTemplates("br.com.six2six.template");
 	}
 	
 	@Test

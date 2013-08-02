@@ -4,38 +4,22 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.com.six2six.fixturefactory.Fixture;
-import br.com.six2six.fixturefactory.Rule;
+import br.com.fixturefactory.loader.FixtureFactoryLoader;
 import br.com.six2six.fixturefactory.model.Invoice;
 import br.com.six2six.fixturefactory.util.DateTimeUtil;
 
 public class FixtureInvoiceTest {
 
-	@Before
-	public void setUp() {
-		Fixture.of(Invoice.class).addTemplate("valid", new Rule(){{
-			add("id", regex("\\d{3,5}"));
-			add("ammount", random(new BigDecimal("58.67"), new BigDecimal("45.89")));
-			add("dueDate", beforeDate("2011-04-08", new SimpleDateFormat("yyyy-MM-dd")));
-			
-		}}).addTemplate("previousInvoices", new Rule() {{
-			add("id", regex("\\d{3,5}"));
-			add("ammount", random(new BigDecimal("58.67"), new BigDecimal("45.89")));
-			add("dueDate", sequenceDate("2011-04-01", new SimpleDateFormat("yyyy-MM-dd"), decrement(1).month()));
-			
-		}}).addTemplate("nextInvoices", new Rule() {{
-			add("id", regex("\\d{3,5}"));
-			add("ammount", random(new BigDecimal("58.67"), new BigDecimal("45.89")));
-			add("dueDate", sequenceDate("2011-04-30", increment(1).day()));
-		}});
+	@BeforeClass
+	public static void setUp() {
+		FixtureFactoryLoader.loadTemplates("br.com.six2six.template");
 	}
 
 	@Test
