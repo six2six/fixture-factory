@@ -1,4 +1,4 @@
-package br.com.fixturefactory.loader;
+package br.com.six2six.fixturefactory.loader;
 
 public interface TemplateLoader {
 

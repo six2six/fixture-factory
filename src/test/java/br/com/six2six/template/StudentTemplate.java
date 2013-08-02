@@ -1,11 +1,11 @@
 package br.com.six2six.template;
 
-import br.com.fixturefactory.loader.TemplateLoader;
 import br.com.six2six.bfgex.Gender;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.base.Sequence;
 import br.com.six2six.fixturefactory.function.NumberSequence;
+import br.com.six2six.fixturefactory.loader.TemplateLoader;
 import br.com.six2six.fixturefactory.model.Student;
 
 public class StudentTemplate implements TemplateLoader {

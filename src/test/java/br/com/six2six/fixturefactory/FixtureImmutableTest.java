@@ -11,7 +11,7 @@ import static org.junit.matchers.JUnitMatchers.either;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.com.fixturefactory.loader.FixtureFactoryLoader;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import br.com.six2six.fixturefactory.model.Child;
 import br.com.six2six.fixturefactory.model.Immutable;
 import br.com.six2six.fixturefactory.model.Route;

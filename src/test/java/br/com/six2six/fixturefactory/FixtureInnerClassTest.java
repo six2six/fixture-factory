@@ -7,7 +7,7 @@ import static org.junit.Assert.assertSame;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.com.fixturefactory.loader.FixtureFactoryLoader;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import br.com.six2six.fixturefactory.model.Owner;
 
 public class FixtureInnerClassTest {

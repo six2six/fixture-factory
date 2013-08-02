@@ -1,4 +1,4 @@
-package br.com.fixturefactory.util;
+package br.com.six2six.fixturefactory.util;
 
 import java.io.File;
 import java.net.URL;

@@ -1,6 +1,6 @@
-package br.com.fixturefactory.loader;
+package br.com.six2six.fixturefactory.loader;
 
-import static br.com.fixturefactory.util.ClassLoaderUtils.getClassesForPackage;
+import static br.com.six2six.fixturefactory.util.ClassLoaderUtils.getClassesForPackage;
 
 public class FixtureFactoryLoader {
 

@@ -3,9 +3,9 @@ package br.com.six2six.template;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
-import br.com.fixturefactory.loader.TemplateLoader;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.Rule;
+import br.com.six2six.fixturefactory.loader.TemplateLoader;
 import br.com.six2six.fixturefactory.model.Invoice;
 
 public class InvoiceTemplate implements TemplateLoader {

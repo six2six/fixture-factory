@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.com.fixturefactory.loader.FixtureFactoryLoader;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import br.com.six2six.fixturefactory.model.Address;
 import br.com.six2six.fixturefactory.model.Client;
 

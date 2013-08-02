@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.com.fixturefactory.loader.FixtureFactoryLoader;
+import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import br.com.six2six.fixturefactory.model.Item;
 import br.com.six2six.fixturefactory.model.Order;
 
