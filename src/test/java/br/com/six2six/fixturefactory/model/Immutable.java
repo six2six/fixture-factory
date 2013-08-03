@@ -16,8 +16,20 @@ public class Immutable {
 	
 	private ImmutableInner immutableInner;
 	
+	public Immutable(String propertyA, Integer propertyB) {
+		this(propertyA, propertyB.longValue(), "default", null, null);
+	}
+	
+	public Immutable(String propertyA, short propertyB) {
+		this(propertyA, Short.valueOf(propertyB).longValue(), "default", null, null);
+	}
+	
 	public Immutable(String propertyA, Long propertyB) {
 		this(propertyA, propertyB, "default", null, null);
+	}
+	
+	public Immutable(String propertyA, byte propertyB) {
+		this(propertyA, Byte.valueOf(propertyB).longValue(), "default", null, null);
 	}
 	
 	public Immutable(Long propertyB, String propertyC, Address address) {
@@ -47,8 +59,16 @@ public class Immutable {
 	public class ImmutableInner {
 		private String propertyD;
 
+		public ImmutableInner(Object propertyD) {
+			this.propertyD = propertyD.toString();
+		}
+		
 		public ImmutableInner(String propertyD) {
 			this.propertyD = propertyD;
+		}
+		
+		public ImmutableInner(char[] propertyD) {
+			this.propertyD = new String(propertyD);
 		}
 
 		public String getPropertyD() {
