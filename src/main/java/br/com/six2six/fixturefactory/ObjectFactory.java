@@ -56,8 +56,10 @@ public class ObjectFactory {
 	private Object createObject(Rule rule) {
 		Map<String, Object> constructorArguments = new HashMap<String, Object>();
 		List<Property> deferredProperties = new ArrayList<Property>();
+		Class<?> clazz = templateHolder.getClazz();
 		
-		List<String> parameterNames = lookupConstructorParameterNames(templateHolder.getClazz(), rule.getProperties());
+		List<String> parameterNames = !ReflectionUtils.hasDefaultConstructor(clazz) ? 
+										lookupConstructorParameterNames(clazz, rule.getProperties()) : new ArrayList<String>();
 		
 		for (Property property : rule.getProperties()) {
 			if (parameterNames.contains(property.getRootAttribute())) {
@@ -67,7 +69,7 @@ public class ObjectFactory {
 			}
 		}
 		
-		Object result = ReflectionUtils.newInstance(templateHolder.getClazz(), processConstructorArguments(parameterNames, constructorArguments));
+		Object result = ReflectionUtils.newInstance(clazz, processConstructorArguments(parameterNames, constructorArguments));
 		
 		for (Property property : deferredProperties) {
 			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), processPropertyValue(result, property));

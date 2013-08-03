@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.vidageek.mirror.dsl.Mirror;
+import net.vidageek.mirror.list.dsl.Matcher;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
@@ -204,4 +205,16 @@ public class ReflectionUtils {
 		};
 		return map;
     }
+
+	public static <T> boolean hasDefaultConstructor(final Class<T> clazz) {
+		return !new Mirror().on(clazz).reflectAll().constructors().matching(new Matcher<Constructor<T>>() {
+			@Override
+			public boolean accepts(Constructor<T> constructor) {
+				if (ReflectionUtils.isInnerClass(clazz)) {
+					return constructor.getParameterTypes().length == 1 && constructor.getParameterTypes()[0].equals(clazz.getEnclosingClass());
+				}
+				return Arrays.asList(constructor.getParameterTypes()).isEmpty();
+			}
+		}).isEmpty();
+	}
 }
