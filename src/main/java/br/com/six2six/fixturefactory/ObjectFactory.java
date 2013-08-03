@@ -118,6 +118,6 @@ public class ObjectFactory {
 	
 	private <T> List<String> lookupConstructorParameterNames(Class<T> target, Set<Property> properties) {
 		Collection<String> propertyNames = ReflectionUtils.map(properties, "rootAttribute");
-		return ReflectionUtils.filterConstructorParameterNames(target, propertyNames);
+		return ReflectionUtils.filterConstructorParameters(target, propertyNames);
 	}
 }
