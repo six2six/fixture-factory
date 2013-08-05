@@ -25,7 +25,7 @@ public class FixtureImmutableTest {
 	}
 	
 	@Test
-	public void shouldCreateImmutableObjectUsingPartialConstructor() {
+	public void shouldCreateImmutableObjectUsingCorrectPartialConstructor() {
 		Immutable result = Fixture.from(Immutable.class).gimme("twoParameterConstructor");
 		
 		assertNotNull(result.getPropertyA());

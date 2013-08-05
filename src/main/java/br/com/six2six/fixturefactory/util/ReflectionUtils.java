@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.vidageek.mirror.dsl.Mirror;
+import net.vidageek.mirror.list.dsl.Matcher;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
@@ -123,18 +124,29 @@ public class ReflectionUtils {
 		}
 	}
     
-    public static <T> List<String> filterConstructorParameterNames(Class<T> target, Collection<String> names) {
+    public static <T> List<String> filterConstructorParameters(Class<T> target, Collection<String> names) {
 		List<String> result = Collections.emptyList();
 		Paranamer paranamer = new AdaptiveParanamer();
 		
 		for (Constructor<T> constructor : new Mirror().on(target).reflectAll().constructors()) {
 			List<String> constructorParameterNames = Arrays.asList(paranamer.lookupParameterNames(constructor, false));
-			if (result.size() < constructorParameterNames.size() && names.containsAll(constructorParameterNames)) {
-				result = constructorParameterNames;
+			if (result.size() < constructorParameterNames.size()) {
+				if (names.containsAll(constructorParameterNames) 
+						&& constructorParameterTypesMatch(target, constructorParameterNames, Arrays.asList(constructor.getParameterTypes())))
+					result = constructorParameterNames;
 			}
 		}
-		
 		return result;
+    }
+    
+    private static boolean constructorParameterTypesMatch(Class<?> target, List<String> parameterNames, List<Class<?>> parameterTypes) {
+    	for (int idx = 0; idx < parameterNames.size(); idx++) {
+    		String parameterName = parameterNames.get(idx);
+    		Class<?> parameterType = parameterTypes.get(idx);
+    		if (isInnerClass(target) && parameterType.equals(target.getEnclosingClass())) continue;
+			if (!parameterType.equals(invokeRecursiveType(target, parameterName))) return false;
+    	}
+    	return true;
     }
     
     public static Class<?> getTargetClass(Class<?> clazz) {
@@ -204,4 +216,16 @@ public class ReflectionUtils {
 		};
 		return map;
     }
+
+	public static <T> boolean hasDefaultConstructor(final Class<T> clazz) {
+		return !new Mirror().on(clazz).reflectAll().constructors().matching(new Matcher<Constructor<T>>() {
+			@Override
+			public boolean accepts(Constructor<T> constructor) {
+				if (ReflectionUtils.isInnerClass(clazz)) {
+					return constructor.getParameterTypes().length == 1 && constructor.getParameterTypes()[0].equals(clazz.getEnclosingClass());
+				}
+				return Arrays.asList(constructor.getParameterTypes()).isEmpty();
+			}
+		}).isEmpty();
+	}
 }
