@@ -8,7 +8,7 @@ public class Address implements Serializable {
 
 	private Long id;
 	private String street;
-	private String city;
+	private City city;
 	private String state;
 	private String country;
 	private String zipCode;
@@ -25,10 +25,10 @@ public class Address implements Serializable {
 	public void setStreet(String street) {
 		this.street = street;
 	}
-	public String getCity() {
+	public City getCity() {
 		return city;
 	}
-	public void setCity(String city) {
+	public void setCity(City city) {
 		this.city = city;
 	}
 	public String getState() {

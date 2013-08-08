@@ -1,5 +1,7 @@
 package br.com.six2six.fixturefactory;
 
+import org.hibernate.Session;
+
 import br.com.six2six.fixturefactory.function.AtomicFunction;
 import br.com.six2six.fixturefactory.function.Function;
 import br.com.six2six.fixturefactory.function.RelationFunction;
@@ -32,6 +34,10 @@ public class Property {
 	
 	public Object getValue(Object owner) {
 		return ((RelationFunction) this.function).generateValue(owner);
+	}
+	
+	public Object getValue(Object owner, Session session) {
+		return ((RelationFunction) this.function).generateValue(owner, session);
 	}
 	
 	

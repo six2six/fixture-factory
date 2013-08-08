@@ -9,6 +9,7 @@ import br.com.six2six.fixturefactory.model.Child;
 import br.com.six2six.fixturefactory.model.City;
 import br.com.six2six.fixturefactory.model.Immutable;
 import br.com.six2six.fixturefactory.model.Immutable.ImmutableInner;
+import br.com.six2six.fixturefactory.model.Neighborhood;
 import br.com.six2six.fixturefactory.model.Route;
 import br.com.six2six.fixturefactory.model.RouteId;
 import br.com.six2six.fixturefactory.model.RoutePlanner;
@@ -44,7 +45,7 @@ public class ImmutableTemplate implements TemplateLoader {
 		Fixture.of(Address.class).addTemplate("valid", new Rule(){{
 			add("id", random(Long.class, range(1L, 100L)));
 			add("street", random("Paulista Avenue", "Ibirapuera Avenue"));
-			add("city", "São Paulo");
+			add("city", one(City.class, "valid"));
 			add("state", "${city}");
 			add("country", "Brazil");
 			add("zipCode", random("06608000", "17720000"));
@@ -74,6 +75,11 @@ public class ImmutableTemplate implements TemplateLoader {
 	    
 	    Fixture.of(City.class).addTemplate("valid", new Rule(){{
 	        add("name", regex("\\w{8}"));
+	        add("neighborhoods", has(2).of(Neighborhood.class, "valid"));
+	    }});
+	    
+	    Fixture.of(Neighborhood.class).addTemplate("valid", new Rule(){{
+	    	add("name", regex("\\w{12}"));
 	    }});
 	    
 	    Fixture.of(Attribute.class).addTemplate("valid", new Rule(){{ 

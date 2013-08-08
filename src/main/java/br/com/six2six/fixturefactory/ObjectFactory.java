@@ -13,7 +13,7 @@ public class ObjectFactory {
 	
 	private static final String NO_SUCH_LABEL_MESSAGE = "%s-> No such label: %s";
 	
-	private TemplateHolder templateHolder;
+	protected TemplateHolder templateHolder;
 	
 	private Object owner;
 	
@@ -53,7 +53,7 @@ public class ObjectFactory {
 		return results;
 	}
 
-	private Object createObject(Rule rule) {
+	protected Object createObject(Rule rule) {
 		Map<String, Object> constructorArguments = new HashMap<String, Object>();
 		List<Property> deferredProperties = new ArrayList<Property>();
 		Class<?> clazz = templateHolder.getClazz();
@@ -78,7 +78,7 @@ public class ObjectFactory {
 		return result;
 	}
 	
-	private List<Object> processConstructorArguments(List<String> parameterNames, Map<String, Object> arguments) {
+	protected List<Object> processConstructorArguments(List<String> parameterNames, Map<String, Object> arguments) {
 		List<Object> values = new ArrayList<Object>();
 		
 		if (owner != null && ReflectionUtils.isInnerClass(templateHolder.getClazz()))  {
@@ -97,7 +97,7 @@ public class ObjectFactory {
 		return values;
 	}
 
-	private Object processChainedProperty(String parameterName, Class<?> fieldType, Map<String, Object> arguments) {
+	protected Object processChainedProperty(String parameterName, Class<?> fieldType, Map<String, Object> arguments) {
 		Rule rule = new Rule();
 		for (final String argument : arguments.keySet()) {
 			int index = argument.indexOf(".");
@@ -108,7 +108,7 @@ public class ObjectFactory {
 		return new ObjectFactory(new TemplateHolder(fieldType)).createObject(rule);
 	}
 
-	private Object processPropertyValue(Object object, Property property) {
+	protected Object processPropertyValue(Object object, Property property) {
 		Class<?> fieldType = ReflectionUtils.invokeRecursiveType(object.getClass(), property.getName());
 		Object value = property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType) ?
 				property.getValue(object) : property.getValue();
@@ -116,7 +116,7 @@ public class ObjectFactory {
 		return new PropertyProcessor(object).process(value, fieldType);
 	}
 	
-	private <T> List<String> lookupConstructorParameterNames(Class<T> target, Set<Property> properties) {
+	protected <T> List<String> lookupConstructorParameterNames(Class<T> target, Set<Property> properties) {
 		Collection<String> propertyNames = ReflectionUtils.map(properties, "rootAttribute");
 		return ReflectionUtils.filterConstructorParameters(target, propertyNames);
 	}
