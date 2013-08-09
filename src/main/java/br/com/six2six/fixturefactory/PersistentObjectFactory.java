@@ -34,7 +34,11 @@ public class PersistentObjectFactory extends ObjectFactory {
 		
 		for (Property property : rule.getProperties()) {
 			if (parameterNames.contains(property.getRootAttribute())) {
-				constructorArguments.put(property.getName(), property.getValue());
+				if(property.hasRelationFunction()) {
+					constructorArguments.put(property.getName(), property.getValue(session));
+				} else {
+					constructorArguments.put(property.getName(), property.getValue());
+				}
 			} else {
 				deferredProperties.add(property);
 			}

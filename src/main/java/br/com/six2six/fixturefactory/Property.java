@@ -32,6 +32,10 @@ public class Property {
 		return this.value == null ? ((AtomicFunction) this.function).generateValue() : this.value;
 	}
 	
+	public Object getValue(Session session) {
+		return this.value == null ? ((RelationFunction) this.function).generateValue(session) : this.value;
+	}
+	
 	public Object getValue(Object owner) {
 		return ((RelationFunction) this.function).generateValue(owner);
 	}
