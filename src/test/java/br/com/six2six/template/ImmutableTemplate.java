@@ -46,7 +46,7 @@ public class ImmutableTemplate implements TemplateLoader {
 			add("id", random(Long.class, range(1L, 100L)));
 			add("street", random("Paulista Avenue", "Ibirapuera Avenue"));
 			add("city", one(City.class, "valid"));
-			add("state", "${city}");
+			add("state", "SP");
 			add("country", "Brazil");
 			add("zipCode", random("06608000", "17720000"));
 		}});
