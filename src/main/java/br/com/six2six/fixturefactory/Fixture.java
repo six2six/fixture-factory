@@ -24,7 +24,7 @@ public class Fixture {
 		return new ObjectFactory(of(clazz));
 	}
 	
-	public static ObjectFactory from(Class<?> clazz, Session session) {
+	public static PersistentObjectFactory from(Class<?> clazz, Session session) {
 		return new PersistentObjectFactory(of(clazz), session);
 	}
 
