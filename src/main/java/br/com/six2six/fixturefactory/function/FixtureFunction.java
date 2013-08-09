@@ -1,7 +1,10 @@
 package br.com.six2six.fixturefactory.function;
 
+import org.hibernate.Session;
+
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.ObjectFactory;
+import br.com.six2six.fixturefactory.PersistentObjectFactory;
 
 public class FixtureFunction implements AtomicFunction, RelationFunction {
 
@@ -29,6 +32,12 @@ public class FixtureFunction implements AtomicFunction, RelationFunction {
 	
 	@Override
 	@SuppressWarnings("unchecked")
+	public <T> T generateValue(Session session) {
+		return (T) generate(Fixture.from(clazz, session));
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
 	public <T> T generateValue(Object owner) {
 		return (T) generate(new ObjectFactory(Fixture.of(clazz), owner));
 	}
@@ -36,6 +45,17 @@ public class FixtureFunction implements AtomicFunction, RelationFunction {
 	@SuppressWarnings("unchecked")
 	private <T> T generate(ObjectFactory objectFactory) {
 		return (T) (quantity != null ? objectFactory.gimme(quantity, label) : objectFactory.gimme(label));
+	}
+	
+	@SuppressWarnings("unchecked")
+	private <T> T generatePersistent(PersistentObjectFactory objectFactory) {
+		return (T) (quantity != null ? objectFactory.gimme(quantity, label) : objectFactory.gimme(label));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T generateValue(Object owner, Session session) {
+		return (T) generatePersistent(new PersistentObjectFactory(Fixture.of(clazz), owner, session));
 	}
 	
 }
