@@ -34,11 +34,7 @@ public class PersistentObjectFactory extends ObjectFactory {
 		
 		for (Property property : rule.getProperties()) {
 			if (parameterNames.contains(property.getRootAttribute())) {
-				if(property.hasRelationFunction()) {
-					constructorArguments.put(property.getName(), property.getValue(session));
-				} else {
-					constructorArguments.put(property.getName(), property.getValue());
-				}
+				constructorArguments.put(property.getName(), generateConstructorParamValue(property));
 			} else {
 				deferredProperties.add(property);
 			}
@@ -53,6 +49,14 @@ public class PersistentObjectFactory extends ObjectFactory {
 		session.save(result);
 		
 		return result;
+	}
+	
+	private Object generateConstructorParamValue(Property property) {
+		if(property.hasRelationFunction()) {
+			return property.getValue(session);
+		} else {
+			return property.getValue();
+		}
 	}
 	
 	@Override
