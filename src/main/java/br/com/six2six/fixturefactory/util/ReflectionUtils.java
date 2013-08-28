@@ -89,25 +89,14 @@ public class ReflectionUtils {
 
     public static Field invokeRecursiveField(Class<?> clazz, String attribute) {
         Field field = null;
-        Class<?> superClass = null;
         Class<?> targetBeanClass = getTargetClass(clazz);
         
         for (String propertyItem : attribute.split("\\.")) {
-            do {
-                superClass = targetBeanClass.getSuperclass();
-                try {
-                    field = targetBeanClass.getDeclaredField(propertyItem);
-                    targetBeanClass = field.getType();
-                } catch (NoSuchFieldException e) {
-                    targetBeanClass = superClass;
-                } 
-            } while (superClass != null && !superClass.equals(Object.class));
+            field = new Mirror().on(targetBeanClass).reflect().field(propertyItem);
+            if (field == null) throw new IllegalArgumentException(String.format("%s-> Field %s doesn't exists", clazz.getName(), attribute));
+            targetBeanClass = field.getType();
         }
-        
-        if (field == null) {
-            throw new IllegalArgumentException(String.format("%s-> Field %s doesn't exists", clazz.getName(), attribute));
-        }
-        
+
         return field;
     }
 
