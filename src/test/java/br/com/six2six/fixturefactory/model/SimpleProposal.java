@@ -2,14 +2,13 @@ package br.com.six2six.fixturefactory.model;
 
 public class SimpleProposal extends Proposal {
 
-	private Contract contract;
+	private Item item;
 
-	public Contract getContract() {
-		return contract;
+	public Item getItem() {
+		return item;
 	}
 
-	public void setContract(Contract contract) {
-		this.contract = contract;
+	public void setItem(Item item) {
+		this.item = item;
 	}
-	
 }
