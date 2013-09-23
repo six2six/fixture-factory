@@ -1,12 +1,14 @@
 package br.com.six2six.fixturefactory.util;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
 import br.com.six2six.fixturefactory.model.Immutable;
 import br.com.six2six.fixturefactory.model.Owner;
+import br.com.six2six.fixturefactory.model.SimpleProposal;
 
 public class ReflectionUtilsTest {
 
@@ -30,4 +32,8 @@ public class ReflectionUtilsTest {
 		assertThat(ReflectionUtils.hasDefaultConstructor(Immutable.ImmutableInner.class), is(false));
 	}
 	
+	@Test
+	public void shouldFindRecursiveFieldWithInheritanceBaseClass() {
+		assertNotNull(ReflectionUtils.invokeRecursiveField(SimpleProposal.class, "item.order.id"));
+	}
 }
