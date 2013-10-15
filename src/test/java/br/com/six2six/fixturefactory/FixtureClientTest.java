@@ -3,6 +3,7 @@ package br.com.six2six.fixturefactory;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 
 import java.util.Calendar;
 import java.util.List;
@@ -50,4 +51,12 @@ public class FixtureClientTest {
 		}
 	}
 	
+	@Test
+	public void shouldCreateClientWithAddressEqualToNull() {
+		Client client = Fixture.from(Client.class).gimme("valid-noaddress");
+		
+		assertNotNull(client.getId());
+		assertNull(client.getAddress());
+	}
+
 }
