@@ -4,6 +4,7 @@ import org.hibernate.Session;
 
 import br.com.six2six.fixturefactory.function.AtomicFunction;
 import br.com.six2six.fixturefactory.function.Function;
+import br.com.six2six.fixturefactory.function.NullFunction;
 import br.com.six2six.fixturefactory.function.RelationFunction;
 
 public class Property {
@@ -16,7 +17,7 @@ public class Property {
 
 	public Property(String name, Function function) {
 		this.name = name;
-		this.function = function;
+		this.function = (function == null ? new NullFunction() : function);
 	}
 
 	public Property(String name, Object value) {
