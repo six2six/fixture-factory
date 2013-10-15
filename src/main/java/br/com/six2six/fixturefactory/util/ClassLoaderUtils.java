@@ -1,6 +1,7 @@
 package br.com.six2six.fixturefactory.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Collection;
@@ -14,6 +15,8 @@ public class ClassLoaderUtils {
 
     public static Set<Class<?>> getClassesForPackage(String packageName) {
         Set<Class<?>> classes = new HashSet<Class<?>>();
+        
+        JarInputStream jarInputStream = null;
         try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
@@ -26,7 +29,7 @@ public class ClassLoaderUtils {
                             "file:".concat(res.getFile().startsWith("/") ? "": "/") : "").concat(res.getFile().split("!")[0]));
                 }
                 if (res.getFile().contains(".jar")) {
-                    JarInputStream jarInputStream = new JarInputStream(res.openStream());
+                    jarInputStream = new JarInputStream(res.openStream());
                     JarEntry entry = jarInputStream.getNextJarEntry();
 
 
@@ -43,6 +46,14 @@ public class ClassLoaderUtils {
             }
         } catch (Exception x) {
             throw new IllegalArgumentException("invalid package");
+        } finally {
+        	if(jarInputStream != null){
+        		try {
+					jarInputStream.close();
+				} catch (IOException e) {
+					throw new IllegalStateException(e.getMessage());
+				}
+        	}
         }
 
         return classes;
