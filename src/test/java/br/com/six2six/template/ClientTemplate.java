@@ -20,6 +20,10 @@ public class ClientTemplate implements TemplateLoader {
 			add("address", one(Address.class, "valid"));
 		}});
 		
+		Fixture.of(Client.class).addTemplate("valid-noaddress").inherits("valid", new Rule(){{
+			add("address", null);
+		}});
+		
 		Fixture.of(Address.class).addTemplate("valid", new Rule(){{
 			add("id", random(Long.class, range(1L, 100L)));
 			add("street", random("Paulista Avenue", "Ibirapuera Avenue"));
