@@ -4,25 +4,30 @@ import org.hibernate.Session;
 
 import br.com.six2six.fixturefactory.function.AtomicFunction;
 import br.com.six2six.fixturefactory.function.Function;
-import br.com.six2six.fixturefactory.function.NullFunction;
+import br.com.six2six.fixturefactory.function.IdentityFunction;
 import br.com.six2six.fixturefactory.function.RelationFunction;
 
 public class Property {
 
 	private String name;
 	
-	private Object value;
-	
 	private Function function;
 
 	public Property(String name, Function function) {
+	    if (name == null) {
+	        throw new IllegalArgumentException("name must not be null");
+	    }
+	    
+	    if (function == null) {
+            throw new IllegalArgumentException("function must not be null");
+        }
+	    
 		this.name = name;
-		this.function = (function == null ? new NullFunction() : function);
+		this.function = function;
 	}
 
 	public Property(String name, Object value) {
-		this.name = name;
-		this.value = value;
+	    this(name, new IdentityFunction(value));
 	}
 
 	public String getName() {
@@ -30,11 +35,11 @@ public class Property {
 	}
 
 	public Object getValue() {
-		return this.value == null ? ((AtomicFunction) this.function).generateValue() : this.value;
+		return ((AtomicFunction) this.function).generateValue();
 	}
 	
 	public Object getValue(Session session) {
-		return this.value == null ? ((RelationFunction) this.function).generateValue(session) : this.value;
+		return ((RelationFunction) this.function).generateValue(session);
 	}
 	
 	public Object getValue(Object owner) {
@@ -44,7 +49,6 @@ public class Property {
 	public Object getValue(Object owner, Session session) {
 		return ((RelationFunction) this.function).generateValue(owner, session);
 	}
-	
 	
 	public boolean hasRelationFunction() {
 		return this.function instanceof RelationFunction;

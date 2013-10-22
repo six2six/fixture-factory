@@ -23,6 +23,7 @@ import br.com.six2six.fixturefactory.function.ChronicFunction;
 import br.com.six2six.fixturefactory.function.DateTimeFunction;
 import br.com.six2six.fixturefactory.function.FixtureFunction;
 import br.com.six2six.fixturefactory.function.Function;
+import br.com.six2six.fixturefactory.function.IdentityFunction;
 import br.com.six2six.fixturefactory.function.NameFunction;
 import br.com.six2six.fixturefactory.function.NumberSequence;
 import br.com.six2six.fixturefactory.function.RandomFunction;
@@ -52,9 +53,12 @@ public class Rule {
     }
 
     public void add(String property, Function function) {
+        if (function == null) {
+            function = new IdentityFunction(null);
+        }
     	this.properties.add(new Property(property, function));
     }
-
+    
     /**
      * @deprecated use {@link one(clazz, label)} instead.
      */
