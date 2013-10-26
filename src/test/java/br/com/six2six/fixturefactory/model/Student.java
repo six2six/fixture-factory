@@ -15,14 +15,15 @@ public class Student implements Serializable {
 	private Gender gender;
 	private String idCardNumber;
 	private Set<Address> addresses;
+	private Integer testsTaken;
+	private double bestScore;
 
-	public Long getId() {
+    public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -50,5 +51,16 @@ public class Student implements Serializable {
 	public void setAddresses(Set<Address> addresses) {
 		this.addresses = addresses;
 	}
-	
+    public Integer getTestsTaken() {
+        return testsTaken;
+    }
+    public void setTestsTaken(Integer testsTaken) {
+        this.testsTaken = testsTaken;
+    }
+    public double getBestScore() {
+        return bestScore;
+    }
+    public void setBestScore(double bestScore) {
+        this.bestScore = bestScore;
+    }
 }

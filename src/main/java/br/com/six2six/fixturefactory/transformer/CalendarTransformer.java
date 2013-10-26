@@ -1,4 +1,4 @@
-package br.com.six2six.fixturefactory.util;
+package br.com.six2six.fixturefactory.transformer;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -9,7 +9,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.lang.ClassUtils;
 
-public class CalendarTransformer {
+public class CalendarTransformer implements Transformer {
 
 	public <T> T transform(Object value, Class<T> type)  {
 		Object returnValue = null;
@@ -40,5 +40,8 @@ public class CalendarTransformer {
 		
 		return type.cast(returnValue);
 	}
-	
+
+    public boolean accepts(Object value, Class<?> type) {
+        return value instanceof Calendar;
+    }
 }

@@ -22,6 +22,8 @@ public class FixtureStudentTest {
 		assertNotNull("Student should not be null", student);
 		assertNotNull("Students id should not be null", student.getId());
 		assertTrue("Students it should be 1", student.getId() == 1);
+		assertTrue("Tests taken should be greather than 0", student.getTestsTaken() > 0);
+		assertTrue("Best score should be greather than 0", student.getTestsTaken() > 0);
 	}
 	
 	@Test

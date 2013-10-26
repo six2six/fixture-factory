@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.hibernate.Session;
 
+import br.com.six2six.fixturefactory.transformer.PropertyPlaceholderTransformer;
+import br.com.six2six.fixturefactory.transformer.TransformerChain;
 import br.com.six2six.fixturefactory.util.ReflectionUtils;
 
 public class PersistentObjectFactory extends ObjectFactory {
@@ -78,9 +80,7 @@ public class PersistentObjectFactory extends ObjectFactory {
 		Object value = property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType) ?
 				property.getValue(object, session) : property.getValue();
 		
-		Object propertyValue = new PropertyProcessor(object).process(value, fieldType);
-		
-		return propertyValue;
+		TransformerChain transformerBaseChain = buildTransformerChain(new PropertyPlaceholderTransformer(object));
+		return transformerBaseChain.transform(value, fieldType);
 	}
-	
 }

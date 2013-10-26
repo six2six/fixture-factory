@@ -7,6 +7,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import br.com.six2six.fixturefactory.transformer.CalendarTransformer;
+import br.com.six2six.fixturefactory.transformer.ParameterPlaceholderTransformer;
+import br.com.six2six.fixturefactory.transformer.PrimitiveTransformer;
+import br.com.six2six.fixturefactory.transformer.PropertyPlaceholderTransformer;
+import br.com.six2six.fixturefactory.transformer.SetTransformer;
+import br.com.six2six.fixturefactory.transformer.Transformer;
+import br.com.six2six.fixturefactory.transformer.TransformerChain;
+import br.com.six2six.fixturefactory.transformer.WrapperTransformer;
 import br.com.six2six.fixturefactory.util.ReflectionUtils;
 
 public class ObjectFactory {
@@ -85,14 +93,15 @@ public class ObjectFactory {
 			values.add(owner);	
 		}
 		
-		ConstructorArgumentProcessor valueProcessor = new ConstructorArgumentProcessor(arguments);
+        TransformerChain transformerChain = buildTransformerChain(new ParameterPlaceholderTransformer(arguments));
+		
 		for (String parameterName : parameterNames) {
 			Class<?> fieldType = ReflectionUtils.invokeRecursiveType(templateHolder.getClazz(), parameterName);
 			Object result = arguments.get(parameterName);
 			if (result == null) {
 				result = processChainedProperty(parameterName, fieldType, arguments);	
 			}
-			values.add(valueProcessor.process(result, fieldType));
+			values.add(transformerChain.transform(result, fieldType));
 		}
 		return values;
 	}
@@ -113,11 +122,23 @@ public class ObjectFactory {
 		Object value = property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType) ?
 				property.getValue(object) : property.getValue();
 		
-		return new PropertyProcessor(object).process(value, fieldType);
+	    TransformerChain transformerChain = buildTransformerChain(new PropertyPlaceholderTransformer(object));
+		return transformerChain.transform(value, fieldType);
 	}
 	
 	protected <T> List<String> lookupConstructorParameterNames(Class<T> target, Set<Property> properties) {
 		Collection<String> propertyNames = ReflectionUtils.map(properties, "rootAttribute");
 		return ReflectionUtils.filterConstructorParameters(target, propertyNames);
+	}
+	
+	protected TransformerChain buildTransformerChain(Transformer transformer) {
+	    TransformerChain transformerChain = new TransformerChain(transformer);
+	    
+	    transformerChain.add(new CalendarTransformer());
+        transformerChain.add(new SetTransformer());
+        transformerChain.add(new PrimitiveTransformer());
+        transformerChain.add(new WrapperTransformer());
+        
+        return transformerChain;
 	}
 }

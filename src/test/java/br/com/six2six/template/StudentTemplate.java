@@ -17,6 +17,8 @@ public class StudentTemplate implements TemplateLoader {
 			add("firstName", firstName());
 			add("lastName", lastName());
 			add("gender", random(Gender.class));
+			add("bestScore", regex("\\d{2}\\.\\d{3}"));
+			add("testsTaken", regex("\\d{2}"));
 			add("idCardNumber", regex("\\d{6}"));
 		}}
 		).addTemplate("validFemaleStudent", new Rule(){{

@@ -1,10 +1,9 @@
-package br.com.six2six.fixturefactory.util;
+package br.com.six2six.fixturefactory.transformer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -14,8 +13,6 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.junit.Test;
-
-import br.com.six2six.fixturefactory.util.CalendarTransformer;
 
 public class CalendarTransformerTest {
 
@@ -32,7 +29,7 @@ public class CalendarTransformerTest {
 	}
 
 	@Test
-	public void transformCalendarToXMLGregorianCalendar() throws ParseException, DatatypeConfigurationException {
+	public void transformCalendarToXMLGregorianCalendar() throws DatatypeConfigurationException {
 		Calendar value = Calendar.getInstance();
 
 		XMLGregorianCalendar transform = new CalendarTransformer().transform(value, XMLGregorianCalendar.class);
