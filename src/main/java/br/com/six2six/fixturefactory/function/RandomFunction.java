@@ -51,7 +51,13 @@ public class RandomFunction implements AtomicFunction {
 		} else if (this.type.isEnum()) {
 			result = this.type.getEnumConstants()[random.nextInt(this.type.getEnumConstants().length)];
 			
-		} else if (this.type.isAssignableFrom(Integer.class)) {
+		} else if (this.type.isAssignableFrom(Byte.class)) {
+            result = (byte) (this.range == null ? random.nextInt(Byte.MAX_VALUE + 1) : (this.range.getStart().byteValue() + (Math.random() * (this.range.getEnd().byteValue() - this.range.getStart().byteValue()) + 1)));
+            
+        } else if (this.type.isAssignableFrom(Short.class)) {
+            result = (short) (this.range == null ? (short) random.nextInt(Short.MAX_VALUE + 1) : (this.range.getStart().shortValue() + (Math.random() * (this.range.getEnd().shortValue() - this.range.getStart().shortValue()) + 1)));
+            
+        } else if (this.type.isAssignableFrom(Integer.class)) {
 			result = this.range == null ? random.nextInt() : (this.range.getStart().intValue() + (int)(Math.random() * (this.range.getEnd().intValue() - this.range.getStart().intValue()) + 1));
 			
 		} else if (this.type.isAssignableFrom(Long.class)) {
@@ -64,10 +70,9 @@ public class RandomFunction implements AtomicFunction {
 			result = this.range == null ? random.nextDouble() : (this.range.getStart().doubleValue() + (double)(Math.random() * (this.range.getEnd().doubleValue() - this.range.getStart().doubleValue()) + 1));
 			
 		} else if (this.type.isAssignableFrom(Boolean.class)) {
-			result = random.nextBoolean();	
+			result = random.nextBoolean();
 		}
 		
 		return (T) result;
 	}
-	
 }
