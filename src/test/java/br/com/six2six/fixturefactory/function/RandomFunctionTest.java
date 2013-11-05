@@ -8,6 +8,8 @@ import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -113,10 +115,32 @@ public class RandomFunctionTest {
 
 	@Test
 	public void randomLongRangeTest() {
-		Long start = 85L, end = 95L;
-		Object value = new RandomFunction(Long.class, new Range(start, end)).generateValue();
+		Long start = 85L, end = 86L;
+        Object value = new RandomFunction(Long.class, new Range(start, end)).generateValue();
 		assertNotNull("Generated long can not be null", value);
 		assertTrue("Generated long does not exist in the range", (start <= (Long) value && (Long) value <= end));
+	}
+
+	@Test
+	public void randomLongDistributionTest() {
+	    Long start = 85L, end = 86L;
+        RandomFunction randomFunction = new RandomFunction(Long.class, new Range(start, end));
+        Set<Long> values = new HashSet<Long>();
+        for (int i=0; i<10; i++) {
+            values.add((Long) randomFunction.generateValue());
+        }
+        assertTrue("Generated at least one equal to start", values.contains(start));
+        assertTrue("Generated at least one equal to end", values.contains(end));
+	}
+
+	public void randomDoubleRangeTest() {
+	    Double start = 85.1, end = 85.2;
+	    RandomFunction randomFunction = new RandomFunction(Double.class, new Range(start, end));
+        for (int i=0; i<10; i++) {
+            Object value = randomFunction.generateValue();
+            assertNotNull("Generated double can not be null", value);
+            assertTrue("Generated double does not exist in the range", (start <= (Double) value && (Double) value <= end));
+        }
 	}
 
 	@Test
@@ -143,6 +167,18 @@ public class RandomFunctionTest {
 	    BigInteger value = new RandomFunction(BigInteger.class, new Range(start, end)).generateValue();
 	    assertNotNull("Generated BigInteger can not be null", value);
 	    assertTrue("Generated BigInteger does not exist in the range", (start.compareTo(value) <= 0 && value.compareTo(end) <= 0));
+	}
+
+	@Test
+	public void randomBigIntegerDistributionTest() {
+	    BigInteger start = new BigInteger("2147483648"), end = new BigInteger("2147483649");
+	    RandomFunction randomFunction = new RandomFunction(BigInteger.class, new Range(start, end));
+	    Set<BigInteger> values = new HashSet<BigInteger>();
+	    for (int i=0; i<10; i++) {
+	        values.add((BigInteger) randomFunction.generateValue());
+	    }
+	    assertTrue("Generated at least one equal to start", values.contains(start));
+	    assertTrue("Generated at least one equal to end", values.contains(end));
 	}
 
 	@Test(expected = IllegalArgumentException.class)

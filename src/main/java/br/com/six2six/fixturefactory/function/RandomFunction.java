@@ -63,19 +63,19 @@ public class RandomFunction implements AtomicFunction {
             result = this.type.getEnumConstants()[random.nextInt(this.type.getEnumConstants().length)];
 
         } else if (this.type.isAssignableFrom(Byte.class)) {
-            result = this.range == null ? (byte) random.nextInt(Byte.MAX_VALUE + 1) : getRandomDouble(this.range).byteValue();
+            result = this.range == null ? (byte) random.nextInt(Byte.MAX_VALUE + 1) : (byte) getRandomLong(this.range);
 
         } else if (this.type.isAssignableFrom(Short.class)) {
-            result = this.range == null ? (short) random.nextInt(Short.MAX_VALUE + 1) : getRandomDouble(this.range).shortValue();
+            result = this.range == null ? (short) random.nextInt(Short.MAX_VALUE + 1) : (short) getRandomLong(this.range);
 
         } else if (this.type.isAssignableFrom(Integer.class)) {
-            result = this.range == null ? random.nextInt() : getRandomDouble(this.range).intValue();
+            result = this.range == null ? random.nextInt() : (int) getRandomLong(this.range);
 
         } else if (this.type.isAssignableFrom(Long.class)) {
-            result = this.range == null ? random.nextLong() : getRandomDouble(this.range).longValue();
+            result = this.range == null ? random.nextLong() : getRandomLong(this.range);
 
         } else if (this.type.isAssignableFrom(Float.class)) {
-            result = this.range == null ? random.nextFloat() : getRandomDouble(this.range).floatValue();
+            result = this.range == null ? random.nextFloat() : (float) getRandomDouble(this.range);
 
         } else if (this.type.isAssignableFrom(Double.class)) {
             result = this.range == null ? random.nextDouble() : getRandomDouble(this.range);
@@ -105,8 +105,12 @@ public class RandomFunction implements AtomicFunction {
         return (T) result;
     }
 
-    private Double getRandomDouble(Range range) {
-        return range.getStart().doubleValue() + (Math.random() * (range.getEnd().doubleValue() - range.getStart().doubleValue()) + 1);
+    private long getRandomLong(Range range) {
+        return Math.round(getRandomDouble(range));
+    }
+    
+    private double getRandomDouble(Range range) {
+        return range.getStart().doubleValue() + (Math.random() * (range.getEnd().doubleValue() - range.getStart().doubleValue()));
     }
     
     private BigDecimal getRandomBigDecimal(BigDecimal start, BigDecimal end) {
