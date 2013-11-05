@@ -139,7 +139,7 @@ public class RandomFunctionTest {
 
 	@Test
 	public void randomBigIntegerRangeTest() {
-	    BigInteger start = new BigInteger("2147483648"), end = new BigInteger("9876543210");
+	    BigInteger start = new BigInteger("2147483648"), end = new BigInteger("2147483650");
 	    BigInteger value = new RandomFunction(BigInteger.class, new Range(start, end)).generateValue();
 	    assertNotNull("Generated BigInteger can not be null", value);
 	    assertTrue("Generated BigInteger does not exist in the range", (start.compareTo(value) <= 0 && value.compareTo(end) <= 0));
