@@ -6,6 +6,8 @@ import static br.com.six2six.fixturefactory.function.NameFunction.NameType.FIRST
 import static br.com.six2six.fixturefactory.function.NameFunction.NameType.LAST;
 import static br.com.six2six.fixturefactory.util.DateTimeUtil.toCalendar;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -89,6 +91,10 @@ public class Rule {
 	
 	public Function random(Class<?> clazz, Object... dataset) {
 		return new RandomFunction(clazz, dataset);
+	}
+
+	public Function random(Class<? extends BigDecimal> clazz, MathContext mc) {
+	    return new RandomFunction(clazz, mc);
 	}
 
 	public Function random(Object... dataset) {

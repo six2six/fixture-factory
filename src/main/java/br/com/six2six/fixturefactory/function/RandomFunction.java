@@ -1,5 +1,9 @@
 package br.com.six2six.fixturefactory.function;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Random;
 
 import br.com.six2six.fixturefactory.base.Range;
@@ -13,6 +17,8 @@ public class RandomFunction implements AtomicFunction {
 	private AtomicFunction[] functions;
 	
 	private Range range;
+	
+	private MathContext mathContext = MathContext.DECIMAL32;
 	
 	public RandomFunction(Class<?> type) {
 		this.type = type;
@@ -36,6 +42,11 @@ public class RandomFunction implements AtomicFunction {
 		this.range = range;
 	}
 	
+	public RandomFunction(Class<? extends BigDecimal> type, MathContext mathContext) {
+	    this.type = type;
+	    this.mathContext = mathContext;
+	}
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T generateValue() {
@@ -71,6 +82,26 @@ public class RandomFunction implements AtomicFunction {
 			
 		} else if (this.type.isAssignableFrom(Boolean.class)) {
 			result = random.nextBoolean();
+			
+		} else if (this.type.isAssignableFrom(BigDecimal.class)) {
+		    if (this.range == null) {
+		        result = new BigDecimal(Double.valueOf(Math.random()), this.mathContext);
+		    } else {
+		        BigDecimal start = ((BigDecimal) range.getStart());
+		        BigDecimal end = ((BigDecimal) range.getEnd());
+		        int scale = start.scale() > end.scale() ? start.scale() : end.scale();
+		        
+		        result = start.add(new BigDecimal(Math.random()).multiply(end.subtract(start))).setScale(scale, RoundingMode.HALF_EVEN);
+		    }
+		} else if (this.type.isAssignableFrom(BigInteger.class)) {
+		    if (this.range == null) {
+		        result = new BigInteger(64, random);
+		    } else {
+		        BigInteger start = ((BigInteger) range.getStart());
+		        BigInteger end = ((BigInteger) range.getEnd());
+		        
+		        result = start.add(new BigDecimal(Math.random()).toBigInteger().multiply(end.subtract(start)));
+		    }
 		}
 		
 		return (T) result;

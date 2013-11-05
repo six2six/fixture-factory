@@ -4,6 +4,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -26,6 +27,7 @@ public class FixtureInvoiceTest {
 	public void fixtureInvoice() {
 		Invoice invoice = Fixture.from(Invoice.class).gimme("valid");
 		assertNotNull("Invoice should not be null", invoice);
+		assertEquals("Invoice ammout should have precision of 2", 2, invoice.getAmmount().precision());
 	}
 	
 	@Test
@@ -39,6 +41,8 @@ public class FixtureInvoiceTest {
 		for (Invoice invoice : invoices) {
 			assertEquals("Calendar should be equal", calendar, invoice.getDueDate());
 			calendar.add(Calendar.MONTH, -1);
+	        assertTrue("Invoice ammout should be within range", invoice.getAmmount().compareTo(new BigDecimal("45.89")) >= 0 && 
+	                invoice.getAmmount().compareTo(new BigDecimal("58.67")) <= 0);			
 		}
 	}
 	

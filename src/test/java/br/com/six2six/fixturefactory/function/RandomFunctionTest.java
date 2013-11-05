@@ -3,15 +3,16 @@ package br.com.six2six.fixturefactory.function;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Arrays;
 
 import org.junit.Test;
 
 import br.com.six2six.bfgex.Gender;
 import br.com.six2six.fixturefactory.base.Range;
-import br.com.six2six.fixturefactory.function.Function;
-import br.com.six2six.fixturefactory.function.NameFunction;
-import br.com.six2six.fixturefactory.function.RandomFunction;
 
 public class RandomFunctionTest {
 
@@ -58,6 +59,28 @@ public class RandomFunctionTest {
 	}
 
 	@Test
+	public void randomBigDecimalTest() {
+	    Object value = new RandomFunction(BigDecimal.class).generateValue();
+	    assertNotNull("Generated BigDecimal must not be null", value);
+	    assertTrue("Generated value is not a BigDecimal", value instanceof BigDecimal);
+	}
+	
+	@Test
+	public void randomBigDecimalWithMathContextTest() {
+	    Object value = new RandomFunction(BigDecimal.class, new MathContext(3, RoundingMode.HALF_EVEN)).generateValue();
+	    assertNotNull("Generated BigDecimal must not be null", value);
+	    assertTrue("Generated value is not a BigDecimal", value instanceof BigDecimal);
+	    assertTrue("Generated value should have a precision of 3", ((BigDecimal) value).precision() == 3);
+	}
+
+	@Test
+	public void randomBigIntegerTest() {
+	    Object value = new RandomFunction(BigInteger.class).generateValue();
+	    assertNotNull("Generated BigInteger must not be null", value);
+	    assertTrue("Generated value is not a BigInteger", value instanceof BigInteger);
+	}
+
+	@Test
 	public void randomBooleanTest() {
 		Object value = new RandomFunction(Boolean.class).generateValue();
 		assertNotNull("Generated boolean can not be null", value);
@@ -94,6 +117,32 @@ public class RandomFunctionTest {
 		Object value = new RandomFunction(Long.class, new Range(start, end)).generateValue();
 		assertNotNull("Generated long can not be null", value);
 		assertTrue("Generated long does not exist in the range", (start <= (Long) value && (Long) value <= end));
+	}
+
+	@Test
+	public void randomBigDecimalRangeChoosesStartScaleTest() {
+	    BigDecimal start = new BigDecimal("2.313"), end = new BigDecimal("3.73");
+	    BigDecimal value = new RandomFunction(BigDecimal.class, new Range(start, end)).generateValue();
+	    assertNotNull("Generated BigDecimal can not be null", value);
+	    assertTrue("Generated BigDecimal does not exist in the range", (start.compareTo(value) <= 0 && value.compareTo(end) <= 0));
+	    assertTrue("Generated BigDecimal should most precise scale", value.scale() == start.scale());
+	}
+
+	@Test
+	public void randomBigDecimalRangeChoosesEndScaleTest() {
+	    BigDecimal start = new BigDecimal("2.31"), end = new BigDecimal("3.731");
+	    BigDecimal value = new RandomFunction(BigDecimal.class, new Range(start, end)).generateValue();
+	    assertNotNull("Generated BigDecimal can not be null", value);
+	    assertTrue("Generated BigDecimal does not exist in the range", (start.compareTo(value) <= 0 && value.compareTo(end) <= 0));
+	    assertTrue("Generated BigDecimal should most precise scale", value.scale() == end.scale());
+	}
+
+	@Test
+	public void randomBigIntegerRangeTest() {
+	    BigInteger start = new BigInteger("2147483648"), end = new BigInteger("9876543210");
+	    BigInteger value = new RandomFunction(BigInteger.class, new Range(start, end)).generateValue();
+	    assertNotNull("Generated BigInteger can not be null", value);
+	    assertTrue("Generated BigInteger does not exist in the range", (start.compareTo(value) <= 0 && value.compareTo(end) <= 0));
 	}
 
 	@Test(expected = IllegalArgumentException.class)

@@ -1,6 +1,7 @@
 package br.com.six2six.template;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.SimpleDateFormat;
 
 import br.com.six2six.fixturefactory.Fixture;
@@ -14,12 +15,12 @@ public class InvoiceTemplate implements TemplateLoader {
 	public void load() {
 		Fixture.of(Invoice.class).addTemplate("valid", new Rule(){{
 			add("id", regex("\\d{3,5}"));
-			add("ammount", random(new BigDecimal("58.67"), new BigDecimal("45.89")));
+			add("ammount", random(BigDecimal.class, new MathContext(2)));
 			add("dueDate", beforeDate("2011-04-08", new SimpleDateFormat("yyyy-MM-dd")));
 			
 		}}).addTemplate("previousInvoices", new Rule(){{
 			add("id", regex("\\d{3,5}"));
-			add("ammount", random(new BigDecimal("58.67"), new BigDecimal("45.89")));
+			add("ammount", random(BigDecimal.class, range(new BigDecimal("45.89"), new BigDecimal("58.67"))));
 			add("dueDate", sequenceDate("2011-04-01", new SimpleDateFormat("yyyy-MM-dd"), decrement(1).month()));
 			
 		}}).addTemplate("nextInvoices", new Rule(){{
