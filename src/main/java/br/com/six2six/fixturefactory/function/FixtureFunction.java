@@ -2,8 +2,7 @@ package br.com.six2six.fixturefactory.function;
 
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.ObjectFactory;
-import br.com.six2six.fixturefactory.ObjectFactoryProcessor;
-import br.com.six2six.fixturefactory.context.Processor;
+import br.com.six2six.fixturefactory.processor.Processor;
 
 public class FixtureFunction implements AtomicFunction, RelationFunction {
 
@@ -24,37 +23,27 @@ public class FixtureFunction implements AtomicFunction, RelationFunction {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public <T> T generateValue() {
-		return (T) generate(Fixture.from(clazz));
+		return generate(Fixture.from(clazz));
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public <T> T generateValue(Processor processor) {
-		return (T) generate(Fixture.from(clazz, processor));
+		return generate(Fixture.from(clazz).uses(processor));
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public <T> T generateValue(Object owner) {
-		return (T) generate(new ObjectFactory(Fixture.of(clazz), owner));
+		return generate(new ObjectFactory(Fixture.of(clazz), owner));
 	}
-	
+
+	@Override
+	public <T> T generateValue(Object owner, Processor processor) {
+	    return generate(Fixture.from(clazz).uses(processor));
+	}
+
 	@SuppressWarnings("unchecked")
 	private <T> T generate(ObjectFactory objectFactory) {
 		return (T) (quantity != null ? objectFactory.gimme(quantity, label) : objectFactory.gimme(label));
 	}
-	
-	@SuppressWarnings("unchecked")
-	private <T> T generatePersistent(ObjectFactoryProcessor objectFactory) {
-		return (T) (quantity != null ? objectFactory.gimme(quantity, label) : objectFactory.gimme(label));
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> T generateValue(Object owner, Processor processor) {
-		return (T) generatePersistent(new ObjectFactoryProcessor(Fixture.of(clazz), owner, processor));
-	}
-	
 }

@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 
-import br.com.six2six.fixturefactory.context.Processor;
+import br.com.six2six.fixturefactory.processor.Processor;
 import br.com.six2six.fixturefactory.util.Chainable;
 import br.com.six2six.fixturefactory.util.ReflectionUtils;
 

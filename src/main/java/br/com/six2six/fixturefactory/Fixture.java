@@ -3,7 +3,7 @@ package br.com.six2six.fixturefactory;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import br.com.six2six.fixturefactory.context.Processor;
+import br.com.six2six.fixturefactory.processor.Processor;
 
 public class Fixture {
 
@@ -23,9 +23,4 @@ public class Fixture {
 	public static ObjectFactory from(Class<?> clazz) {
 		return new ObjectFactory(of(clazz));
 	}
-	
-	public static ObjectFactoryProcessor from(Class<?> clazz, Processor processor) {
-		return new ObjectFactoryProcessor(of(clazz), processor);
-	}
-
 }

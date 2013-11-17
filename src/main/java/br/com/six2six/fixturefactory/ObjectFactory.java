@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import br.com.six2six.fixturefactory.processor.Processor;
 import br.com.six2six.fixturefactory.transformer.CalendarTransformer;
 import br.com.six2six.fixturefactory.transformer.ParameterPlaceholderTransformer;
 import br.com.six2six.fixturefactory.transformer.PrimitiveTransformer;
@@ -24,6 +25,8 @@ public class ObjectFactory {
 	protected TemplateHolder templateHolder;
 	
 	private Object owner;
+
+    private Processor processor;
 	
 	public ObjectFactory(TemplateHolder templateHolder) {
 		this.templateHolder = templateHolder;
@@ -33,7 +36,17 @@ public class ObjectFactory {
 		this.templateHolder = templateHolder;
 		this.owner = owner;
 	}
-	
+
+	public ObjectFactory(TemplateHolder templateHolder, Processor owner) {
+	    this.templateHolder = templateHolder;
+	    this.owner = owner;
+	}
+
+    public ObjectFactory uses(Processor processor) {
+        this.processor = processor;
+        return this;
+    }
+    
 	@SuppressWarnings("unchecked")
 	public <T> T gimme(String label) {
 		Rule rule = templateHolder.getRules().get(label);
@@ -71,7 +84,7 @@ public class ObjectFactory {
 		
 		for (Property property : rule.getProperties()) {
 			if (parameterNames.contains(property.getRootAttribute())) {
-				constructorArguments.put(property.getName(), property.getValue());
+				constructorArguments.put(property.getName(), generateConstructorParamValue(property));
 			} else {
 				deferredProperties.add(property);
 			}
@@ -83,9 +96,20 @@ public class ObjectFactory {
 			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), processPropertyValue(result, property));
 		}
 		
+		if (processor != null) {
+		    processor.execute(result);
+		}
 		return result;
 	}
 	
+	private Object generateConstructorParamValue(Property property) {
+	    if (property.hasRelationFunction() && processor != null) {
+	        return property.getValue(processor);
+	    } else {
+	        return property.getValue();
+	    }
+	}
+
 	protected List<Object> processConstructorArguments(List<String> parameterNames, Map<String, Object> arguments) {
 		List<Object> values = new ArrayList<Object>();
 		
@@ -114,14 +138,18 @@ public class ObjectFactory {
 				rule.add(argument.substring(index+1), arguments.get(argument));
 			}
 		}
-		return new ObjectFactory(new TemplateHolder(fieldType)).createObject(rule);
+		return new ObjectFactory(new TemplateHolder(fieldType), processor).createObject(rule);
 	}
 
 	protected Object processPropertyValue(Object object, Property property) {
 		Class<?> fieldType = ReflectionUtils.invokeRecursiveType(object.getClass(), property.getName());
-		Object value = property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType) ?
-				property.getValue(object) : property.getValue();
 		
+		Object value = null;
+		if (property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType)) {
+		    value = processor != null ? property.getValue(object, processor) : property.getValue(object);
+		} else {
+		    value = property.getValue();
+		}
 	    TransformerChain transformerChain = buildTransformerChain(new PropertyPlaceholderTransformer(object));
 		return transformerChain.transform(value, fieldType);
 	}

@@ -1,6 +1,6 @@
 package br.com.six2six.fixturefactory.function;
 
-import br.com.six2six.fixturefactory.context.Processor;
+import br.com.six2six.fixturefactory.processor.Processor;
 
 
 public interface RelationFunction extends Function {

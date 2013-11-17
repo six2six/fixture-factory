@@ -1,4 +1,4 @@
-package br.com.six2six.fixturefactory.context;
+package br.com.six2six.fixturefactory.processor;
 
 import org.hibernate.Session;
 

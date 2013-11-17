@@ -1,10 +1,10 @@
 package br.com.six2six.fixturefactory;
 
-import br.com.six2six.fixturefactory.context.Processor;
 import br.com.six2six.fixturefactory.function.AtomicFunction;
 import br.com.six2six.fixturefactory.function.Function;
 import br.com.six2six.fixturefactory.function.IdentityFunction;
 import br.com.six2six.fixturefactory.function.RelationFunction;
+import br.com.six2six.fixturefactory.processor.Processor;
 
 public class Property {
 
