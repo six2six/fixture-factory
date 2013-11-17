@@ -3,7 +3,7 @@ package br.com.six2six.fixturefactory;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.hibernate.Session;
+import br.com.six2six.fixturefactory.context.Processor;
 
 public class Fixture {
 
@@ -24,8 +24,8 @@ public class Fixture {
 		return new ObjectFactory(of(clazz));
 	}
 	
-	public static PersistentObjectFactory from(Class<?> clazz, Session session) {
-		return new PersistentObjectFactory(of(clazz), session);
+	public static ObjectFactoryProcessor from(Class<?> clazz, Processor processor) {
+		return new ObjectFactoryProcessor(of(clazz), processor);
 	}
 
 }

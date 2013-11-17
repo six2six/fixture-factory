@@ -5,8 +5,8 @@ import java.util.Collection;
 
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.Session;
 
+import br.com.six2six.fixturefactory.context.Processor;
 import br.com.six2six.fixturefactory.util.Chainable;
 import br.com.six2six.fixturefactory.util.ReflectionUtils;
 
@@ -42,8 +42,8 @@ public class AssociationFunction implements AtomicFunction, RelationFunction, Ch
 	}
 	
 	@Override
-	public <T> T generateValue(Session session) {
-		return new FixtureFunction(clazz, label, quantity).generateValue(session);
+	public <T> T generateValue(Processor processor) {
+		return new FixtureFunction(clazz, label, quantity).generateValue(processor);
 	}
 	
 	@Override
@@ -62,8 +62,8 @@ public class AssociationFunction implements AtomicFunction, RelationFunction, Ch
 	}
 	
 	@Override
-	public <T> T generateValue(Object owner, Session session) {
-		T target = new FixtureFunction(clazz, label, quantity).generateValue(owner, session);
+	public <T> T generateValue(Object owner, Processor processor) {
+		T target = new FixtureFunction(clazz, label, quantity).generateValue(owner, processor);
 		
 		if (target instanceof Collection<?>) {
 			for (Object item : (Collection<?>) target) {

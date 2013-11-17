@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.com.six2six.fixturefactory.context.HibernateProcessor;
+import br.com.six2six.fixturefactory.context.Processor;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import br.com.six2six.fixturefactory.model.Address;
 import br.com.six2six.fixturefactory.model.Attribute;
@@ -20,10 +22,11 @@ import br.com.six2six.fixturefactory.model.Item;
 import br.com.six2six.fixturefactory.model.Neighborhood;
 import br.com.six2six.fixturefactory.model.Order;
 
-public class PersistentObjectFactoryTest {
+public class ObjectFactoryProcessorTest {
 
-	private PersistentObjectFactory factory;
+	private ObjectFactoryProcessor factory;
 	private Session session;
+	private Processor processor;
 	
 	@BeforeClass
 	public static void setUpClass() {
@@ -33,20 +36,21 @@ public class PersistentObjectFactoryTest {
 	@Before
 	public void setUp() {
 		session = mock(Session.class);
+		processor = new HibernateProcessor(session);
 	}
 	
 	@Test
 	public void shouldSavePersistentFixture() {
-		factory = new PersistentObjectFactory(Fixture.of(City.class), session);
+	    factory = new ObjectFactoryProcessor(Fixture.of(City.class), processor);
 		
-		factory.gimme("valid");
-		
+	    factory.gimme("valid");
+	    
 		verify(session).save(isA(City.class));
 	}
 	
 	@Test
 	public void shouldSavePersistentFixtureAndHisRelations() {
-		factory = new PersistentObjectFactory(Fixture.of(Client.class), session);
+		factory = new ObjectFactoryProcessor(Fixture.of(Client.class), processor);
 		
 		factory.gimme("valid");
 		
@@ -56,7 +60,7 @@ public class PersistentObjectFactoryTest {
 	
 	@Test
 	public void shouldSavePersistentFixtureAndRelationsOfHisRelations() {
-		factory = new PersistentObjectFactory(Fixture.of(Client.class), session);
+		factory = new ObjectFactoryProcessor(Fixture.of(Client.class), processor);
 		
 		factory.gimme("valid");
 		
@@ -67,7 +71,7 @@ public class PersistentObjectFactoryTest {
 	
 	@Test
 	public void shouldSavePersistentFixtureCollections() {
-		factory = new PersistentObjectFactory(Fixture.of(City.class), session);
+		factory = new ObjectFactoryProcessor(Fixture.of(City.class), processor);
 		
 		factory.gimme(2, "valid");
 		
@@ -76,7 +80,7 @@ public class PersistentObjectFactoryTest {
 	
 	@Test
 	public void shouldSavePersistentFixtureAnsHisRelationsCollections() {
-		factory = new PersistentObjectFactory(Fixture.of(Order.class), session);
+		factory = new ObjectFactoryProcessor(Fixture.of(Order.class), processor);
 		
 		factory.gimme("valid");
 		
@@ -86,7 +90,7 @@ public class PersistentObjectFactoryTest {
 	
 	@Test
 	public void shouldSavePersistentFixtureAndHisRelationsCollectionsOfHisRelations() {
-		factory = new PersistentObjectFactory(Fixture.of(Client.class), session);
+		factory = new ObjectFactoryProcessor(Fixture.of(Client.class), processor);
 		
 		factory.gimme("valid");
 		
@@ -98,7 +102,7 @@ public class PersistentObjectFactoryTest {
 	
 	@Test
 	public void shouldSavePersistentFixtureAndHisConstructorParameterRelation() {
-		factory = new PersistentObjectFactory(Fixture.of(Child.class), session);
+		factory = new ObjectFactoryProcessor(Fixture.of(Child.class), processor);
 		
 		factory.gimme("valid");
 		

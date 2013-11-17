@@ -1,14 +1,14 @@
 package br.com.six2six.fixturefactory.function;
 
-import org.hibernate.Session;
+import br.com.six2six.fixturefactory.context.Processor;
 
 
 public interface RelationFunction extends Function {
 
-	<T> T generateValue(Session session);
+	<T> T generateValue(Processor processor);
 	
 	<T> T generateValue(Object owner);
 	
-	<T> T generateValue(Object owner, Session session);
+	<T> T generateValue(Object owner, Processor processor);
 	
 }

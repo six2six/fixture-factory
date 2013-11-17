@@ -5,24 +5,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Session;
-
+import br.com.six2six.fixturefactory.context.Processor;
 import br.com.six2six.fixturefactory.transformer.PropertyPlaceholderTransformer;
 import br.com.six2six.fixturefactory.transformer.TransformerChain;
 import br.com.six2six.fixturefactory.util.ReflectionUtils;
 
-public class PersistentObjectFactory extends ObjectFactory {
+public class ObjectFactoryProcessor extends ObjectFactory {
 
-	private final Session session;
+	private final Processor processor;
 	
-	public PersistentObjectFactory(TemplateHolder templateHolder, Object owner, Session session) {
+	public ObjectFactoryProcessor(TemplateHolder templateHolder, Object owner, Processor processor) {
 		super(templateHolder, owner);
-		this.session = session;
+		this.processor = processor;
 	}
 	
-	public PersistentObjectFactory(TemplateHolder templateHolder, Session session) {
+	public ObjectFactoryProcessor(TemplateHolder templateHolder, Processor processor) {
 		super(templateHolder);
-		this.session = session;
+		this.processor = processor;
 	}
 
 	@Override
@@ -48,14 +47,14 @@ public class PersistentObjectFactory extends ObjectFactory {
 			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), processPropertyValue(result, property));
 		}
 		
-		session.save(result);
+		processor.execute(result);
 		
 		return result;
 	}
 	
 	private Object generateConstructorParamValue(Property property) {
 		if(property.hasRelationFunction()) {
-			return property.getValue(session);
+			return property.getValue(processor);
 		} else {
 			return property.getValue();
 		}
@@ -70,7 +69,7 @@ public class PersistentObjectFactory extends ObjectFactory {
 				rule.add(argument.substring(index+1), arguments.get(argument));
 			}
 		}
-		return new PersistentObjectFactory(new TemplateHolder(fieldType), session).createObject(rule);
+		return new ObjectFactoryProcessor(new TemplateHolder(fieldType), processor).createObject(rule);
 		
 	}
 	
@@ -78,7 +77,7 @@ public class PersistentObjectFactory extends ObjectFactory {
 	protected Object processPropertyValue(Object object, Property property) {
 		Class<?> fieldType = ReflectionUtils.invokeRecursiveType(object.getClass(), property.getName());
 		Object value = property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType) ?
-				property.getValue(object, session) : property.getValue();
+				property.getValue(object, processor) : property.getValue();
 		
 		TransformerChain transformerBaseChain = buildTransformerChain(new PropertyPlaceholderTransformer(object));
 		return transformerBaseChain.transform(value, fieldType);

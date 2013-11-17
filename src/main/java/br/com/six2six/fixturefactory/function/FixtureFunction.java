@@ -1,10 +1,9 @@
 package br.com.six2six.fixturefactory.function;
 
-import org.hibernate.Session;
-
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.ObjectFactory;
-import br.com.six2six.fixturefactory.PersistentObjectFactory;
+import br.com.six2six.fixturefactory.ObjectFactoryProcessor;
+import br.com.six2six.fixturefactory.context.Processor;
 
 public class FixtureFunction implements AtomicFunction, RelationFunction {
 
@@ -32,8 +31,8 @@ public class FixtureFunction implements AtomicFunction, RelationFunction {
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public <T> T generateValue(Session session) {
-		return (T) generate(Fixture.from(clazz, session));
+	public <T> T generateValue(Processor processor) {
+		return (T) generate(Fixture.from(clazz, processor));
 	}
 	
 	@Override
@@ -48,14 +47,14 @@ public class FixtureFunction implements AtomicFunction, RelationFunction {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T> T generatePersistent(PersistentObjectFactory objectFactory) {
+	private <T> T generatePersistent(ObjectFactoryProcessor objectFactory) {
 		return (T) (quantity != null ? objectFactory.gimme(quantity, label) : objectFactory.gimme(label));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T generateValue(Object owner, Session session) {
-		return (T) generatePersistent(new PersistentObjectFactory(Fixture.of(clazz), owner, session));
+	public <T> T generateValue(Object owner, Processor processor) {
+		return (T) generatePersistent(new ObjectFactoryProcessor(Fixture.of(clazz), owner, processor));
 	}
 	
 }
