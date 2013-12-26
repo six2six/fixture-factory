@@ -1,5 +1,7 @@
 package br.com.six2six.fixturefactory.processor;
 
+import javax.persistence.Embeddable;
+
 import org.hibernate.Session;
 
 public class HibernateProcessor implements Processor {
@@ -12,6 +14,7 @@ public class HibernateProcessor implements Processor {
     
     @Override
     public void execute(Object result) {
-        session.save(result);
+        if(result.getClass().isAnnotationPresent(Embeddable.class)) return;
+    	session.save(result);
     }
 }
