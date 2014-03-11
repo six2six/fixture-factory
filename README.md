@@ -1,7 +1,8 @@
-Fixture Factory - generator to create fake objects from a template
+![Fixture Factory](http://s27.postimg.org/g2cbltgv7/fixture_factory.png)
 ==================================================================
-
 [![Build Status](https://travis-ci.org/six2six/fixture-factory.png?branch=master)](https://travis-ci.org/six2six/fixture-factory)
+
+Fixture Factory is a tool to help developers quickly build and organize fake objects for unit tests. The key idea is to create specification limits of the data (templates) instead of hardcoded data. Try using F-F, then you can focus on the behavior of your methods and we manage the data.
 
 ## Installing
 
@@ -15,7 +16,7 @@ Use it like a maven dependency on your project
 
 ## Usage
 
-Writing bean template rules
+Writing template rules
 
 	Fixture.of(Client.class).addTemplate("valid", new Rule(){{
 		add("id", random(Long.class, range(1L, 200L)));
@@ -35,21 +36,23 @@ Writing bean template rules
 		add("zipCode", random("06608000", "17720000"));
 	}});
 
-Creating a new template based on another existing template. Using this you can override the definition for a property
+You can also create a new template based on another existing template. Using this you can override the definition for a property
 
-	Fixture.of(Address.class).addTemplate("valid-augusta").inherits("valid", new Rule(){{
+	Fixture.of(Address.class).addTemplate("augustaStreet").inherits("valid", new Rule(){{
 		add("street", "Augusta Street");
 	}});
 
-Gimme one object from valid label
+Using on your tests code:
+
+Gimme one object from label "valid"
 
 	Client client = Fixture.from(Client.class).gimme("valid");
 
-Gimme N objects from valid label
+Gimme N objects from label "valid"
 
 	List<Client> clients = Fixture.from(Client.class).gimme(5, "valid");
 
-More helpers functions for create generic template:
+Additional helper functions to create generic template:
 
 ### Relationship (one-to-one and one-to-many)
 
@@ -70,8 +73,8 @@ More helpers functions for create generic template:
 ### Regex
 
 	Fixture.of(Any.class).addTemplate("valid", new Rule(){{
-	  add("id", regex("\\d{3,5}"));
-	  add("phoneNumber", regex("(\\d{2})-(\\d{4})-(\\d{4})"));
+		add("id", regex("\\d{3,5}"));
+		add("phoneNumber", regex("(\\d{2})-(\\d{4})-(\\d{4})"));
 	});
 
 ### Date
@@ -96,7 +99,7 @@ You can see more utilization on [tests](fixture-factory/tree/master/src/test/jav
 
 Want to contribute with code, documentation or bug report?
 
-Do this by [joining the mailing list](http://groups.google.com/group/fixture-factory) on Google Groups.
+Do it by [joining the mailing list](http://groups.google.com/group/fixture-factory) on Google Groups.
 
 ## Credits
 
