@@ -48,6 +48,12 @@ Gimme one object from label "valid"
 
 	Client client = Fixture.from(Client.class).gimme("valid");
 
+Gimme one objet from label "valid" overriding the "name" property:
+
+    Client client = Fixture.from(Client.class).gimme("valid", new Rule() {{
+        add("name", "Fixture Factory");
+    }});
+
 Gimme N objects from label "valid"
 
 	List<Client> clients = Fixture.from(Client.class).gimme(5, "valid");
