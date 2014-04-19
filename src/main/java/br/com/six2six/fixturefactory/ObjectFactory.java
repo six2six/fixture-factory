@@ -49,29 +49,28 @@ public class ObjectFactory {
     
 	@SuppressWarnings("unchecked")
 	public <T> T gimme(String label) {
-		Rule rule = templateHolder.getRules().get(label);
-		 	
-		if (rule == null) {
-			throw new IllegalArgumentException(String.format(NO_SUCH_LABEL_MESSAGE, templateHolder.getClazz().getName(), label));
-		}
+		Rule rule = findRule(label);
 
 		return (T) this.createObject(rule);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> List<T> gimme(Integer quantity, String label) {
-		Rule rule = templateHolder.getRules().get(label);
-		
-		if (rule == null) {
-			throw new IllegalArgumentException(String.format(NO_SUCH_LABEL_MESSAGE, templateHolder.getClazz().getName(), label));
-		}
+	public <T> T gimme(String label, Rule propertiesToOverride) {
+		Rule rule = findRule(label);
 
-		List<T> results = new ArrayList<T>(quantity);
-		for (int i = 0; i < quantity; i++) {
-			results.add((T) this.createObject(rule));
-		}	
-		
-		return results;
+		return (T) this.createObject(new Rule(rule, propertiesToOverride));
+	}
+
+	public <T> List<T> gimme(Integer quantity, String label) {
+		Rule rule = findRule(label);
+
+		return this.createObjects(quantity, rule);
+	}
+
+	public <T> List<T> gimme(int quantity, String label, Rule propertiesToOverride) {
+		Rule rule = findRule(label);
+
+		return this.createObjects(quantity, new Rule(rule, propertiesToOverride));
 	}
 
 	protected Object createObject(Rule rule) {
@@ -102,6 +101,26 @@ public class ObjectFactory {
 		return result;
 	}
 	
+	@SuppressWarnings("unchecked")
+	protected <T> List<T> createObjects(int quantity, Rule rule) {
+		List<T> results = new ArrayList<T>(quantity);
+		for (int i = 0; i < quantity; i++) {
+			results.add((T) this.createObject(rule));
+		}	
+
+		return results;
+	}
+
+	private Rule findRule(String label) {
+		Rule rule = templateHolder.getRules().get(label);
+
+		if (rule == null) {
+			throw new IllegalArgumentException(String.format(NO_SUCH_LABEL_MESSAGE, templateHolder.getClazz().getName(), label));
+		}
+
+		return rule;
+	}
+
 	private Object generateConstructorParamValue(Property property) {
 	    if (property.hasRelationFunction() && processor != null) {
 	        return property.getValue(processor);
