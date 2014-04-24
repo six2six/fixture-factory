@@ -52,6 +52,33 @@ public class FixtureClientTest {
 	}
 	
 	@Test
+	public void fixtureClientWithOverridedProperty() {
+		Client client = Fixture.from(Client.class).gimme("valid", new Rule() {
+			{
+				add("name", "Fixture Factory");
+			}
+		});
+		
+		assertEquals("Fixture Factory", client.getName());
+	}
+	
+	@Test
+	public void fixtureClientListWithOverridedProperty() {
+		List<Client> clients = Fixture.from(Client.class).gimme(5, "valid", new Rule() {
+			{
+				add("name", "Joseph");
+				add("email", "joseph@fixturefactory.org");
+			}
+		});
+
+		assertEquals("Client list size should be 5", clients.size(), 5);
+		for (Client client : clients) {
+			assertEquals("Joseph", client.getName());
+			assertEquals("joseph@fixturefactory.org", client.getEmail());
+		}
+	}
+	
+	@Test
 	public void shouldCreateClientWithAddressEqualToNull() {
 		Client client = Fixture.from(Client.class).gimme("valid-noaddress");
 		
