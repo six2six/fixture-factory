@@ -54,6 +54,44 @@ Gimme N objects from label "valid"
 
 Additional helper functions to create generic template:
 
+### Managing Templates
+
+Templates can be written within TemplateLoader interface
+
+	public class ClientTemplateLoader implements TemplateLoader {
+	    @Override
+	    public void load() {
+	        Fixture.of(Client.class).addTemplate("valid", new Rule(){{
+	            add("id", random(Long.class, range(1L, 200L)));
+	            add("name", random("Anderson Parra", "Arthur Hirata"));
+	            add("nickname", random("nerd", "geek"));
+	            add("email", "${nickname}@gmail.com");
+	            add("birthday", instant("18 years ago"));
+	            add("address", fixture(Address.class, "valid"));
+	        }});
+
+	        Fixture.of(Address.class).addTemplate("valid", new Rule(){{
+	            add("id", random(Long.class, range(1L, 100L)));
+	            add("street", random("Paulista Avenue", "Ibirapuera Avenue"));
+	            add("city", "São Paulo");
+	            add("state", "${city}");
+	            add("country", "Brazil");
+	            add("zipCode", random("06608000", "17720000"));
+	        }});
+	    }
+	}
+
+All templates can be loaded using FixtureFactoryLoader telling what package that contains the templates
+
+	FixtureFactoryLoader.loadTemplates("br.com.six2six.template");
+
+Example of loading templates with JUnit tests
+
+	@BeforeClass
+	public static void setUp() {
+	    FixtureFactoryLoader.loadTemplates("br.com.six2six.template");
+	}
+
 ### Relationship (one-to-one and one-to-many)
 
 	Fixture.of(Order.class).addTemplate("valid", new Rule(){{
@@ -116,4 +154,3 @@ with contributions from several authors, including:
 ## License
 
 Fixture-Factory is released under the Apache 2.0 license. See the LICENSE file included with the distribution for details.
-
