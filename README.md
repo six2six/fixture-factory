@@ -11,7 +11,7 @@ Use it like a maven dependency on your project
 	<dependency>
 		<groupId>br.com.six2six</groupId>
 		<artifactId>fixture-factory</artifactId>
-		<version>2.1.0</version>
+		<version>2.2.0</version>
 	</dependency>
 
 ## Usage
