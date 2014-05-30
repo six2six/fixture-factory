@@ -19,8 +19,8 @@ public class FixtureCircularTemplate implements TemplateLoader {
 
 		Fixture.of(Order.class).addTemplate("otherValid", new Rule(){{
 			add("id", random(Long.class, range(1L, 200L)));
-			add("items", has(3).of(Item.class, "valid", "order"));
-			add("payment", one(Payment.class, "valid", "order"));
+			add("items", has(3).of(Item.class, "valid").targetAttribute("order"));
+			add("payment", one(Payment.class, "valid").targetAttribute("order"));
 		}});
 		
 		Fixture.of(Item.class).addTemplate("valid", new Rule(){{

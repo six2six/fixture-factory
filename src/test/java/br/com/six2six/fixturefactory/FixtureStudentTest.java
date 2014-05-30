@@ -1,11 +1,15 @@
 package br.com.six2six.fixturefactory;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.com.six2six.bfgex.Gender;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import br.com.six2six.fixturefactory.model.Student;
 
@@ -57,5 +61,12 @@ public class FixtureStudentTest {
 		 Student student = Fixture.from(Student.class).gimme("validMaleStudent");
 		 assertNotNull("Male Student should not be null", student);
 		 assertNotNull("Students id should not be null", student.getId());
+	 }
+	 
+	 @Test
+	 public void shouldGimmeOneMaleAndOneFemaleStudent() {
+		 List<Student> students = Fixture.from(Student.class).gimme(2, "validFemaleStudent", "validMaleStudent");
+		 assertEquals(Gender.FEMALE, students.get(0).getGender());
+		 assertEquals(Gender.MALE, students.get(1).getGender());
 	 }
 }
