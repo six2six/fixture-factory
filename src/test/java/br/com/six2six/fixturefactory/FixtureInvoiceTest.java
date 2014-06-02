@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import br.com.six2six.fixturefactory.model.Invoice;
-import br.com.six2six.fixturefactory.util.DateTimeUtil;
+import br.com.six2six.fixturefactory.util.DateTimeUtils;
 
 public class FixtureInvoiceTest {
 
@@ -36,7 +36,7 @@ public class FixtureInvoiceTest {
 		assertNotNull("Invoice list should not be null", invoices);
 		assertTrue("Invoice list should not be empty", !invoices.isEmpty());
 		
-		Calendar calendar = DateTimeUtil.toCalendar("2011-04-01", new SimpleDateFormat("yyyy-MM-dd"));
+		Calendar calendar = DateTimeUtils.toCalendar("2011-04-01", new SimpleDateFormat("yyyy-MM-dd"));
 		
 		for (Invoice invoice : invoices) {
 			assertEquals("Calendar should be equal", calendar, invoice.getDueDate());
@@ -52,7 +52,7 @@ public class FixtureInvoiceTest {
 		assertNotNull("Invoice list should not be null", invoices);
 		assertTrue("Invoice list should not be empty", !invoices.isEmpty());
 		
-		Calendar calendar = DateTimeUtil.toCalendar("2011-04-30", new SimpleDateFormat("yyyy-MM-dd"));
+		Calendar calendar = DateTimeUtils.toCalendar("2011-04-30", new SimpleDateFormat("yyyy-MM-dd"));
 		
 		for (Invoice invoice : invoices) {
 			assertEquals("Calendar should be equal", calendar, invoice.getDueDate());

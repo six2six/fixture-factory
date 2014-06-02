@@ -4,7 +4,7 @@ import static br.com.six2six.fixturefactory.function.impl.DateTimeFunction.DateT
 import static br.com.six2six.fixturefactory.function.impl.DateTimeFunction.DateType.BEFORE;
 import static br.com.six2six.fixturefactory.function.impl.NameFunction.NameType.FIRST;
 import static br.com.six2six.fixturefactory.function.impl.NameFunction.NameType.LAST;
-import static br.com.six2six.fixturefactory.util.DateTimeUtil.toCalendar;
+import static br.com.six2six.fixturefactory.util.DateTimeUtils.toCalendar;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

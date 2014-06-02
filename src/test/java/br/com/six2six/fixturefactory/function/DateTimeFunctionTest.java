@@ -1,6 +1,6 @@
 package br.com.six2six.fixturefactory.function;
 
-import static br.com.six2six.fixturefactory.util.DateTimeUtil.toCalendar;
+import static br.com.six2six.fixturefactory.util.DateTimeUtils.toCalendar;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 

@@ -4,7 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 
-public class DateTimeUtil {
+public class DateTimeUtils {
 
 	public static Calendar toCalendar(String source, DateFormat format) {
 		Calendar date = Calendar.getInstance();
