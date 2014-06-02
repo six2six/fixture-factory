@@ -35,7 +35,6 @@ public class FixtureStudentTest {
 		Student student = Fixture.from(Student.class).gimme("validFemaleStudent");
 		assertNotNull("Female Student should not be null", student);
 		assertNotNull("Students id should not be null", student.getId());
-		assertTrue("Students it should be 1", student.getId() == 200);
 	}
 	
 	@Test
