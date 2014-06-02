@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import br.com.six2six.fixturefactory.base.Range;
-import br.com.six2six.fixturefactory.function.IdentityFunction;
-import br.com.six2six.fixturefactory.function.RandomFunction;
+import br.com.six2six.fixturefactory.function.impl.IdentityFunction;
+import br.com.six2six.fixturefactory.function.impl.RandomFunction;
 
 public class PropertyTest {
 

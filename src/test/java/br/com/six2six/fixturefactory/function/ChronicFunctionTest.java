@@ -6,7 +6,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import br.com.six2six.fixturefactory.function.ChronicFunction;
+import br.com.six2six.fixturefactory.function.impl.ChronicFunction;
 
 import com.mdimension.jchronic.Options;
 import com.mdimension.jchronic.utils.Time;

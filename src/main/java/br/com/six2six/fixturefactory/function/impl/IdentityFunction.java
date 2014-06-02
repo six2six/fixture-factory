@@ -1,4 +1,6 @@
-package br.com.six2six.fixturefactory.function;
+package br.com.six2six.fixturefactory.function.impl;
+
+import br.com.six2six.fixturefactory.function.AtomicFunction;
 
 public class IdentityFunction implements AtomicFunction {
     

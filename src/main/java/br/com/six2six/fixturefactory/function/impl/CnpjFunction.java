@@ -1,6 +1,7 @@
-package br.com.six2six.fixturefactory.function;
+package br.com.six2six.fixturefactory.function.impl;
 
 import br.com.six2six.fixturefactory.base.Range;
+import br.com.six2six.fixturefactory.function.AtomicFunction;
 
 public class CnpjFunction implements AtomicFunction {
 
@@ -15,7 +16,6 @@ public class CnpjFunction implements AtomicFunction {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T generateValue() {
-		
 		RandomFunction random = new RandomFunction(Integer.class, new Range(1, 9));
 		Integer a  = random.generateValue();
 		Integer b  = random.generateValue();
@@ -37,7 +37,5 @@ public class CnpjFunction implements AtomicFunction {
 		o = o % 11 < 2 ? 0 : 11 - (o % 11);
 		
 		return (T) String.format(formatted? "%d%d.%d%d%d.%d%d%d/%d%d%d%d-%d%d" : "%d%d%d%d%d%d%d%d%d%d%d%d%d%d", a, b, c, d, e, f, g, h, i, j, l, m, n, o);
-	
 	}
-
 }

@@ -5,7 +5,7 @@ import static junit.framework.Assert.assertTrue;
 
 import org.junit.Test;
 
-import br.com.six2six.fixturefactory.function.RegexFunction;
+import br.com.six2six.fixturefactory.function.impl.RegexFunction;
 
 public class RegexFunctionTest {
 

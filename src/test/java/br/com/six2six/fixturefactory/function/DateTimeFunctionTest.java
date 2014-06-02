@@ -10,8 +10,8 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import br.com.six2six.fixturefactory.function.DateTimeFunction;
-import br.com.six2six.fixturefactory.function.DateTimeFunction.DateType;
+import br.com.six2six.fixturefactory.function.impl.DateTimeFunction;
+import br.com.six2six.fixturefactory.function.impl.DateTimeFunction.DateType;
 
 public class DateTimeFunctionTest {
 

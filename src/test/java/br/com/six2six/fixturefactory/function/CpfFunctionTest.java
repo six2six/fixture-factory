@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
-import br.com.six2six.fixturefactory.function.CpfFunction;
+import br.com.six2six.fixturefactory.function.impl.CpfFunction;
 
 public class CpfFunctionTest {
 

@@ -1,11 +1,14 @@
-package br.com.six2six.fixturefactory.function;
+package br.com.six2six.fixturefactory.function.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.six2six.fixturefactory.function.AtomicFunction;
+
 public class EnumFunction implements AtomicFunction {
-	public Class<? extends Enum<?>> clazz;
-	public int quantity;
+	
+	private Class<? extends Enum<?>> clazz;
+	private int quantity;
 	
 	public EnumFunction(Class<? extends Enum<?>> clazz, int quantity) {
 		this.clazz = clazz;
@@ -23,5 +26,4 @@ public class EnumFunction implements AtomicFunction {
 		
 		return (T) results;
 	}
-
 }

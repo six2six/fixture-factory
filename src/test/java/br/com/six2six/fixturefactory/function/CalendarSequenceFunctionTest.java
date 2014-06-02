@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import br.com.six2six.fixturefactory.base.CalendarInterval;
 import br.com.six2six.fixturefactory.base.CalendarSequence;
-import br.com.six2six.fixturefactory.function.SequenceFunction;
+import br.com.six2six.fixturefactory.function.impl.SequenceFunction;
 import br.com.six2six.fixturefactory.util.DateTimeUtil;
 
 public class CalendarSequenceFunctionTest {

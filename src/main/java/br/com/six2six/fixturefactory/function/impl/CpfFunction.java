@@ -1,6 +1,7 @@
-package br.com.six2six.fixturefactory.function;
+package br.com.six2six.fixturefactory.function.impl;
 
 import br.com.six2six.fixturefactory.base.Range;
+import br.com.six2six.fixturefactory.function.AtomicFunction;
 
 public class CpfFunction implements AtomicFunction {
 

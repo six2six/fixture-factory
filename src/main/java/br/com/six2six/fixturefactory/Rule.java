@@ -1,9 +1,9 @@
 package br.com.six2six.fixturefactory;
 
-import static br.com.six2six.fixturefactory.function.DateTimeFunction.DateType.AFTER;
-import static br.com.six2six.fixturefactory.function.DateTimeFunction.DateType.BEFORE;
-import static br.com.six2six.fixturefactory.function.NameFunction.NameType.FIRST;
-import static br.com.six2six.fixturefactory.function.NameFunction.NameType.LAST;
+import static br.com.six2six.fixturefactory.function.impl.DateTimeFunction.DateType.AFTER;
+import static br.com.six2six.fixturefactory.function.impl.DateTimeFunction.DateType.BEFORE;
+import static br.com.six2six.fixturefactory.function.impl.NameFunction.NameType.FIRST;
+import static br.com.six2six.fixturefactory.function.impl.NameFunction.NameType.LAST;
 import static br.com.six2six.fixturefactory.util.DateTimeUtil.toCalendar;
 
 import java.math.BigDecimal;
@@ -21,17 +21,17 @@ import br.com.six2six.fixturefactory.base.Interval;
 import br.com.six2six.fixturefactory.base.Range;
 import br.com.six2six.fixturefactory.base.Sequence;
 import br.com.six2six.fixturefactory.function.AssociationFunction;
-import br.com.six2six.fixturefactory.function.AssociationFunctionImpl;
-import br.com.six2six.fixturefactory.function.ChronicFunction;
-import br.com.six2six.fixturefactory.function.DateTimeFunction;
 import br.com.six2six.fixturefactory.function.FixtureFunction;
 import br.com.six2six.fixturefactory.function.Function;
-import br.com.six2six.fixturefactory.function.IdentityFunction;
-import br.com.six2six.fixturefactory.function.NameFunction;
-import br.com.six2six.fixturefactory.function.NumberSequence;
-import br.com.six2six.fixturefactory.function.RandomFunction;
-import br.com.six2six.fixturefactory.function.RegexFunction;
-import br.com.six2six.fixturefactory.function.SequenceFunction;
+import br.com.six2six.fixturefactory.function.impl.AssociationFunctionImpl;
+import br.com.six2six.fixturefactory.function.impl.ChronicFunction;
+import br.com.six2six.fixturefactory.function.impl.DateTimeFunction;
+import br.com.six2six.fixturefactory.function.impl.IdentityFunction;
+import br.com.six2six.fixturefactory.function.impl.NameFunction;
+import br.com.six2six.fixturefactory.function.impl.NumberSequence;
+import br.com.six2six.fixturefactory.function.impl.RandomFunction;
+import br.com.six2six.fixturefactory.function.impl.RegexFunction;
+import br.com.six2six.fixturefactory.function.impl.SequenceFunction;
 import br.com.six2six.fixturefactory.util.Chainable;
 import br.com.six2six.fixturefactory.util.ReflectionUtils;
 

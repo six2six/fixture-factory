@@ -1,4 +1,6 @@
-package br.com.six2six.fixturefactory.function;
+package br.com.six2six.fixturefactory.function.impl;
+
+import br.com.six2six.fixturefactory.function.AtomicFunction;
 
 import com.mdimension.jchronic.Chronic;
 import com.mdimension.jchronic.Options;

@@ -4,8 +4,8 @@ import static junit.framework.Assert.assertEquals;
 
 import org.junit.Test;
 
-import br.com.six2six.fixturefactory.function.NumberSequence;
-import br.com.six2six.fixturefactory.function.SequenceFunction;
+import br.com.six2six.fixturefactory.function.impl.NumberSequence;
+import br.com.six2six.fixturefactory.function.impl.SequenceFunction;
 
 public class NumberSequenceFunctionTest {
 

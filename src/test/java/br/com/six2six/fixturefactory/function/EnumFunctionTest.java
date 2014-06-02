@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import br.com.six2six.fixturefactory.function.EnumFunction;
+import br.com.six2six.fixturefactory.function.impl.EnumFunction;
 import br.com.six2six.fixturefactory.model.UserType;
 
 public class EnumFunctionTest {

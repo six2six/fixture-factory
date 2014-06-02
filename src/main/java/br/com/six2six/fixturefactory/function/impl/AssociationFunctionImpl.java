@@ -1,4 +1,4 @@
-package br.com.six2six.fixturefactory.function;
+package br.com.six2six.fixturefactory.function.impl;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -8,6 +8,9 @@ import java.util.List;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 
+import br.com.six2six.fixturefactory.function.AssociationFunction;
+import br.com.six2six.fixturefactory.function.FixtureFunction;
+import br.com.six2six.fixturefactory.function.Function;
 import br.com.six2six.fixturefactory.processor.Processor;
 import br.com.six2six.fixturefactory.util.ReflectionUtils;
 

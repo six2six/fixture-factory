@@ -5,8 +5,8 @@ import static junit.framework.Assert.assertNotNull;
 import org.junit.Test;
 
 import br.com.six2six.bfgex.Gender;
-import br.com.six2six.fixturefactory.function.NameFunction;
-import br.com.six2six.fixturefactory.function.NameFunction.NameType;
+import br.com.six2six.fixturefactory.function.impl.NameFunction;
+import br.com.six2six.fixturefactory.function.impl.NameFunction.NameType;
 
 public class NameFunctionTest {
 

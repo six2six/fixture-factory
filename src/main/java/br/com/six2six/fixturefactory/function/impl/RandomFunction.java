@@ -1,4 +1,4 @@
-package br.com.six2six.fixturefactory.function;
+package br.com.six2six.fixturefactory.function.impl;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -7,17 +7,14 @@ import java.math.RoundingMode;
 import java.util.Random;
 
 import br.com.six2six.fixturefactory.base.Range;
+import br.com.six2six.fixturefactory.function.AtomicFunction;
 
 public class RandomFunction implements AtomicFunction {
 
     private Class<?> type;
-
     private Object[] dataset;
-
     private AtomicFunction[] functions;
-
     private Range range;
-
     private MathContext mathContext = MathContext.DECIMAL32;
 
     public RandomFunction(Class<?> type) {

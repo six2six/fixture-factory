@@ -15,6 +15,8 @@ import org.junit.Test;
 
 import br.com.six2six.bfgex.Gender;
 import br.com.six2six.fixturefactory.base.Range;
+import br.com.six2six.fixturefactory.function.impl.NameFunction;
+import br.com.six2six.fixturefactory.function.impl.RandomFunction;
 
 public class RandomFunctionTest {
 

@@ -1,4 +1,4 @@
-package br.com.six2six.fixturefactory.function;
+package br.com.six2six.fixturefactory.function.impl;
 
 import br.com.six2six.fixturefactory.base.Sequence;
 
