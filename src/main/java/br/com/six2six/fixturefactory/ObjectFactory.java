@@ -1,11 +1,14 @@
 package br.com.six2six.fixturefactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
 
 import br.com.six2six.fixturefactory.processor.Processor;
 import br.com.six2six.fixturefactory.transformer.CalendarTransformer;
@@ -21,6 +24,7 @@ import br.com.six2six.fixturefactory.util.ReflectionUtils;
 public class ObjectFactory {
 	
 	private static final String NO_SUCH_LABEL_MESSAGE = "%s-> No such label: %s";
+	private static final String LABELS_AMOUNT_DOES_NOT_MATCH = "%s-> labels amount does not match asked quantity (%s)";
 	
 	protected TemplateHolder templateHolder;
 	
@@ -66,6 +70,18 @@ public class ObjectFactory {
 
 		return this.createObjects(quantity, rule);
 	}
+	
+	public <T> List<T> gimme(Integer quantity, String... labels) {
+		return gimme(quantity, Arrays.asList(labels));
+	}
+	
+	public <T> List<T> gimme(Integer quantity, List<String> labels) {
+		if(labels.size() != quantity) throw new IllegalArgumentException(String.format(LABELS_AMOUNT_DOES_NOT_MATCH, templateHolder.getClazz().getName(), StringUtils.join(labels, ",")));
+		
+		List<Rule> rules = findRules(labels);
+		
+		return createObjects(quantity, rules);
+	}
 
 	public <T> List<T> gimme(int quantity, String label, Rule propertiesToOverride) {
 		Rule rule = findRule(label);
@@ -110,6 +126,16 @@ public class ObjectFactory {
 
 		return results;
 	}
+	
+	@SuppressWarnings("unchecked")
+	protected <T> List<T> createObjects(int quantity, List<Rule> rules) {
+		List<T> results = new ArrayList<T>(quantity);
+		for (int i = 0; i < quantity; i++) {
+			results.add((T) this.createObject(rules.get(i)));
+		}	
+
+		return results;
+	}
 
 	private Rule findRule(String label) {
 		Rule rule = templateHolder.getRules().get(label);
@@ -119,6 +145,19 @@ public class ObjectFactory {
 		}
 
 		return rule;
+	}
+	
+	private List<Rule> findRules(List<String> labels) {
+		List<Rule> rules = new ArrayList<Rule>();
+		
+		for(String label : labels) {
+			Rule rule = templateHolder.getRules().get(label);
+			if(rule == null) throw new IllegalArgumentException(String.format(NO_SUCH_LABEL_MESSAGE, templateHolder.getClazz().getName(), label));
+			
+			rules.add(rule);
+		}
+		
+		return rules;
 	}
 
 	private Object generateConstructorParamValue(Property property) {
@@ -188,4 +227,5 @@ public class ObjectFactory {
         
         return transformerChain;
 	}
+	
 }
