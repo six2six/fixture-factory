@@ -21,6 +21,7 @@ import br.com.six2six.fixturefactory.base.Interval;
 import br.com.six2six.fixturefactory.base.Range;
 import br.com.six2six.fixturefactory.base.Sequence;
 import br.com.six2six.fixturefactory.function.AssociationFunction;
+import br.com.six2six.fixturefactory.function.Chainable;
 import br.com.six2six.fixturefactory.function.FixtureFunction;
 import br.com.six2six.fixturefactory.function.Function;
 import br.com.six2six.fixturefactory.function.impl.AssociationFunctionImpl;
@@ -32,7 +33,6 @@ import br.com.six2six.fixturefactory.function.impl.NumberSequence;
 import br.com.six2six.fixturefactory.function.impl.RandomFunction;
 import br.com.six2six.fixturefactory.function.impl.RegexFunction;
 import br.com.six2six.fixturefactory.function.impl.SequenceFunction;
-import br.com.six2six.fixturefactory.util.Chainable;
 import br.com.six2six.fixturefactory.util.ReflectionUtils;
 
 import com.mdimension.jchronic.Options;

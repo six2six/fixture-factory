@@ -1,7 +1,4 @@
-package br.com.six2six.fixturefactory.util;
-
-import br.com.six2six.fixturefactory.function.AssociationFunction;
-import br.com.six2six.fixturefactory.function.Function;
+package br.com.six2six.fixturefactory.function;
 
 public interface Chainable {
 
@@ -10,5 +7,4 @@ public interface Chainable {
 	AssociationFunction of(Class<?> clazz, String... labels);
 
 	Function of(Class<? extends Enum<?>> clazz);
-	
 }
