@@ -1,5 +1,8 @@
 package br.com.six2six.fixturefactory.function;
 
+import java.util.Arrays;
+import java.util.List;
+
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.ObjectFactory;
 import br.com.six2six.fixturefactory.processor.Processor;
@@ -8,17 +11,22 @@ public class FixtureFunction implements AtomicFunction, RelationFunction {
 
 	private Class<?> clazz;
 
-	private String label;
+	private List<String> labels;
 	
 	private Integer quantity;
 
 	public FixtureFunction(Class<?> clazz, String label) {
 		this.clazz = clazz;
-		this.label = label;
+		this.labels = Arrays.asList(label);
 	}
 
 	public FixtureFunction(Class<?> clazz, String label, Integer quantity) {
-		this(clazz, label);
+		this(clazz, Arrays.asList(label), quantity);
+	}
+	
+	public FixtureFunction(Class<?> clazz, List<String> labels, Integer quantity) {
+		this.clazz = clazz;
+		this.labels = labels;
 		this.quantity = quantity;
 	}
 
@@ -44,6 +52,23 @@ public class FixtureFunction implements AtomicFunction, RelationFunction {
 
 	@SuppressWarnings("unchecked")
 	private <T> T generate(ObjectFactory objectFactory) {
-		return (T) (quantity != null ? objectFactory.gimme(quantity, label) : objectFactory.gimme(label));
+		if(quantity != null) {
+			return gimmeWithQuantity(objectFactory);
+		} else {
+			return (T) objectFactory.gimme(getLabel());
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T gimmeWithQuantity(ObjectFactory objectFactory) {
+		if(labels.size() == 1) {
+			return (T) objectFactory.gimme(quantity, getLabel());
+		} else {
+			return (T) objectFactory.gimme(quantity, labels);
+		}
+	}
+	
+	private String getLabel() {
+		return labels.get(0);
 	}
 }

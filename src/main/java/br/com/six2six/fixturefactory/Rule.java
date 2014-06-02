@@ -21,6 +21,7 @@ import br.com.six2six.fixturefactory.base.Interval;
 import br.com.six2six.fixturefactory.base.Range;
 import br.com.six2six.fixturefactory.base.Sequence;
 import br.com.six2six.fixturefactory.function.AssociationFunction;
+import br.com.six2six.fixturefactory.function.AssociationFunctionImpl;
 import br.com.six2six.fixturefactory.function.ChronicFunction;
 import br.com.six2six.fixturefactory.function.DateTimeFunction;
 import br.com.six2six.fixturefactory.function.FixtureFunction;
@@ -78,15 +79,11 @@ public class Rule {
     }
 	
 	public Chainable has(int quantity) {
-		return new AssociationFunction(quantity);
+		return new AssociationFunctionImpl(quantity);
 	}
 	
 	public AssociationFunction one(Class<?> clazz, String label) {
-		return new AssociationFunction(clazz, label);
-	}
-	
-	public Function one(Class<?> clazz, String label, String targetAttribute) {
-		return new AssociationFunction(clazz, label, targetAttribute);
+		return new AssociationFunctionImpl(clazz, label);
 	}
 	
 	public Function random(Class<?> clazz, Object... dataset) {
