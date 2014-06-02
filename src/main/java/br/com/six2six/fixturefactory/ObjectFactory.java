@@ -26,10 +26,8 @@ public class ObjectFactory {
 	private static final String NO_SUCH_LABEL_MESSAGE = "%s-> No such label: %s";
 	private static final String LABELS_AMOUNT_DOES_NOT_MATCH = "%s-> labels amount does not match asked quantity (%s)";
 	
-	protected TemplateHolder templateHolder;
-	
+	private TemplateHolder templateHolder;
 	private Object owner;
-
     private Processor processor;
 	
 	public ObjectFactory(TemplateHolder templateHolder) {
@@ -37,12 +35,12 @@ public class ObjectFactory {
 	}
 	
 	public ObjectFactory(TemplateHolder templateHolder, Object owner) {
-		this.templateHolder = templateHolder;
+		this(templateHolder);
 		this.owner = owner;
 	}
 
 	public ObjectFactory(TemplateHolder templateHolder, Processor owner) {
-	    this.templateHolder = templateHolder;
+		this(templateHolder);
 	    this.owner = owner;
 	}
 
