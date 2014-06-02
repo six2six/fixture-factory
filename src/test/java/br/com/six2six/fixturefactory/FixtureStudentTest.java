@@ -25,7 +25,6 @@ public class FixtureStudentTest {
 		Student student = Fixture.from(Student.class).gimme("valid");
 		assertNotNull("Student should not be null", student);
 		assertNotNull("Students id should not be null", student.getId());
-		assertTrue("Students it should be 1", student.getId() == 1);
 		assertTrue("Tests taken should be greather than 0", student.getTestsTaken() > 0);
 		assertTrue("Best score should be greather than 0", student.getTestsTaken() > 0);
 	}
@@ -35,25 +34,20 @@ public class FixtureStudentTest {
 		Student student = Fixture.from(Student.class).gimme("validFemaleStudent");
 		assertNotNull("Female Student should not be null", student);
 		assertNotNull("Students id should not be null", student.getId());
-		assertTrue("Students it should be 1", student.getId() == 200);
 	}
 	
 	@Test
 	public void fixtureSharedSequence() {
 		Student oneStudent = Fixture.from(Student.class).gimme("sharedSequence");
 		Student otherStudent = Fixture.from(Student.class).gimme("otherSharedSequence");
-		
-		assertTrue("Students id should be 1", oneStudent.getId() == 1L);
-		assertTrue("otherStudes id should be 2", otherStudent.getId() == 2L);
+		assertTrue(oneStudent.getId() < otherStudent.getId());
 	}
 	
 	 @Test
 	public void fixtureDefaultNumberSequence() {
 		 Student firstStudent = Fixture.from(Student.class).gimme("defaultNumberSequence");
 		 Student secoundStudent = Fixture.from(Student.class).gimme("defaultNumberSequence");
-		 
-		 assertTrue("First Students id should be 1", firstStudent.getId() == 1L);
-		 assertTrue("Secound Students id should be 2", secoundStudent.getId() == 2L);
+		 assertTrue(firstStudent.getId() < secoundStudent.getId());
 	}
 	 
 	 @Test
