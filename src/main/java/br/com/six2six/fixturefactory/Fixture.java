@@ -3,8 +3,6 @@ package br.com.six2six.fixturefactory;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import br.com.six2six.fixturefactory.processor.Processor;
-
 public class Fixture {
 
 	private static Map<Class<?>, TemplateHolder> templates = new LinkedHashMap<Class<?>, TemplateHolder>();
