@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 
 import org.junit.Test;
 
@@ -19,7 +19,8 @@ public class DateAsStringFunctionTest {
 		String dateString = "02/06/1991";
 		String pattern = "dd/MM/yyyy";
 		SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
-		Date date = dateFormat.parse(dateString);
+		Calendar date =  Calendar.getInstance();
+		date.setTime(dateFormat.parse(dateString));
 		
 		DateFunction dateFunction = mock(DateFunction.class);
 		when(dateFunction.generateValue()).thenReturn(date);
