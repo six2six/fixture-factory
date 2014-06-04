@@ -22,6 +22,7 @@ import br.com.six2six.fixturefactory.base.Range;
 import br.com.six2six.fixturefactory.base.Sequence;
 import br.com.six2six.fixturefactory.function.AssociationFunction;
 import br.com.six2six.fixturefactory.function.Chainable;
+import br.com.six2six.fixturefactory.function.DateFunction;
 import br.com.six2six.fixturefactory.function.FixtureFunction;
 import br.com.six2six.fixturefactory.function.Function;
 import br.com.six2six.fixturefactory.function.impl.AssociationFunctionImpl;
@@ -163,7 +164,7 @@ public class Rule {
 		return new SequenceFunction(new CalendarSequence(toCalendar(base, simpleDateFormat), interval));
 	}
 	
-	public Function instant(String dateText) {
+	public DateFunction instant(String dateText) {
 	    return new ChronicFunction(dateText);
 	}
 
