@@ -5,6 +5,7 @@ import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -27,7 +28,12 @@ public class FixtureClientTest {
 		Client client = Fixture.from(Client.class).gimme("valid");
 		assertNotNull("Client should not be null", client);
 		assertNotNull("Address should not be null", client.getAddress());
-		assertEquals("client birthday should be 18 years ago", client.getBirthday().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR) - 18);
+		
+		Calendar expectedAge = Calendar.getInstance();
+		expectedAge.add(Calendar.YEAR, -18);
+		String expectedStringBirthday = new SimpleDateFormat("dd/MM/yyyy").format(expectedAge.getTime());
+		assertEquals("client birthday should be 18 years ago", expectedAge.get(Calendar.YEAR), client.getBirthday().get(Calendar.YEAR));
+		assertEquals(expectedStringBirthday, client.getBirthdayAsString());
 	}
 	
 	@Test

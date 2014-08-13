@@ -12,6 +12,7 @@ public class Client implements Serializable {
 	private String nickname;
 	private String email;
 	private Calendar birthday;
+	private String birthdayAsString;
 	private Address address;
 	
 	private Client() { }
@@ -62,6 +63,12 @@ public class Client implements Serializable {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+	public String getBirthdayAsString() {
+		return birthdayAsString;
+	}
+	public void setBirthdayAsString(String birthdayAsString) {
+		this.birthdayAsString = birthdayAsString;
 	}
 
 	@Override
