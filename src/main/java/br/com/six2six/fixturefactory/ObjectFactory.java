@@ -39,9 +39,9 @@ public class ObjectFactory {
 		this.owner = owner;
 	}
 
-	public ObjectFactory(TemplateHolder templateHolder, Processor owner) {
+	public ObjectFactory(TemplateHolder templateHolder, Processor processor) {
 		this(templateHolder);
-	    this.owner = owner;
+	    this.processor = processor;
 	}
 
     public ObjectFactory uses(Processor processor) {

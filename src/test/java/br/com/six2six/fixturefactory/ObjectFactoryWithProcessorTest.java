@@ -95,4 +95,11 @@ public class ObjectFactoryWithProcessorTest {
 		verify(session).save(isA(Attribute.class));
 	}
 	
+	@Test
+	public void shouldSavePersistentFixtureAndHisChainedConstructorParameterRelation() {
+	    Fixture.from(Child.class).uses(processor).gimme("chained");
+		
+		verify(session).save(isA(Child.class));
+		verify(session).save(isA(Attribute.class));
+	}	
 }
