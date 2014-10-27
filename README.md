@@ -92,6 +92,22 @@ Example of loading templates with JUnit tests
 	    FixtureFactoryLoader.loadTemplates("br.com.six2six.template");
 	}
 
+### Processors
+
+You can also create `Processors` that will be executed after the object is created. For example, you may want to persist the created object in your database after it is created.  
+If you are using Hibernate, we already have a `HibernateProcessor` that persists all created objects into database using Hibernate.
+
+	Fixture.from(Client.class).uses(new HibernateProcessor(session)).gimme("valid");
+	
+The code above will generate a "valid" Client will persist it and his object tree into database using Hibernate.  
+You can also implement your own `Processors`. Just need to implement the `#execute` method of the `Processor` interface.
+
+	public class MyCustomProcessor implements Processor {
+		public void execute(Object object) {
+			//do something with the created object
+		}
+	}
+
 ### Relationship (one-to-one and one-to-many)
 
 	Fixture.of(Order.class).addTemplate("valid", new Rule(){{
