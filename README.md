@@ -100,7 +100,7 @@ If you are using Hibernate, we already have a `HibernateProcessor` that persists
 	Fixture.from(Client.class).uses(new HibernateProcessor(session)).gimme("valid");
 	
 The above code will generate a "valid" Client and persist to database using Hibernate.  
-e.g.: Client template has one `valid` Address, Fixture-Factory generate all Client's properties and when it finds the `address` property, it will generate the `valid` Address, execute the `HibernateProcessor` that will save it to the database and set it into Client's `address` property. After generate the Client object, it will execute the `HibernateProcessor` that will persist it to the database. 
+e.g.: Client template has one `valid` Address, Fixture-Factory will generate all Client's properties and when it finds the `address` property, it will generate the `valid` Address, execute the `HibernateProcessor` that will save it to the database and set it into Client's `address` property. After generate the Client object, it will execute the `HibernateProcessor` that will persist it to the database. 
 You can also implement your own `Processors`. Just need to implement the `#execute` method of the `Processor` interface.
 
 	public class MyCustomProcessor implements Processor {
