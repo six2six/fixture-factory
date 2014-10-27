@@ -99,7 +99,7 @@ If you are using Hibernate, we already have a `HibernateProcessor` that persists
 
 	Fixture.from(Client.class).uses(new HibernateProcessor(session)).gimme("valid");
 	
-The code above will generate a "valid" Client will persist it and his object tree into database using Hibernate.  
+The above code will generate a "valid" Client and will persist it and his object tree into database using Hibernate.  
 You can also implement your own `Processors`. Just need to implement the `#execute` method of the `Processor` interface.
 
 	public class MyCustomProcessor implements Processor {
