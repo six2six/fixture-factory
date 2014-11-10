@@ -94,21 +94,25 @@ Example of loading templates with JUnit tests
 
 ### Processors
 
-You can also create `Processors` that will be executed after the object is created. For example, you may want to persist the created object in your database after it is created.  
-If you are using Hibernate, we already have a `HibernateProcessor` that persists all created objects into database using Hibernate.
+Fixture-Factory comes with a simple mechanism to execute custom logic after the generation of each object.
+
+To do so, implement the Processor interface:
+
+ 	public class MyCustomProcessor implements Processor {
+   		public void execute(Object object) {
+     		//do something with the created object
+   		}
+ 	}
+
+And use it:
+
+	Fixture.from(SomeClass.class).uses(new MyCustomProcessor()).gimme("someTempalte");
+
+The #execute method will be called for each object that Fixture-Factory generates. For instance, if a Client has an Address, the framework will generate the Address, call #execute with the generated Address as argument, set the Address into the Client, call #execute with the generated Client as argument and then return it.  
+
+In case you want to persist the generated object in your database and you are using Hibernate, we already have a `HibernateProcessor` that persists all created objects using the provided session:
 
 	Fixture.from(Client.class).uses(new HibernateProcessor(session)).gimme("valid");
-	
-The above code will generate a "valid" Client and persist to database using Hibernate.  
-e.g.: Client template has one `valid` Address, Fixture-Factory will generate all Client's properties and when it finds the `address` property, it will generate the `valid` Address, execute the `HibernateProcessor` that will save it to the database and set it into Client's `address` property. After generate the Client object, it will execute the `HibernateProcessor` that will persist it to the database.  
-  
-You can also implement your own `Processors`. Just need to implement the `#execute` method of the `Processor` interface.
-
-	public class MyCustomProcessor implements Processor {
-		public void execute(Object object) {
-			//do something with the created object
-		}
-	}
 
 ### Relationship (one-to-one and one-to-many)
 
