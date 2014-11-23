@@ -20,9 +20,11 @@ public class AssociationFunctionImpl implements AssociationFunction {
 	private Class<?> clazz;
 	private List<String> labels;
 	private Integer quantity;
+    private boolean unique;
 
-	public AssociationFunctionImpl(Integer quantity) {
+    public AssociationFunctionImpl(Integer quantity) {
 		this.quantity = quantity;
+        this.unique = false;
 	}
 	
 	public AssociationFunctionImpl(Class<?> clazz, String label) {
@@ -46,7 +48,7 @@ public class AssociationFunctionImpl implements AssociationFunction {
 	
 	@Override
 	public <T> T generateValue(Object owner) {
-		T target = new FixtureFunction(clazz, labels, quantity).generateValue(owner);
+		T target = new FixtureFunction(clazz, labels, quantity, unique).generateValue(owner);
 		
 		if (target instanceof Collection<?>) {
 			for (Object item : (Collection<?>) target) {
@@ -73,8 +75,14 @@ public class AssociationFunctionImpl implements AssociationFunction {
 		
 		return target;
 	}
-	
-	@Override
+
+    @Override
+    public AssociationFunction unique() {
+        this.unique = true;
+        return this;
+    }
+
+    @Override
 	public AssociationFunction of(Class<?> clazz, String label) {
 		this.clazz = clazz;
 		this.labels = Arrays.asList(label);

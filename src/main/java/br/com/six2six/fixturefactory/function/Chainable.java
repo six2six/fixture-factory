@@ -1,6 +1,7 @@
 package br.com.six2six.fixturefactory.function;
 
 public interface Chainable {
+    AssociationFunction unique();
 
 	AssociationFunction of(Class<?> clazz, String label);
 	

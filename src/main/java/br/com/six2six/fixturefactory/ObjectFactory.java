@@ -25,11 +25,12 @@ public class ObjectFactory {
 	
 	private static final String NO_SUCH_LABEL_MESSAGE = "%s-> No such label: %s";
 	private static final String LABELS_AMOUNT_DOES_NOT_MATCH = "%s-> labels amount does not match asked quantity (%s)";
-	
-	private TemplateHolder templateHolder;
+
+    private TemplateHolder templateHolder;
 	private Object owner;
     private Processor processor;
-	
+    private boolean unique = false;
+
 	public ObjectFactory(TemplateHolder templateHolder) {
 		this.templateHolder = templateHolder;
 	}
@@ -38,6 +39,12 @@ public class ObjectFactory {
 		this(templateHolder);
 		this.owner = owner;
 	}
+
+    public ObjectFactory(TemplateHolder templateHolder, Object owner, boolean unique) {
+        this(templateHolder);
+        this.owner = owner;
+        this.unique = unique;
+    }
 
 	public ObjectFactory(TemplateHolder templateHolder, Processor processor) {
 		this(templateHolder);
@@ -68,7 +75,7 @@ public class ObjectFactory {
 
 		return this.createObjects(quantity, rule);
 	}
-	
+
 	public <T> List<T> gimme(Integer quantity, String... labels) {
 		return gimme(quantity, Arrays.asList(labels));
 	}
@@ -225,5 +232,4 @@ public class ObjectFactory {
         
         return transformerChain;
 	}
-	
 }

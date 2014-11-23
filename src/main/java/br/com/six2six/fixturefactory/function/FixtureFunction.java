@@ -9,11 +9,13 @@ import br.com.six2six.fixturefactory.processor.Processor;
 
 public class FixtureFunction implements AtomicFunction, RelationFunction {
 
-	private Class<?> clazz;
+    private Class<?> clazz;
 
 	private List<String> labels;
 	
 	private Integer quantity;
+
+    private boolean unique;
 
 	public FixtureFunction(Class<?> clazz, String label) {
 		this.clazz = clazz;
@@ -25,12 +27,17 @@ public class FixtureFunction implements AtomicFunction, RelationFunction {
 	}
 	
 	public FixtureFunction(Class<?> clazz, List<String> labels, Integer quantity) {
-		this.clazz = clazz;
-		this.labels = labels;
-		this.quantity = quantity;
+        this(clazz, labels, quantity, false);
 	}
 
-	@Override
+    public FixtureFunction(Class<?> clazz, List<String> labels, Integer quantity, boolean unique) {
+        this.clazz = clazz;
+        this.labels = labels;
+        this.quantity = quantity;
+        this.unique = unique;
+    }
+
+    @Override
 	public <T> T generateValue() {
 		return generate(Fixture.from(clazz));
 	}
@@ -42,7 +49,7 @@ public class FixtureFunction implements AtomicFunction, RelationFunction {
 	
 	@Override
 	public <T> T generateValue(Object owner) {
-		return generate(new ObjectFactory(Fixture.of(clazz), owner));
+		return generate(new ObjectFactory(Fixture.of(clazz), owner, unique));
 	}
 
 	@Override
