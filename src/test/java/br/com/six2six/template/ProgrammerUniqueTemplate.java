@@ -14,6 +14,16 @@ public class ProgrammerUniqueTemplate implements TemplateLoader {
             add("skills", has(2).unique().of(Skill.class, "valid"));
         }});
 
+        Fixture.of(Programmer.class).addTemplate("valid_custom_retry", new Rule() {{
+            add("name", firstName());
+            add("skills", has(2).unique(8).of(Skill.class, "valid"));
+        }});
+
+        Fixture.of(Programmer.class).addTemplate("invalid", new Rule() {{
+            add("name", firstName());
+            add("skills", has(3).unique().of(Skill.class, "valid"));
+        }});
+
         Fixture.of(Skill.class).addTemplate("valid", new Rule() {{
             add("name", random("Java", "JavaScript"));
         }});

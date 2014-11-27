@@ -17,6 +17,8 @@ public class FixtureFunction implements AtomicFunction, RelationFunction {
 
     private boolean unique;
 
+    private int retryTimes;
+
 	public FixtureFunction(Class<?> clazz, String label) {
 		this.clazz = clazz;
 		this.labels = Arrays.asList(label);
@@ -27,14 +29,15 @@ public class FixtureFunction implements AtomicFunction, RelationFunction {
 	}
 	
 	public FixtureFunction(Class<?> clazz, List<String> labels, Integer quantity) {
-        this(clazz, labels, quantity, false);
+        this(clazz, labels, quantity, false, 0);
 	}
 
-    public FixtureFunction(Class<?> clazz, List<String> labels, Integer quantity, boolean unique) {
+    public FixtureFunction(Class<?> clazz, List<String> labels, Integer quantity, boolean unique, int retryTimes) {
         this.clazz = clazz;
         this.labels = labels;
         this.quantity = quantity;
         this.unique = unique;
+        this.retryTimes = retryTimes;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class FixtureFunction implements AtomicFunction, RelationFunction {
 	
 	@Override
 	public <T> T generateValue(Object owner) {
-		return generate(new ObjectFactory(Fixture.of(clazz), owner, unique));
+		return generate(new ObjectFactory(Fixture.of(clazz), owner, unique, retryTimes));
 	}
 
 	@Override

@@ -25,11 +25,13 @@ public class ObjectFactory {
 	
 	private static final String NO_SUCH_LABEL_MESSAGE = "%s-> No such label: %s";
 	private static final String LABELS_AMOUNT_DOES_NOT_MATCH = "%s-> labels amount does not match asked quantity (%s)";
+    private static final String COULD_NOT_GENERATE_UNIQUE = "%s-> Could not generate unique values";
 
     private TemplateHolder templateHolder;
 	private Object owner;
     private Processor processor;
     private boolean unique = false;
+    private int retryTimes;
 
 	public ObjectFactory(TemplateHolder templateHolder) {
 		this.templateHolder = templateHolder;
@@ -40,10 +42,11 @@ public class ObjectFactory {
 		this.owner = owner;
 	}
 
-    public ObjectFactory(TemplateHolder templateHolder, Object owner, boolean unique) {
+    public ObjectFactory(TemplateHolder templateHolder, Object owner, boolean unique, int retryTimes) {
         this(templateHolder);
         this.owner = owner;
         this.unique = unique;
+        this.retryTimes = retryTimes;
     }
 
 	public ObjectFactory(TemplateHolder templateHolder, Processor processor) {
@@ -129,14 +132,14 @@ public class ObjectFactory {
         for (int i = 0; i < quantity; i++) {
             T result = (T) this.createObject(rule);
             if (this.unique) {
-                int retry = 10;
+                int retry = this.retryTimes;
                 while (retry > 0 && results.contains(result)) {
                     result = (T) this.createObject(rule);
                     retry--;
                 }
 
                 if (results.contains(result))
-                    throw new RuntimeException("Could not generate unique value");
+                    throw new RuntimeException(String.format(COULD_NOT_GENERATE_UNIQUE, templateHolder.getClazz().getName()));
             }
             results.add(result);
 		}	
