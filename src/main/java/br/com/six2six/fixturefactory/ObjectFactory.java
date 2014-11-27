@@ -129,25 +129,33 @@ public class ObjectFactory {
 	protected <T> List<T> createObjects(int quantity, Rule rule) {
 		List<T> results = new ArrayList<T>(quantity);
 
+        T result;
         for (int i = 0; i < quantity; i++) {
-            T result = (T) this.createObject(rule);
-            if (this.unique) {
-                int retry = this.retryTimes;
-                while (retry > 0 && results.contains(result)) {
-                    result = (T) this.createObject(rule);
-                    retry--;
-                }
-
-                if (results.contains(result))
-                    throw new RuntimeException(String.format(COULD_NOT_GENERATE_UNIQUE, templateHolder.getClazz().getName()));
-            }
+            if (this.unique)
+                result = this.createUniqueObject(rule, results);
+            else
+                result = (T) this.createObject(rule);
             results.add(result);
 		}	
 
 		return results;
 	}
-	
-	@SuppressWarnings("unchecked")
+
+    @SuppressWarnings("unchecked")
+    private <T> T createUniqueObject(Rule rule, List<T> results) {
+        int retry = this.retryTimes;
+        T result = (T) this.createObject(rule);
+        while (retry > 0 && results.contains(result)) {
+            result = (T) this.createObject(rule);
+            retry--;
+        }
+
+        if (results.contains(result))
+            throw new RuntimeException(String.format(COULD_NOT_GENERATE_UNIQUE, templateHolder.getClazz().getName()));
+        return result;
+    }
+
+    @SuppressWarnings("unchecked")
 	protected <T> List<T> createObjects(int quantity, List<Rule> rules) {
 		List<T> results = new ArrayList<T>(quantity);
 		for (int i = 0; i < quantity; i++) {
