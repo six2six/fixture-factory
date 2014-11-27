@@ -125,8 +125,20 @@ public class ObjectFactory {
 	@SuppressWarnings("unchecked")
 	protected <T> List<T> createObjects(int quantity, Rule rule) {
 		List<T> results = new ArrayList<T>(quantity);
-		for (int i = 0; i < quantity; i++) {
-			results.add((T) this.createObject(rule));
+
+        for (int i = 0; i < quantity; i++) {
+            T result = (T) this.createObject(rule);
+            if (this.unique) {
+                int retry = 10;
+                while (retry > 0 && results.contains(result)) {
+                    result = (T) this.createObject(rule);
+                    retry--;
+                }
+
+                if (results.contains(result))
+                    throw new RuntimeException("Could not generate unique value");
+            }
+            results.add(result);
 		}	
 
 		return results;

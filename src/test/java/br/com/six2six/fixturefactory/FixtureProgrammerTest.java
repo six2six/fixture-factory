@@ -16,8 +16,8 @@ public class FixtureProgrammerTest {
     }
 
     @Test
-    public void test() throws Exception {
-        List<Programmer> programmers = Fixture.from(Programmer.class).gimme(5, "valid");
+    public void testWithSuccessUsingDefaultRetry() throws Exception {
+        List<Programmer> programmers = Fixture.from(Programmer.class).gimme(50, "valid");
 
         for (Programmer programmer : programmers) {
             Skill skill1 = programmer.getSkills().get(0);
