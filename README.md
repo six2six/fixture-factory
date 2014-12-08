@@ -92,6 +92,28 @@ Example of loading templates with JUnit tests
 	    FixtureFactoryLoader.loadTemplates("br.com.six2six.template");
 	}
 
+### Processors
+
+Fixture-Factory comes with a simple mechanism to execute custom logic after the generation of each object.
+
+To do so, implement the Processor interface:
+
+ 	public class MyCustomProcessor implements Processor {
+   		public void execute(Object object) {
+     		//do something with the created object
+   		}
+ 	}
+
+And use it:
+
+	Fixture.from(SomeClass.class).uses(new MyCustomProcessor()).gimme("someTempalte");
+
+The #execute method will be called for each object that Fixture-Factory generates. For instance, if a Client has an Address, the framework will generate the Address, call #execute with the generated Address as argument, set the Address into the Client, call #execute with the generated Client as argument and then return it.  
+
+In case you want to persist the generated object in your database and you are using Hibernate, we already have a `HibernateProcessor` that persists all created objects using the provided session:
+
+	Fixture.from(Client.class).uses(new HibernateProcessor(session)).gimme("valid");
+
 ### Relationship (one-to-one and one-to-many)
 
 	Fixture.of(Order.class).addTemplate("valid", new Rule(){{
