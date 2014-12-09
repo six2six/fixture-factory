@@ -1,6 +1,9 @@
 package br.com.six2six.fixturefactory.function;
 
 public interface Chainable {
+    AssociationFunction unique();
+
+    AssociationFunction unique(int retryTimes);
 
 	AssociationFunction of(Class<?> clazz, String label);
 	

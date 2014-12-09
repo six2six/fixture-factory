@@ -4,3 +4,9 @@
 .settings
 /target
 /bin
+
+#Intellij
+*.iml
+
+## Directory-based project format:
+.idea/
