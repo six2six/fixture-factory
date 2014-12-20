@@ -106,7 +106,7 @@ To do so, implement the Processor interface:
 
 And use it:
 
-	Fixture.from(SomeClass.class).uses(new MyCustomProcessor()).gimme("someTempalte");
+	Fixture.from(SomeClass.class).uses(new MyCustomProcessor()).gimme("someTemplate");
 
 The #execute method will be called for each object that Fixture-Factory generates. For instance, if a Client has an Address, the framework will generate the Address, call #execute with the generated Address as argument, set the Address into the Client, call #execute with the generated Client as argument and then return it.  
 
