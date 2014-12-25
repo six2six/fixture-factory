@@ -73,6 +73,6 @@ public class UniqueRandomFunctionTest {
 			enumValuesSet.remove(enumMock);
 		}
 		
-		assertTrue(enumValuesSet.isEmpty());
+		assertTrue("Not all generated enum values were unique.", enumValuesSet.isEmpty());
 	}
 }
