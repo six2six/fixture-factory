@@ -12,18 +12,24 @@ public class UniqueRandomFunction implements AtomicFunction{
 	
 	public UniqueRandomFunction(int minValue, int maxValue) {
 		if(minValue >= maxValue) {
-			throw new IllegalArgumentException("maxValue cannot be greater than minValue");
+			throw new IllegalArgumentException("maxValue cannot be greater than minValue.");
 		}
 		this.dataset = this.initIntegerDataset(minValue, maxValue);
 		this.shuffleDataset();
 	}
 	
 	public UniqueRandomFunction(Object[] dataset) {
+		if(dataset.length == 0) {
+			throw new IllegalArgumentException("provided dataset has no elements.");
+		}
 		this.dataset = dataset;
 		this.shuffleDataset();
 	}
 	
 	public UniqueRandomFunction(Class<? extends Enum<?>> clazz) {
+		if(clazz.getEnumConstants().length == 0) {
+			throw new IllegalArgumentException("Enum has no values.");
+		}
 		this.dataset = clazz.getEnumConstants();
 		this.shuffleDataset();
 	}
