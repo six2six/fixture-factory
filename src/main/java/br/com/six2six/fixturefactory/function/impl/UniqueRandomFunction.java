@@ -8,24 +8,24 @@ public class UniqueRandomFunction implements AtomicFunction{
 
 	private Object[] dataset;
 	
-	private int nextValueIndex;
+	private int nextValueIndex = 0;
 	
 	public UniqueRandomFunction(int minValue, int maxValue) {
+		if(minValue >= maxValue) {
+			throw new IllegalArgumentException("maxValue cannot be greater than minValue");
+		}
 		this.dataset = this.initIntegerDataset(minValue, maxValue);
 		this.shuffleDataset();
-		this.nextValueIndex = 0;
 	}
 	
 	public UniqueRandomFunction(Object[] dataset) {
 		this.dataset = dataset;
 		this.shuffleDataset();
-		this.nextValueIndex = 0;
 	}
 	
 	public UniqueRandomFunction(Class<? extends Enum<?>> clazz) {
 		this.dataset = clazz.getEnumConstants();
 		this.shuffleDataset();
-		this.nextValueIndex = 0;
 	}
 	
 	private Object[] initIntegerDataset(int minValue, int maxValue) {
@@ -41,29 +41,23 @@ public class UniqueRandomFunction implements AtomicFunction{
 	
 	private void shuffleDataset() {
 		Random random = new Random();
-		int iterator, shufflePosition;
-		Object temp;
-		for(iterator = dataset.length - 1; iterator > 0; iterator--) {
+		for(int shufflePosition = 0, iterator = dataset.length - 1; iterator > 0; iterator--) {
 			shufflePosition = random.nextInt(iterator);
-			temp = dataset[iterator];
+			Object temp = dataset[iterator];
 			dataset[iterator] = dataset[shufflePosition];
 			dataset[shufflePosition] = temp;
-		}
-	}
-	
-	private Object getNext() {
-		try {
-			Object nextValue = this.dataset[this.nextValueIndex];
-			this.nextValueIndex ++;
-			return nextValue;
-		} catch(ArrayIndexOutOfBoundsException e) {
-			return null;
 		}
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T generateValue() {
-		return (T) this.getNext();
+		try {
+			Object nextValue = this.dataset[this.nextValueIndex];
+			this.nextValueIndex ++;
+			return (T)nextValue;
+		} catch(ArrayIndexOutOfBoundsException e) {
+			return null;
+		}
 	}
 }
