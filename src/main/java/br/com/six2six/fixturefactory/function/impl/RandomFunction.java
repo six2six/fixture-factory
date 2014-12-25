@@ -85,7 +85,9 @@ public class RandomFunction implements AtomicFunction {
                 result = new BigDecimal(random.nextDouble(), this.mathContext);
 
             } else {
-                result = getRandomBigDecimal((BigDecimal) this.range.getStart(), (BigDecimal) this.range.getEnd());
+
+                result = getRandomBigDecimalByRange();
+
             }
 
         } else if (this.type.isAssignableFrom(BigInteger.class)) {
@@ -93,9 +95,9 @@ public class RandomFunction implements AtomicFunction {
                 result = new BigInteger(64, random);
 
             } else {
-                BigDecimal start = new BigDecimal((BigInteger) range.getStart());
-                BigDecimal end = new BigDecimal((BigInteger) range.getEnd());
-                result = getRandomBigDecimal(start, end).toBigInteger();
+
+                result = getRandomBigDecimalByRange().toBigInteger();
+
             }
         }
 
@@ -113,5 +115,11 @@ public class RandomFunction implements AtomicFunction {
     private BigDecimal getRandomBigDecimal(BigDecimal start, BigDecimal end) {
         int scale = start.scale() > end.scale() ? start.scale() : end.scale();
         return start.add(new BigDecimal(Math.random()).multiply(end.subtract(start))).setScale(scale, RoundingMode.HALF_EVEN);
+    }
+
+    private BigDecimal getRandomBigDecimalByRange() {
+        final BigDecimal start = new BigDecimal(this.range.getStart().toString());
+        final BigDecimal end = new BigDecimal(this.range.getEnd().toString());
+        return getRandomBigDecimal(start, end);
     }
 }

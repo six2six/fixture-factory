@@ -78,10 +78,32 @@ public class RandomFunctionTest {
 	}
 
 	@Test
+	public void randomBigDecimalUsingRange() {
+		RandomFunction random = new RandomFunction(BigDecimal.class, new Range(1, 1000));
+		BigDecimal bigDecimal = random.generateValue();
+
+		assertNotNull("Generated BigDecimal must not be null", bigDecimal);
+		assertTrue("Generated value must be a BigDecimal", bigDecimal instanceof BigDecimal);
+		assertTrue(bigDecimal.compareTo(new BigDecimal("1")) >= 0);
+		assertTrue(bigDecimal.compareTo(new BigDecimal("1000")) <= 0);
+	}
+
+	@Test
 	public void randomBigIntegerTest() {
 	    Object value = new RandomFunction(BigInteger.class).generateValue();
 	    assertNotNull("Generated BigInteger must not be null", value);
 	    assertTrue("Generated value is not a BigInteger", value instanceof BigInteger);
+	}
+
+	@Test
+	public void randomBigIntegerTestUsingRange() {
+		RandomFunction random = new RandomFunction(BigInteger.class, new Range(1, 1000));
+		BigInteger bigInteger = random.generateValue();
+
+		assertNotNull("Generated BigInteger must not be null", bigInteger);
+		assertTrue("Generated value is not a BigInteger", bigInteger instanceof BigInteger);
+		assertTrue(bigInteger.compareTo(new BigInteger("1")) >= 0);
+		assertTrue(bigInteger.compareTo(new BigInteger("1000")) <= 0);
 	}
 
 	@Test
