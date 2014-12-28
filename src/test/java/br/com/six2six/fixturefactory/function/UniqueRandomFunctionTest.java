@@ -75,4 +75,47 @@ public class UniqueRandomFunctionTest {
 		
 		assertTrue("Not all generated enum values were unique.", enumValuesSet.isEmpty());
 	}
+	
+	@Test(expected=RuntimeException.class)
+	public void shouldThrowRuntimeExceptionWhenNoMoreIntegerValuesExist() {
+		UniqueRandomFunction function = new UniqueRandomFunction(0, 10);
+		for(int i = 0; i <= 10; i++) {
+			function.generateValue();
+		}
+		
+		function.generateValue();
+			
+	}
+	
+	@Test(expected=RuntimeException.class)
+	public void shouldThrowRuntimeExceptionWhenNoMoreFixedValuesExist() {
+		UniqueRandomFunction function = new UniqueRandomFunction(new String[]{
+				"Brazil", 
+				"Argentina", 
+				"Chile", 
+				"Uruguay", 
+				"Germany", 
+				"Colombia", 
+				"Australia",
+				"Canada",
+				"United States",
+				"France"});
+		for(int i = 0; i <= 10; i++) {
+			function.generateValue();
+		}
+		
+		function.generateValue();
+			
+	}
+	
+	@Test(expected=RuntimeException.class)
+	public void shouldThrowRuntimeExceptionWhenNoMoreEnumValuesExist() {
+		UniqueRandomFunction function = new UniqueRandomFunction(EnumMock.class);
+		for(int i = 0; i <= 10; i++) {
+			function.generateValue();
+		}
+		
+		function.generateValue();
+			
+	}
 }

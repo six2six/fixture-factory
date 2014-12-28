@@ -58,12 +58,14 @@ public class UniqueRandomFunction implements AtomicFunction{
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T generateValue() {
-		try {
-			Object nextValue = this.dataset[this.nextValueIndex];
-			this.nextValueIndex ++;
-			return (T)nextValue;
-		} catch(ArrayIndexOutOfBoundsException e) {
-			return null;
+		
+		if(this.nextValueIndex >= this.dataset.length) {
+			throw new RuntimeException("No more values to be generated."); 
 		}
+		
+		Object nextValue = this.dataset[this.nextValueIndex];
+		this.nextValueIndex ++;
+		return (T)nextValue;
+		
 	}
 }
