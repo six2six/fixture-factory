@@ -118,7 +118,8 @@ public class ReflectionUtils {
 		Paranamer paranamer = new AdaptiveParanamer();
 		
 		for (Constructor<T> constructor : new Mirror().on(target).reflectAll().constructors()) {
-			List<String> constructorParameterNames = Arrays.asList(paranamer.lookupParameterNames(constructor, false));
+		    List<String> constructorParameterNames = lookupParameterNames(paranamer, constructor);
+		    
 			if (result.size() < constructorParameterNames.size()) {
 				if (names.containsAll(constructorParameterNames) 
 						&& constructorParameterTypesMatch(target, constructorParameterNames, Arrays.asList(constructor.getParameterTypes())))
@@ -126,6 +127,17 @@ public class ReflectionUtils {
 			}
 		}
 		return result;
+    }
+
+    private static <T> List<String> lookupParameterNames(Paranamer paranamer, Constructor<T> ctor) {
+        String[] paramNames = paranamer.lookupParameterNames(ctor, false);
+
+        // as of jdk8, javac adds the "this$n" in the debug info.
+        if (isInnerClass(ctor.getDeclaringClass()) && paramNames[0].startsWith("this$")) {
+            paramNames = Arrays.copyOfRange(paramNames, 1, paramNames.length);
+        }
+
+        return Arrays.asList(paramNames);
     }
     
     private static boolean constructorParameterTypesMatch(Class<?> target, List<String> parameterNames, List<Class<?>> parameterTypes) {
