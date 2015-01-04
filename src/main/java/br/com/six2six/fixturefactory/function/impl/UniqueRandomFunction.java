@@ -60,7 +60,7 @@ public class UniqueRandomFunction implements AtomicFunction{
 	public <T> T generateValue() {
 		
 		if(this.nextValueIndex >= this.dataset.length) {
-			throw new RuntimeException("No more values to be generated."); 
+			this.nextValueIndex = 0; 
 		}
 		
 		Object nextValue = this.dataset[this.nextValueIndex];
