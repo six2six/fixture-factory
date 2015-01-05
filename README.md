@@ -153,6 +153,17 @@ In case you want to persist the generated object in your database and you are us
 		add("lastName", lastName());
 	});
 
+### Unique random
+	
+	Fixture.of(Any.class).addTemplate("valid", new Rule() {{
+		add("country", "Brazil");
+		add("state", uniqueRandom("São Paulo", "Rio de Janeiro", "Minas Gerais", "Bahia"));
+	}});
+
+The attribute state of this fixture will contain an unique value each time it is generated. 
+Note that if this fixture is generated more times than there are available state values, the state values will start to repeat.
+
+
 You can see more utilization on [tests](https://github.com/six2six/fixture-factory/tree/master/src/test/java/br/com/six2six/fixturefactory)!
 
 ## Contributing

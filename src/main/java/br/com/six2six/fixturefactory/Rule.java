@@ -34,6 +34,7 @@ import br.com.six2six.fixturefactory.function.impl.NumberSequence;
 import br.com.six2six.fixturefactory.function.impl.RandomFunction;
 import br.com.six2six.fixturefactory.function.impl.RegexFunction;
 import br.com.six2six.fixturefactory.function.impl.SequenceFunction;
+import br.com.six2six.fixturefactory.function.impl.UniqueRandomFunction;
 import br.com.six2six.fixturefactory.util.ReflectionUtils;
 
 import com.mdimension.jchronic.Options;
@@ -101,6 +102,18 @@ public class Rule {
 	
 	public Function random(Class<?> clazz, Range range) {
 		return new RandomFunction(clazz, range);
+	}
+	
+	public Function uniqueRandom(int minValue, int maxValue) {
+		return new UniqueRandomFunction(minValue, maxValue);
+	}
+	
+	public Function uniqueRandom(Object... dataset) {
+		return new UniqueRandomFunction(dataset);
+	}
+	
+	public Function uniqueRandom(Class<? extends Enum<?>> clazz) {
+		return new UniqueRandomFunction(clazz);
 	}
 
 	public Function name() {
