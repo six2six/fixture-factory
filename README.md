@@ -163,6 +163,12 @@ In case you want to persist the generated object in your database and you are us
 The attribute state of this fixture will contain an unique value each time it is generated. 
 Note that if this fixture is generated more times than there are available state values, the state values will start to repeat.
 
+### CNPJ
+
+	Fixture.of(User.class).addTemplate("valid", new Rule() {{
+		add("cnpj", cnpj()); // this will generate an unformatted CNPJ e.g. 11111111111111
+		add("cnpj", cnpj(true)); this will generate a formatted CNPJ e.g. 11.111.111/1111-11
+	}});
 
 You can see more utilization on [tests](https://github.com/six2six/fixture-factory/tree/master/src/test/java/br/com/six2six/fixturefactory)!
 

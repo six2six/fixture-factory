@@ -27,6 +27,7 @@ import br.com.six2six.fixturefactory.function.FixtureFunction;
 import br.com.six2six.fixturefactory.function.Function;
 import br.com.six2six.fixturefactory.function.impl.AssociationFunctionImpl;
 import br.com.six2six.fixturefactory.function.impl.ChronicFunction;
+import br.com.six2six.fixturefactory.function.impl.CnpjFunction;
 import br.com.six2six.fixturefactory.function.impl.DateTimeFunction;
 import br.com.six2six.fixturefactory.function.impl.IdentityFunction;
 import br.com.six2six.fixturefactory.function.impl.NameFunction;
@@ -183,6 +184,14 @@ public class Rule {
 
     public Function instant(String dateText, Options options) {
         return new ChronicFunction(dateText, options);
+    }
+    
+    public Function cnpj() {
+    	return new CnpjFunction();
+    }
+    
+    public Function cnpj(boolean formatted) {
+    	return new CnpjFunction(formatted);
     }
 	
 	public Interval increment(int interval) {
