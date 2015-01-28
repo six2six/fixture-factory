@@ -122,13 +122,11 @@ public class ObjectFactory {
 	}
 
 	private Set<Property> getPropertiesNotUsedInConstructor(Map<String, Property> constructorArguments, List<String> parameterNames) {
-		Set<Property> propertiesNotUsedInConstructor = new HashSet<Property>(constructorArguments.values());
-		Set<Property> parameterProperties = new HashSet<Property>();
+		Map<String, Property> propertiesNotUsedInConstructor = new HashMap<String, Property>(constructorArguments);
 		for(String parameterName : parameterNames) {
-			parameterProperties.add(new Property(parameterName, "fakeValue"));
+			propertiesNotUsedInConstructor.remove(parameterName);
 		}
-		propertiesNotUsedInConstructor.removeAll(parameterProperties);
-		return propertiesNotUsedInConstructor;
+		return new HashSet<Property>(propertiesNotUsedInConstructor.values());
 	}
 	
 	@SuppressWarnings("unchecked")
