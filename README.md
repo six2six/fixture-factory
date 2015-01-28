@@ -51,6 +51,10 @@ Gimme one object from label "valid"
 Gimme N objects from label "valid"
 
 	List<Client> clients = Fixture.from(Client.class).gimme(5, "valid");
+	
+Gimme N objects each one from one label
+
+	List<Client> clients = Fixture.from(Client.class).gimme(2, "valid", "invalid");
 
 Additional helper functions to create generic template:
 
@@ -119,6 +123,7 @@ In case you want to persist the generated object in your database and you are us
 	Fixture.of(Order.class).addTemplate("valid", new Rule(){{
 		add("id", random(Long.class, range(1L, 200L)));
 		add("items", has(3).of(Item.class, "valid"));
+		// add("items", has(3).of(Item.class, "valid", "invalid", "external")); this will generate three Item, each one from one of the given templates
 		add("payment", one(Payment.class, "valid"));
 	}});
 
