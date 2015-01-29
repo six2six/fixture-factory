@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -88,7 +90,7 @@ public class ObjectFactory {
 	}
 
 	protected Object createObject(Rule rule) {
-		Map<String, Object> constructorArguments = new HashMap<String, Object>();
+		Map<String, Property> constructorArguments = new HashMap<String, Property>();
 		List<Property> deferredProperties = new ArrayList<Property>();
 		Class<?> clazz = templateHolder.getClazz();
 		
@@ -96,14 +98,19 @@ public class ObjectFactory {
 										lookupConstructorParameterNames(clazz, rule.getProperties()) : new ArrayList<String>();
 		
 		for (Property property : rule.getProperties()) {
-			if (parameterNames.contains(property.getRootAttribute())) {
-				constructorArguments.put(property.getName(), generateConstructorParamValue(property));
+			if(parameterNames.contains(property.getRootAttribute())) {
+				constructorArguments.put(property.getName(), property);
 			} else {
 				deferredProperties.add(property);
 			}
 		}
 		
 		Object result = ReflectionUtils.newInstance(clazz, processConstructorArguments(parameterNames, constructorArguments));
+		
+		Set<Property> propertiesNotUsedInConstructor = getPropertiesNotUsedInConstructor(constructorArguments, parameterNames);
+		if(propertiesNotUsedInConstructor.size() > 0) {
+			deferredProperties.addAll(propertiesNotUsedInConstructor);
+		}
 		
 		for (Property property : deferredProperties) {
 			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), processPropertyValue(result, property));
@@ -113,6 +120,14 @@ public class ObjectFactory {
 		    processor.execute(result);
 		}
 		return result;
+	}
+
+	private Set<Property> getPropertiesNotUsedInConstructor(Map<String, Property> constructorArguments, List<String> parameterNames) {
+		Map<String, Property> propertiesNotUsedInConstructor = new HashMap<String, Property>(constructorArguments);
+		for(String parameterName : parameterNames) {
+			propertiesNotUsedInConstructor.remove(parameterName);
+		}
+		return new HashSet<Property>(propertiesNotUsedInConstructor.values());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -166,24 +181,34 @@ public class ObjectFactory {
 	    }
 	}
 
-	protected List<Object> processConstructorArguments(List<String> parameterNames, Map<String, Object> arguments) {
+	protected List<Object> processConstructorArguments(List<String> parameterNames, Map<String, Property> arguments) {
 		List<Object> values = new ArrayList<Object>();
+		Map<String, Object> processedArguments = processArguments(arguments); 
 		
 		if (owner != null && ReflectionUtils.isInnerClass(templateHolder.getClazz()))  {
 			values.add(owner);	
 		}
 		
-        TransformerChain transformerChain = buildTransformerChain(new ParameterPlaceholderTransformer(arguments));
+        TransformerChain transformerChain = buildTransformerChain(new ParameterPlaceholderTransformer(processedArguments));
 		
 		for (String parameterName : parameterNames) {
 			Class<?> fieldType = ReflectionUtils.invokeRecursiveType(templateHolder.getClazz(), parameterName);
-			Object result = arguments.get(parameterName);
+			Object result = processedArguments.get(parameterName);
 			if (result == null) {
-				result = processChainedProperty(parameterName, fieldType, arguments);	
+				result = processChainedProperty(parameterName, fieldType, processedArguments);	
 			}
 			values.add(transformerChain.transform(result, fieldType));
 		}
 		return values;
+	}
+	
+	private Map<String, Object> processArguments(Map<String, Property> arguments) {
+		Map<String, Object> processedArguments = new HashMap<String, Object>();
+		for(Entry<String, Property> entry : arguments.entrySet()) {
+			processedArguments.put(entry.getKey(), generateConstructorParamValue(entry.getValue()));
+		}
+		
+		return processedArguments;
 	}
 
 	protected Object processChainedProperty(String parameterName, Class<?> fieldType, Map<String, Object> arguments) {

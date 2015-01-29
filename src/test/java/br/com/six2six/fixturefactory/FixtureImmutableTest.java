@@ -96,4 +96,14 @@ public class FixtureImmutableTest {
         assertThat(child.getParentAttribute().getValue().length(), is(8));
         assertThat(child.getChildAttribute().length(), is(16));
     }
+    
+    @Test
+    public void shouldOverrideNestedObjectAttribute() {
+    	Immutable result = Fixture.from(Immutable.class).gimme("fullConstructor", new Rule() {{
+    		add("address.street", "Rua do Nykolas");
+    	}});
+    	
+    	assertThat(result.getAddress().getStreet(), equalTo("Rua do Nykolas"));
+    }
+    
 }
