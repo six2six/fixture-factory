@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -203,8 +204,8 @@ public class ObjectFactory {
 	
 	private Map<String, Object> processArguments(Map<String, Property> arguments) {
 		Map<String, Object> processedArguments = new HashMap<String, Object>();
-		for(String key : arguments.keySet()) {
-			processedArguments.put(key, generateConstructorParamValue(arguments.get(key)));
+		for(Entry<String, Property> entry : arguments.entrySet()) {
+			processedArguments.put(entry.getKey(), generateConstructorParamValue(entry.getValue()));
 		}
 		
 		return processedArguments;
