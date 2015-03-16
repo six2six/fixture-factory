@@ -17,7 +17,6 @@ public class PropertyTest {
     public ExpectedException expectedException = ExpectedException.none();
     
     @Test
-    @SuppressWarnings("unused")
     public void shoudNotAllowNullName() {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(org.junit.matchers.JUnitMatchers.containsString("name"));
@@ -25,7 +24,6 @@ public class PropertyTest {
     }
     
     @Test
-    @SuppressWarnings("unused")
     public void shoudNotAllowNullFunction() {
         expectedException.expect(IllegalArgumentException.class);
         expectedException.expectMessage(org.junit.matchers.JUnitMatchers.containsString("function"));
