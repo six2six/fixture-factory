@@ -58,7 +58,11 @@ public class Property {
 		return index > 0 ? this.name.substring(0, index) : this.name;
 	}
 
-	@Override
+    public Function getFunction() {
+        return function;
+    }
+
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
