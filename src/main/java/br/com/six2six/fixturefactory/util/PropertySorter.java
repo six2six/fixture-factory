@@ -11,14 +11,14 @@ import static br.com.six2six.fixturefactory.transformer.PlaceholderTransformer.P
 public class PropertySorter {
 
     private static final String CYCLIC_MESSAGE_ERROR = "Fixture Factory failed to calculate ${} field references. Either a cyclic dependency exists or one of the fields references a non-existent field.";
-    private final Map<String, Property> mapedProperties;
+    private final Map<String, Property> mappedProperties;
     private List<Property> independents;
     private final Map<Property, Set<Property>> incoming;
     private final Map<Property, Set<Property>> outcoming;
     private Set<Property> sortedProperties;
 
     public PropertySorter(Set<Property> properties) {
-        mapedProperties = mapProperties(properties);
+        mappedProperties = mapProperties(properties);
         incoming = new LinkedHashMap<Property, Set<Property>>();
         outcoming = new LinkedHashMap<Property, Set<Property>>();
     }
@@ -67,7 +67,7 @@ public class PropertySorter {
     private void extractDependencies() {
         independents = new ArrayList<Property>();
 
-        for (Property property : mapedProperties.values()) {
+        for (Property property : mappedProperties.values()) {
 
             if (property.getFunction() instanceof IdentityFunction) {
 
@@ -79,7 +79,7 @@ public class PropertySorter {
 
                     while (matcher.find()) {
 
-                        Property referencedProperty = mapedProperties.get(matcher.group(2));
+                        Property referencedProperty = mappedProperties.get(matcher.group(2));
 
                         getOrInitialize(outcoming, referencedProperty).add(property);
 
