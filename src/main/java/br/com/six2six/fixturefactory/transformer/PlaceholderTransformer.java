@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public abstract class PlaceholderTransformer implements Transformer {
 
-    private static final Pattern PLACEHOLDER = Pattern.compile("(\\$\\{([^\\}]+)\\})");
+    public static final Pattern PLACEHOLDER = Pattern.compile("(\\$\\{([^\\}]+)\\})");
 
     protected abstract String getValue(String name);
 

@@ -23,6 +23,13 @@ public class UserTemplate implements TemplateLoader {
 			add("password", name(Gender.MALE));
 			add("gender", Gender.FEMALE);
 			add("email", "duck@gmail.com");
-		}});
+		}})
+        .addTemplate("validWithRulesOutOfOrder", new Rule(){{
+            add("login", "${name}");
+            add("name", name(Gender.FEMALE));
+            add("password", name(Gender.MALE));
+            add("gender", Gender.FEMALE);
+            add("email", "${login}@gmail.com");
+        }});
 	}
 }

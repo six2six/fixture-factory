@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import br.com.six2six.fixturefactory.util.PropertySorter;
 import org.apache.commons.lang.StringUtils;
 
 import br.com.six2six.fixturefactory.processor.Processor;
@@ -22,6 +23,9 @@ import br.com.six2six.fixturefactory.transformer.Transformer;
 import br.com.six2six.fixturefactory.transformer.TransformerChain;
 import br.com.six2six.fixturefactory.transformer.WrapperTransformer;
 import br.com.six2six.fixturefactory.util.ReflectionUtils;
+
+import static br.com.six2six.fixturefactory.util.ReflectionUtils.hasDefaultConstructor;
+import static br.com.six2six.fixturefactory.util.ReflectionUtils.newInstance;
 
 public class ObjectFactory {
 	
@@ -93,11 +97,12 @@ public class ObjectFactory {
 		Map<String, Property> constructorArguments = new HashMap<String, Property>();
 		List<Property> deferredProperties = new ArrayList<Property>();
 		Class<?> clazz = templateHolder.getClazz();
+        Set<Property> properties = new PropertySorter(rule.getProperties()).sort();
+
+        List<String> parameterNames = !hasDefaultConstructor(clazz) ?
+										lookupConstructorParameterNames(clazz, properties) : new ArrayList<String>();
 		
-		List<String> parameterNames = !ReflectionUtils.hasDefaultConstructor(clazz) ? 
-										lookupConstructorParameterNames(clazz, rule.getProperties()) : new ArrayList<String>();
-		
-		for (Property property : rule.getProperties()) {
+		for (Property property : properties) {
 			if(parameterNames.contains(property.getRootAttribute())) {
 				constructorArguments.put(property.getName(), property);
 			} else {
@@ -105,7 +110,7 @@ public class ObjectFactory {
 			}
 		}
 		
-		Object result = ReflectionUtils.newInstance(clazz, processConstructorArguments(parameterNames, constructorArguments));
+		Object result = newInstance(clazz, processConstructorArguments(parameterNames, constructorArguments));
 		
 		Set<Property> propertiesNotUsedInConstructor = getPropertiesNotUsedInConstructor(constructorArguments, parameterNames);
 		if(propertiesNotUsedInConstructor.size() > 0) {
