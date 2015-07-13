@@ -1,7 +1,7 @@
 package br.com.six2six.fixturefactory.function;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ import java.util.Arrays;
 @RunWith(Parameterized.class)
 public class RegexFunctionTest {
 
-	@Parameters(name= "{index}: regex {0}={1}")
+	@Parameters(name = "{index}: regex {0}={1}")
 	public static Iterable<String[]> data() {
 		return Arrays.asList(new String[][]{
 				{"String", "\\w{8}"},

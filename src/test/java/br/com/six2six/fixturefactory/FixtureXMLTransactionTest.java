@@ -1,6 +1,6 @@
 package br.com.six2six.fixturefactory;
 
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

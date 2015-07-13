@@ -1,20 +1,16 @@
 package br.com.six2six.fixturefactory;
 
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertNotNull;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.contains;
 
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import br.com.six2six.fixturefactory.model.User;
-import org.mockito.Matchers;
 
 public class FixtureUserTest {
 

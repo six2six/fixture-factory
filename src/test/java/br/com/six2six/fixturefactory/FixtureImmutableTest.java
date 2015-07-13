@@ -1,13 +1,13 @@
 package br.com.six2six.fixturefactory;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.either;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -78,8 +78,8 @@ public class FixtureImmutableTest {
     @Test
     public void shouldWorkWhenChainingPropertiesUsingRelations() {
         RoutePlanner routePlanner = Fixture.from(RoutePlanner.class).gimme("chainedRoutePlanner");
-        assertThat(routePlanner.getRoute().getId().getValue(), is(either(equalTo(3L)).or(equalTo(4L))));
-        assertThat(routePlanner.getRoute().getId().getSeq(), is(either(equalTo(300L)).or(equalTo(400L))));
+        assertThat(routePlanner.getRoute().getId().getValue(), CoreMatchers.<Long>either(equalTo(3L)).or(equalTo(4L)));
+        assertThat(routePlanner.getRoute().getId().getSeq(), CoreMatchers.<Long>either(equalTo(300L)).or(equalTo(400L)));
         assertNotNull(routePlanner.getRoute().getCities().get(0).getName());
     }
 

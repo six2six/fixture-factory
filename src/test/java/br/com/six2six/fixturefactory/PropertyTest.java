@@ -1,5 +1,6 @@
 package br.com.six2six.fixturefactory;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -19,14 +20,14 @@ public class PropertyTest {
     @Test
     public void shoudNotAllowNullName() {
         expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(org.junit.matchers.JUnitMatchers.containsString("name"));
+        expectedException.expectMessage(containsString("name"));
         new Property(null, null);
     }
     
     @Test
     public void shoudNotAllowNullFunction() {
         expectedException.expect(IllegalArgumentException.class);
-        expectedException.expectMessage(org.junit.matchers.JUnitMatchers.containsString("function"));
+        expectedException.expectMessage(containsString("function"));
         new Property("attr", null);
     }
     

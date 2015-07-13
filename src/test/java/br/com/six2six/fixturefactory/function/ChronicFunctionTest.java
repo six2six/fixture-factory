@@ -2,8 +2,7 @@ package br.com.six2six.fixturefactory.function;
 
 import java.util.Calendar;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 import br.com.six2six.fixturefactory.function.impl.ChronicFunction;
