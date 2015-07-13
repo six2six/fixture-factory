@@ -6,31 +6,38 @@ import static junit.framework.Assert.assertTrue;
 import org.junit.Test;
 
 import br.com.six2six.fixturefactory.function.impl.RegexFunction;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
+import java.util.Arrays;
+
+@RunWith(Parameterized.class)
 public class RegexFunctionTest {
 
-	@Test
-	public void regexString() {
-		String pattern = "\\w{8}";
-		String value = new RegexFunction(pattern).generateValue();
-		assertNotNull("Generated string can not be null", value);
-		assertTrue(String.format("Generated string no match with %s", pattern), value.matches(pattern));
+	@Parameters(name= "{index}: regex {0}={1}")
+	public static Iterable<String[]> data() {
+		return Arrays.asList(new String[][]{
+				{"String", "\\w{8}"},
+				{"Number", "\\d{3,8}"},
+				{"Phone number", "(\\d{2})-(\\d{4})-(\\d{4})"},
+				{"MD5", "[0-9a-f]{32}"}
+		});
 	}
-	
-	@Test
-	public void regexNumber() {
-		String pattern = "\\d{3,8}";
-		String value = new RegexFunction(pattern).generateValue();
-		assertNotNull("Generated number can not be null", value);
-		assertTrue(String.format("Generated number no match with %s", pattern), value.matches(pattern));
+
+	private String regexName;
+	private String pattern;
+
+	public RegexFunctionTest(String regexName, String pattern) {
+		this.regexName = regexName;
+		this.pattern = pattern;
 	}
 
 	@Test
-	public void regexPhoneNumber() {
-		String pattern = "(\\d{2})-(\\d{4})-(\\d{4})";
+	public void testAgainstRegex() {
 		String value = new RegexFunction(pattern).generateValue();
-		assertNotNull("Generated phone number can not be null", value);
-		assertTrue(String.format("Generated phone number no match with %s", pattern), value.matches(pattern));
+		assertNotNull(String.format("Generated %s can not be null", regexName), regexName);
+		assertTrue(String.format("Generated %s (%s) no match with %s", regexName, value, pattern), value.matches(pattern));
 	}
 	
 }
