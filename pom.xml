@@ -90,7 +90,7 @@
 		<dependency>
 			<groupId>br.com.six2six</groupId>
 			<artifactId>bfgex</artifactId>
-			<version>1.0</version>
+			<version>1.1.1</version>
 		</dependency>
 		<dependency>
           <groupId>com.rubiconproject.oss</groupId>
