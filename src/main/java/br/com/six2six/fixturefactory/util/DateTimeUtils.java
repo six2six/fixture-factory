@@ -2,6 +2,7 @@ package br.com.six2six.fixturefactory.util;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 
 public class DateTimeUtils {
@@ -14,6 +15,10 @@ public class DateTimeUtils {
 			throw new IllegalArgumentException(e);
 		}
 		return date;
+	}
+	
+	public static ZonedDateTime toZonedDateTime(Calendar value) {
+		return value.toInstant().atZone(value.getTimeZone().toZoneId());
 	}
 	
 }

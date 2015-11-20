@@ -81,4 +81,18 @@ public class ClassLoaderUtils {
 		}
 		return classes;
 	}
+	
+	public static boolean isPresent(String className) {
+		try {
+			Class.forName(className, true, Thread.currentThread().getContextClassLoader());
+			return true;
+		} catch (ClassNotFoundException ex) {
+			// Class or one of its dependencies is not present... Not so pretty, but Spring uses same way
+			return false;
+		}
+	}
+	
+	public static boolean isJava8Present() {
+		return isPresent("java.time.LocalDate");
+	}
 }
