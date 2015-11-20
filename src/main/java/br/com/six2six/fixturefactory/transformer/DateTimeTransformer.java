@@ -2,14 +2,6 @@ package br.com.six2six.fixturefactory.transformer;
 
 import static br.com.six2six.fixturefactory.util.DateTimeUtils.toZonedDateTime;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
-import java.time.ZonedDateTime;
-import java.time.temporal.Temporal;
 import java.util.Calendar;
 
 import org.apache.commons.lang.ClassUtils;
@@ -24,28 +16,28 @@ public class DateTimeTransformer implements Transformer {
 			return null;
 		}
 		
-		if (ClassUtils.isAssignable(type, LocalDateTime.class)) {
+		if (ClassUtils.isAssignable(type, java.time.LocalDateTime.class)) {
 			returnValue = toZonedDateTime((Calendar) value).toLocalDateTime();
 			
-		} else if (ClassUtils.isAssignable(type, LocalDate.class)) {
+		} else if (ClassUtils.isAssignable(type, java.time.LocalDate.class)) {
 			returnValue = toZonedDateTime((Calendar) value).toLocalDate();
 			
-		} else if (ClassUtils.isAssignable(type, LocalTime.class)) {
+		} else if (ClassUtils.isAssignable(type, java.time.LocalTime.class)) {
 			returnValue = toZonedDateTime((Calendar) value).toLocalTime();
 			
-		} else if (ClassUtils.isAssignable(type, OffsetDateTime.class)) { 
+		} else if (ClassUtils.isAssignable(type, java.time.OffsetDateTime.class)) { 
 			returnValue = toZonedDateTime((Calendar) value).toOffsetDateTime();
 			
-		} else if (ClassUtils.isAssignable(type, ZonedDateTime.class)) { 
+		} else if (ClassUtils.isAssignable(type, java.time.ZonedDateTime.class)) { 
 			returnValue = toZonedDateTime((Calendar) value);
 			
-		} else if (ClassUtils.isAssignable(type, OffsetTime.class)) { 
+		} else if (ClassUtils.isAssignable(type, java.time.OffsetTime.class)) { 
 			returnValue = toZonedDateTime((Calendar) value).toOffsetDateTime().toOffsetTime();
 			
-		} else if (ClassUtils.isAssignable(type, Instant.class)) { 
+		} else if (ClassUtils.isAssignable(type, java.time.Instant.class)) { 
 			returnValue = ((Calendar) value).toInstant();
 			
-		} else if (ClassUtils.isAssignable(type, Instant.class)) { 
+		} else if (ClassUtils.isAssignable(type, java.time.Instant.class)) { 
 			returnValue = ((Calendar) value).toInstant();
 			
 		} else {
@@ -57,6 +49,6 @@ public class DateTimeTransformer implements Transformer {
 
     @Override
 	public boolean accepts(Object value, Class<?> type) {
-        return value instanceof Calendar && Temporal.class.isAssignableFrom(type);
+        return value instanceof Calendar && java.time.temporal.Temporal.class.isAssignableFrom(type);
     }
 }

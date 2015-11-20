@@ -1,6 +1,5 @@
 package br.com.six2six.fixturefactory.transformer;
 
-import java.time.temporal.Temporal;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -46,6 +45,6 @@ public class CalendarTransformer implements Transformer {
 
     public boolean accepts(Object value, Class<?> type) {
     	boolean instanceOfCalendar = value instanceof Calendar;
-        return ClassLoaderUtils.isJava8Present() ? instanceOfCalendar && !Temporal.class.isAssignableFrom(type) : instanceOfCalendar;
+        return ClassLoaderUtils.isJava8Present() ? instanceOfCalendar && !java.time.temporal.Temporal.class.isAssignableFrom(type) : instanceOfCalendar;
     }
 }
