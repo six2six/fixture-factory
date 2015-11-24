@@ -13,6 +13,7 @@ import java.time.OffsetTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 
@@ -22,9 +23,8 @@ public class DateTimeTransformerTest {
 
 	@Test
 	public void transformCalendarToLocalDateTime() {
-		LocalDateTime date = LocalDateTime.now();
-		Calendar value = Calendar.getInstance();
-		value.setTimeInMillis(date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
+		Calendar value = Calendar.getInstance(TimeZone.getDefault());
+		LocalDateTime date = value.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 		
 		LocalDateTime transform = new DateTimeTransformer().transform(value, LocalDateTime.class);
 
@@ -34,8 +34,8 @@ public class DateTimeTransformerTest {
 
 	@Test
 	public void transformCalendarToLocalDate() throws DatatypeConfigurationException {
-		LocalDate date = LocalDate.now();
-		Calendar value = Calendar.getInstance();
+		Calendar value = Calendar.getInstance(TimeZone.getDefault());
+		LocalDate date = value.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
 		LocalDate transform = new DateTimeTransformer().transform(value, LocalDate.class);
 		
@@ -45,8 +45,8 @@ public class DateTimeTransformerTest {
 	
 	@Test
 	public void transformCalendarToLocalTime() {
-		LocalTime time = LocalTime.now();
-		Calendar value = Calendar.getInstance();
+		Calendar value = Calendar.getInstance(TimeZone.getDefault());
+		LocalTime time = value.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
 
 		LocalTime transform = new DateTimeTransformer().transform(value, LocalTime.class);
 
@@ -56,8 +56,8 @@ public class DateTimeTransformerTest {
 
 	@Test
 	public void transformCalendarToOffsetDateTime() {
-		OffsetDateTime offsetDateTime = OffsetDateTime.now();
-		Calendar value = Calendar.getInstance();
+		Calendar value = Calendar.getInstance(TimeZone.getDefault());
+		OffsetDateTime offsetDateTime = value.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime();
 
 		OffsetDateTime transform = new DateTimeTransformer().transform(value, OffsetDateTime.class);
 
@@ -67,8 +67,8 @@ public class DateTimeTransformerTest {
 	
 	@Test
 	public void transformCalendarToOffsetTime() {
-		OffsetTime offsetTime = OffsetTime.now();
-		Calendar value = Calendar.getInstance();
+		Calendar value = Calendar.getInstance(TimeZone.getDefault());
+		OffsetTime offsetTime = value.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime().toOffsetTime();
 		
 		OffsetTime transform = new DateTimeTransformer().transform(value, OffsetTime.class);
 		
@@ -78,8 +78,8 @@ public class DateTimeTransformerTest {
 	
 	@Test
 	public void transformCalendarToZonedDateTime() {
-		ZonedDateTime zonedDateTime = ZonedDateTime.now();
-		Calendar value = Calendar.getInstance();
+		Calendar value = Calendar.getInstance(TimeZone.getDefault());
+		ZonedDateTime zonedDateTime = value.toInstant().atZone(ZoneId.systemDefault());
 		
 		ZonedDateTime transform = new DateTimeTransformer().transform(value, ZonedDateTime.class);
 		
@@ -89,8 +89,8 @@ public class DateTimeTransformerTest {
 	
 	@Test
 	public void transformCalendarToInstant() {
-		Instant instant = Instant.now();
-		Calendar value = Calendar.getInstance();
+		Calendar value = Calendar.getInstance(TimeZone.getDefault());
+		Instant instant = value.toInstant();
 		
 		Instant transform = new DateTimeTransformer().transform(value, Instant.class);
 		
