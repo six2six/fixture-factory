@@ -255,7 +255,7 @@ public class ObjectFactory {
         transformerChain.add(new PrimitiveTransformer());
         transformerChain.add(new WrapperTransformer());
         
-        if(ClassLoaderUtils.isJava8Present()){
+        if(ClassLoaderUtils.isJava8()){
 	    	transformerChain.add(new DateTimeTransformer());
 	    }
         
