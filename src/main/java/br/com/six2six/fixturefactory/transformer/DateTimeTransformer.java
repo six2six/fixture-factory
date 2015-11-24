@@ -37,9 +37,6 @@ public class DateTimeTransformer implements Transformer {
 		} else if (ClassUtils.isAssignable(type, java.time.Instant.class)) { 
 			returnValue = ((Calendar) value).toInstant();
 			
-		} else if (ClassUtils.isAssignable(type, java.time.Instant.class)) { 
-			returnValue = ((Calendar) value).toInstant();
-			
 		} else {
 			throw new IllegalArgumentException("Incorrect type for transformer: " + type.getCanonicalName());
 		}
