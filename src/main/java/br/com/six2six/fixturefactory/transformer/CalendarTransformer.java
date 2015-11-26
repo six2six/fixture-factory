@@ -45,6 +45,6 @@ public class CalendarTransformer implements Transformer {
 
     public boolean accepts(Object value, Class<?> type) {
     	boolean instanceOfCalendar = value instanceof Calendar;
-        return ClassLoaderUtils.isJava8() ? instanceOfCalendar && !java.time.temporal.Temporal.class.isAssignableFrom(type) : instanceOfCalendar;
+        return ClassLoaderUtils.isJava8OrGreater() ? instanceOfCalendar && !java.time.temporal.Temporal.class.isAssignableFrom(type) : instanceOfCalendar;
     }
 }
