@@ -84,7 +84,7 @@ public class ClassLoaderUtils {
 		return classes;
 	}
 	
-	public static boolean isJava8() {
-		return StringUtils.containsIgnoreCase(System.getProperty("java.version"),"1.8");
+	public static boolean isJava8OrGreater() {
+		return Integer.valueOf(StringUtils.substring(System.getProperty("java.version"),2).replaceAll("\\.", "")) >= 18;
 	}
 }
