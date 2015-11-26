@@ -85,6 +85,6 @@ public class ClassLoaderUtils {
 	}
 	
 	public static boolean isJava8OrGreater() {
-		return Integer.valueOf(StringUtils.substring(System.getProperty("java.version"),2).replaceAll("\\.", "")) >= 18;
+		return Integer.valueOf(StringUtils.substring(System.getProperty("java.version"),0,3).replaceAll("\\.", "")) >= 18;
 	}
 }
