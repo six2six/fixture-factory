@@ -11,8 +11,6 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import org.apache.commons.lang.StringUtils;
-
 public class ClassLoaderUtils {
 
 	public static Set<Class<?>> getClassesForPackage(String packageName) {
@@ -82,9 +80,5 @@ public class ClassLoaderUtils {
 			}
 		}
 		return classes;
-	}
-	
-	public static boolean isJava8OrGreater() {
-		return Integer.valueOf(StringUtils.substring(System.getProperty("java.version"),0,3).replaceAll("\\.", "")) >= 18;
 	}
 }

@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import br.com.six2six.fixturefactory.util.ClassLoaderUtils;
 import br.com.six2six.fixturefactory.util.PropertySorter;
 
 import org.apache.commons.lang.StringUtils;
@@ -255,7 +254,7 @@ public class ObjectFactory {
         transformerChain.add(new PrimitiveTransformer());
         transformerChain.add(new WrapperTransformer());
         
-        if(ClassLoaderUtils.isJava8OrGreater()){
+        if(JavaVersion.current().gte(JavaVersion.JAVA_8)){
 	    	transformerChain.add(new DateTimeTransformer());
 	    }
         
