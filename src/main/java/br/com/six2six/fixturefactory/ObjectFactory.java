@@ -11,10 +11,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import br.com.six2six.fixturefactory.util.PropertySorter;
+
 import org.apache.commons.lang.StringUtils;
 
 import br.com.six2six.fixturefactory.processor.Processor;
 import br.com.six2six.fixturefactory.transformer.CalendarTransformer;
+import br.com.six2six.fixturefactory.transformer.DateTimeTransformer;
 import br.com.six2six.fixturefactory.transformer.ParameterPlaceholderTransformer;
 import br.com.six2six.fixturefactory.transformer.PrimitiveTransformer;
 import br.com.six2six.fixturefactory.transformer.PropertyPlaceholderTransformer;
@@ -23,7 +25,6 @@ import br.com.six2six.fixturefactory.transformer.Transformer;
 import br.com.six2six.fixturefactory.transformer.TransformerChain;
 import br.com.six2six.fixturefactory.transformer.WrapperTransformer;
 import br.com.six2six.fixturefactory.util.ReflectionUtils;
-
 import static br.com.six2six.fixturefactory.util.ReflectionUtils.hasDefaultConstructor;
 import static br.com.six2six.fixturefactory.util.ReflectionUtils.newInstance;
 
@@ -252,6 +253,10 @@ public class ObjectFactory {
         transformerChain.add(new SetTransformer());
         transformerChain.add(new PrimitiveTransformer());
         transformerChain.add(new WrapperTransformer());
+        
+        if(JavaVersion.current().gte(JavaVersion.JAVA_8)){
+	    	transformerChain.add(new DateTimeTransformer());
+	    }
         
         return transformerChain;
 	}

@@ -9,6 +9,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.lang.ClassUtils;
 
+import br.com.six2six.fixturefactory.JavaVersion;
+
+
 public class CalendarTransformer implements Transformer {
 
 	public <T> T transform(Object value, Class<T> type)  {
@@ -42,6 +45,7 @@ public class CalendarTransformer implements Transformer {
 	}
 
     public boolean accepts(Object value, Class<?> type) {
-        return value instanceof Calendar;
+    	boolean instanceOfCalendar = value instanceof Calendar;
+        return JavaVersion.current().gte(JavaVersion.JAVA_8) ? instanceOfCalendar && !java.time.temporal.Temporal.class.isAssignableFrom(type) : instanceOfCalendar;
     }
 }

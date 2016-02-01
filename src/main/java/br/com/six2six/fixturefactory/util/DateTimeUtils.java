@@ -16,4 +16,8 @@ public class DateTimeUtils {
 		return date;
 	}
 	
+	public static java.time.ZonedDateTime toZonedDateTime(Calendar value) {
+		return value.toInstant().atZone(value.getTimeZone().toZoneId());
+	}
+	
 }
