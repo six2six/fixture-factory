@@ -6,12 +6,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.junit.Test;
+
 
 public class SetTransformerTest {
     
@@ -31,6 +37,14 @@ public class SetTransformerTest {
     }
 
     @Test
+    public void shouldTrasformAnyInstanceOfSet() {
+       assertEquals(new SetTransformer().transform(new LinkedHashSet<String>(Arrays.asList("A", "B")), HashSet.class).size(), 2);
+       assertEquals(new SetTransformer().transform(new TreeSet<String>(Arrays.asList("A", "B")), SortedSet.class).size(), 2);
+       assertEquals(new SetTransformer().transform(new HashSet<String>(Arrays.asList("A", "B")), Set.class).size(), 2);
+       assertEquals(new SetTransformer().transform(EnumSet.of(Letters.A, Letters.B), Set.class).size(), 2);
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
     public void shoudTransformToSet() {
         List<String> value = Arrays.asList("A", "B");
@@ -39,4 +53,7 @@ public class SetTransformerTest {
         assertTrue(result.containsAll(value));
         assertEquals(2, result.size());
     }
+
+    private static enum Letters { A, B }
+
 }
