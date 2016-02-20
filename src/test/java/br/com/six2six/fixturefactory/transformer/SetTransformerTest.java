@@ -41,7 +41,7 @@ public class SetTransformerTest {
        assertEquals(new SetTransformer().transform(new LinkedHashSet<String>(Arrays.asList("A", "B")), HashSet.class).size(), 2);
        assertEquals(new SetTransformer().transform(new TreeSet<String>(Arrays.asList("A", "B")), SortedSet.class).size(), 2);
        assertEquals(new SetTransformer().transform(new HashSet<String>(Arrays.asList("A", "B")), Set.class).size(), 2);
-       assertEquals(new SetTransformer().transform(EnumSet.of(Letters.A, Letters.B), Set.class).size(), 2);
+       assertEquals(new SetTransformer().transform(EnumSet.of(Letters.A, Letters.B), EnumSet.class).size(), 2);
     }
 
     @Test
