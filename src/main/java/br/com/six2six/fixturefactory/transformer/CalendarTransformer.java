@@ -44,8 +44,13 @@ public class CalendarTransformer implements Transformer {
 		return type.cast(returnValue);
 	}
 
-    public boolean accepts(Object value, Class<?> type) {
+    @SuppressWarnings("unchecked")
+	public boolean accepts(Object value, Class<?> type) {
     	boolean instanceOfCalendar = value instanceof Calendar;
-        return JavaVersion.current().gte(JavaVersion.JAVA_8) ? instanceOfCalendar && !java.time.temporal.Temporal.class.isAssignableFrom(type) : instanceOfCalendar;
+		try {
+			return JavaVersion.current().gte(JavaVersion.JAVA_8) ? instanceOfCalendar && !ClassUtils.getClass("java.time.temporal.Temporal").isAssignableFrom(type) : instanceOfCalendar;
+		} catch (ClassNotFoundException e) {
+			throw new IllegalArgumentException(e.getMessage(),e);
+		}
     }
 }
