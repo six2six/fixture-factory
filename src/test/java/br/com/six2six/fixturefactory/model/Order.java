@@ -2,6 +2,8 @@ package br.com.six2six.fixturefactory.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.time.LocalDateTime;
+import java.time.LocalDate
 
 public class Order implements Serializable {
 
@@ -9,9 +11,9 @@ public class Order implements Serializable {
 
 	private Long id;
 	
-	private java.time.LocalDateTime registerDate;
+	private LocalDateTime registerDate;
 	
-	private java.time.LocalDate sendDate;
+	private LocalDate sendDate;
 	
 	private List<Item> items;
 
@@ -41,19 +43,19 @@ public class Order implements Serializable {
 		this.payment = payment;
 	}
 
-	public java.time.LocalDateTime getRegisterDate() {
+	public LocalDateTime getRegisterDate() {
 		return registerDate;
 	}
 
-	public void setRegisterDate(java.time.LocalDateTime registerDate) {
+	public void setRegisterDate(LocalDateTime registerDate) {
 		this.registerDate = registerDate;
 	}
 
-	public java.time.LocalDate getSendDate() {
+	public LocalDate getSendDate() {
 		return sendDate;
 	}
 
-	public void setSendDate(java.time.LocalDate sendDate) {
+	public void setSendDate(LocalDate sendDate) {
 		this.sendDate = sendDate;
 	}
 	
