@@ -11,7 +11,11 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-public class ClassLoaderUtils {
+public final class ClassLoaderUtils {
+
+	private ClassLoaderUtils() throws InstantiationException {
+		throw new InstantiationException("The class can't be instantiated");
+	}
 
 	public static Set<Class<?>> getClassesForPackage(String packageName) {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
