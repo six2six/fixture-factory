@@ -106,12 +106,7 @@ public class ObjectFactory {
 			ReflectionUtils.invokeRecursiveSetter(builder, protoProperty.getName(), processPropertyValue(builder, protoProperty));
 		}
 
-		Message result = builder.build();
-
-		if (processor != null) {
-			processor.execute(result);
-		}
-		return result;
+		return builder.build();
 	}
 
 
