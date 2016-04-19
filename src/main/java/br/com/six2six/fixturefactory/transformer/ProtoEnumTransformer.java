@@ -16,7 +16,7 @@ public class ProtoEnumTransformer implements Transformer {
     @Override
     public boolean accepts(Object value, Class<?> type) {
         if(value == null) return false;
-        
+
         return ProtocolMessageEnum.class.isAssignableFrom(value.getClass());
     }
 
