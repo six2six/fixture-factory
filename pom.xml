@@ -19,9 +19,11 @@
 	<repositories>
 		<repository>
 			<id>vivareal-nexus</id>
+			<name>vivareal-nexus</name>
+			<url>${vivareal-nexus-url}</url>
 		</repository>
 	</repositories>
-	
+
 	<scm>
 		<url>https://github.com/six2six/fixture-factory</url>
 		<connection>scm:git:git://github.com/six2six/fixture-factory</connection>
