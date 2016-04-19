@@ -32,7 +32,7 @@ public class NumberSequenceFunctionTest {
 		SequenceFunction function = new SequenceFunction(new NumberSequence(1.2f, 1));
 		
 		for (int i=1; i<=3; i++) {
-			assertEquals("floats should be equal", ((Float)function.generateValue()).floatValue(), (float) i+(.2F));
+			assertEquals("floats should be equal", ((Float)function.generateValue()).floatValue(), (float) i+(.2F), 0);
 		}
 	}
 	
@@ -41,7 +41,7 @@ public class NumberSequenceFunctionTest {
 		SequenceFunction function = new SequenceFunction(new NumberSequence(1.23d, 2));
 		
 		for (int i=1; i<=5; i=i+2) {
-			assertEquals("doubles should be equal", ((Double)function.generateValue()).doubleValue(), (double) i+(.23d));
+			assertEquals("doubles should be equal", ((Double)function.generateValue()).doubleValue(), (double) i+(.23d), 0);
 		}
 	}
 }
