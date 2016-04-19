@@ -15,6 +15,12 @@
 			<distribution>repo</distribution>
 		</license>	    
 	</licenses>
+
+	<repositories>
+		<repository>
+			<id>vivareal-nexus</id>
+		</repository>
+	</repositories>
 	
 	<scm>
 		<url>https://github.com/six2six/fixture-factory</url>
