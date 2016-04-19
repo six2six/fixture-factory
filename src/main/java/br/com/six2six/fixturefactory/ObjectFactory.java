@@ -1,30 +1,17 @@
 package br.com.six2six.fixturefactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
+import br.com.six2six.fixturefactory.processor.Processor;
+import br.com.six2six.fixturefactory.transformer.*;
 import br.com.six2six.fixturefactory.util.PropertySorter;
-
+import br.com.six2six.fixturefactory.util.ReflectionUtils;
+import com.google.protobuf.GeneratedMessage;
+import com.google.protobuf.Message;
+import net.vidageek.mirror.dsl.Mirror;
 import org.apache.commons.lang.StringUtils;
 
-import br.com.six2six.fixturefactory.processor.Processor;
-import br.com.six2six.fixturefactory.transformer.CalendarTransformer;
-import br.com.six2six.fixturefactory.transformer.DateTimeTransformer;
-import br.com.six2six.fixturefactory.transformer.ParameterPlaceholderTransformer;
-import br.com.six2six.fixturefactory.transformer.PrimitiveTransformer;
-import br.com.six2six.fixturefactory.transformer.PropertyPlaceholderTransformer;
-import br.com.six2six.fixturefactory.transformer.SetTransformer;
-import br.com.six2six.fixturefactory.transformer.Transformer;
-import br.com.six2six.fixturefactory.transformer.TransformerChain;
-import br.com.six2six.fixturefactory.transformer.WrapperTransformer;
-import br.com.six2six.fixturefactory.util.ReflectionUtils;
+import java.util.*;
+import java.util.Map.Entry;
+
 import static br.com.six2six.fixturefactory.util.ReflectionUtils.hasDefaultConstructor;
 import static br.com.six2six.fixturefactory.util.ReflectionUtils.newInstance;
 
@@ -96,13 +83,43 @@ public class ObjectFactory {
 
 	protected Object createObject(Rule rule) {
 		Map<String, Property> constructorArguments = new HashMap<String, Property>();
-		List<Property> deferredProperties = new ArrayList<Property>();
 		Class<?> clazz = templateHolder.getClazz();
         Set<Property> properties = new PropertySorter(rule.getProperties()).sort();
 
-        List<String> parameterNames = !hasDefaultConstructor(clazz) ?
-										lookupConstructorParameterNames(clazz, properties) : new ArrayList<String>();
+		Object result;
+		if(GeneratedMessage.class.isAssignableFrom(clazz)) {
+			result = createProtobufObject(rule, clazz);
+		} else {
+			result = createPojoObject(constructorArguments, clazz, properties);
+		}
 		
+		if (processor != null) {
+		    processor.execute(result);
+		}
+		return result;
+	}
+
+	private Object createProtobufObject(Rule rule, Class<?> clazz) {
+		GeneratedMessage.Builder builder = (GeneratedMessage.Builder) new Mirror().on(clazz).invoke().method("newBuilder").withoutArgs();
+		for (Property property : rule.getProperties()) {
+			Property protoProperty = new Property(property.getName() + "_", property.getFunction());
+			ReflectionUtils.invokeRecursiveSetter(builder, protoProperty.getName(), processPropertyValue(builder, protoProperty));
+		}
+
+		Message result = builder.build();
+
+		if (processor != null) {
+			processor.execute(result);
+		}
+		return result;
+	}
+
+
+	private Object createPojoObject(Map<String, Property> constructorArguments, Class<?> clazz, Set<Property> properties) {
+		List<Property> deferredProperties = new ArrayList<Property>();
+		List<String> parameterNames = !hasDefaultConstructor(clazz) ?
+                                        lookupConstructorParameterNames(clazz, properties) : new ArrayList<String>();
+
 		for (Property property : properties) {
 			if(parameterNames.contains(property.getRootAttribute())) {
 				constructorArguments.put(property.getName(), property);
@@ -110,20 +127,16 @@ public class ObjectFactory {
 				deferredProperties.add(property);
 			}
 		}
-		
+
 		Object result = newInstance(clazz, processConstructorArguments(parameterNames, constructorArguments));
-		
+
 		Set<Property> propertiesNotUsedInConstructor = getPropertiesNotUsedInConstructor(constructorArguments, parameterNames);
 		if(propertiesNotUsedInConstructor.size() > 0) {
 			deferredProperties.addAll(propertiesNotUsedInConstructor);
 		}
-		
+
 		for (Property property : deferredProperties) {
 			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), processPropertyValue(result, property));
-		}
-		
-		if (processor != null) {
-		    processor.execute(result);
 		}
 		return result;
 	}
@@ -253,6 +266,7 @@ public class ObjectFactory {
         transformerChain.add(new SetTransformer());
         transformerChain.add(new PrimitiveTransformer());
         transformerChain.add(new WrapperTransformer());
+		transformerChain.add(new ProtoEnumTransformer());
         
         if(JavaVersion.current().gte(JavaVersion.JAVA_8)){
 	    	transformerChain.add(new DateTimeTransformer());
