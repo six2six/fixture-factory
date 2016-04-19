@@ -16,6 +16,14 @@
 		</license>	    
 	</licenses>
 
+	<distributionManagement>
+		<repository>
+			<id>vivareal-nexus</id>
+			<name>vivareal-nexus</name>
+			<url>${vivareal-nexus-url}</url>
+		</repository>
+	</distributionManagement>
+
 	<repositories>
 		<repository>
 			<id>vivareal-nexus</id>
