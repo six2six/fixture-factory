@@ -4,10 +4,15 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import br.com.six2six.fixturefactory.base.Range;
 import br.com.six2six.fixturefactory.function.AtomicFunction;
+import com.google.protobuf.ProtocolMessageEnum;
+import net.vidageek.mirror.dsl.Mirror;
 
 public class RandomFunction implements AtomicFunction {
 
@@ -57,7 +62,13 @@ public class RandomFunction implements AtomicFunction {
             result = this.functions[random.nextInt(this.functions.length)].generateValue();
 
         } else if (this.type.isEnum()) {
-            result = this.type.getEnumConstants()[random.nextInt(this.type.getEnumConstants().length)];
+            if(ProtocolMessageEnum.class.isAssignableFrom(type)) {
+                Object[] enumConstants = this.type.getEnumConstants();
+                List<Object> validEnumValues = Stream.of(enumConstants).filter(value -> !new Mirror().on(value).invoke().method("name").withoutArgs().equals("UNRECOGNIZED")).collect(Collectors.toList());
+                result = validEnumValues.get(random.nextInt(validEnumValues.size()));
+            } else {
+                result = this.type.getEnumConstants()[random.nextInt(this.type.getEnumConstants().length)];
+            }
 
         } else if (this.type.isAssignableFrom(Byte.class)) {
             result = this.range == null ? (byte) random.nextInt(Byte.MAX_VALUE + 1) : (byte) getRandomLong(this.range);
@@ -102,6 +113,10 @@ public class RandomFunction implements AtomicFunction {
         }
 
         return (T) result;
+    }
+
+    private <T extends Enum<T>> List<Object> removeProtobufUnrecognizedEnum(Class<T> enumType) {
+        return Stream.of(enumType.getEnumConstants()).filter(value -> !value.name().equals("UNRECOGNIZED")).collect(Collectors.toList());
     }
 
     private long getRandomLong(Range range) {
