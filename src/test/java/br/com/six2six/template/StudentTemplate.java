@@ -6,6 +6,7 @@ import br.com.six2six.fixturefactory.Rule;
 import br.com.six2six.fixturefactory.base.Sequence;
 import br.com.six2six.fixturefactory.function.impl.NumberSequence;
 import br.com.six2six.fixturefactory.loader.TemplateLoader;
+import br.com.six2six.fixturefactory.model.Address;
 import br.com.six2six.fixturefactory.model.Student;
 
 public class StudentTemplate implements TemplateLoader {
@@ -20,6 +21,7 @@ public class StudentTemplate implements TemplateLoader {
 			add("bestScore", regex("\\d{2}\\.\\d{3}"));
 			add("testsTaken", regex("\\d{1}1"));
 			add("idCardNumber", regex("\\d{6}"));
+			add("addresses", has(3).of(Address.class, "valid"));
 		}}
 		).addTemplate("validFemaleStudent", new Rule(){{
 			add("id", sequence(200L, 2));
