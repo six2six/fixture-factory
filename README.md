@@ -1,6 +1,7 @@
 ![Fixture Factory](http://s27.postimg.org/g2cbltgv7/fixture_factory.png)
 ==================================================================
 [![Build Status](https://travis-ci.org/six2six/fixture-factory.png?branch=master)](https://travis-ci.org/six2six/fixture-factory)
+[![codecov](https://codecov.io/gh/six2six/fixture-factory/branch/master/graph/badge.svg)](https://codecov.io/gh/six2six/fixture-factory)
 
 Fixture Factory is a tool to help developers quickly build and organize fake objects for unit tests. The key idea is to create specification limits of the data (templates) instead of hardcoded data. Try using F-F, then you can focus on the behavior of your methods and we manage the data.
 
