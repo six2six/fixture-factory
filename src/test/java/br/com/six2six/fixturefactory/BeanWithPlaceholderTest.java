@@ -10,7 +10,7 @@ import org.junit.Test;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 import br.com.six2six.fixturefactory.model.BeanWithPlaceholder;
 
-public class BeanWtihPlaceholderTest {
+public class BeanWithPlaceholderTest {
 
     @BeforeClass
     public static void setUp() {
