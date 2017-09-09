@@ -1,13 +1,13 @@
 package br.com.six2six.fixturefactory.function.impl;
 
+import br.com.six2six.fixturefactory.base.Range;
+import br.com.six2six.fixturefactory.function.AtomicFunction;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Random;
-
-import br.com.six2six.fixturefactory.base.Range;
-import br.com.six2six.fixturefactory.function.AtomicFunction;
 
 public class RandomFunction implements AtomicFunction {
 
@@ -59,25 +59,25 @@ public class RandomFunction implements AtomicFunction {
         } else if (this.type.isEnum()) {
             result = this.type.getEnumConstants()[random.nextInt(this.type.getEnumConstants().length)];
 
-        } else if (this.type.isAssignableFrom(Byte.class)) {
+        } else if (this.type.isAssignableFrom(Byte.class) || this.type.equals(byte.class)) {
             result = this.range == null ? (byte) random.nextInt(Byte.MAX_VALUE + 1) : (byte) getRandomLong(this.range);
 
-        } else if (this.type.isAssignableFrom(Short.class)) {
+        } else if (this.type.isAssignableFrom(Short.class) || this.type.equals(short.class)) {
             result = this.range == null ? (short) random.nextInt(Short.MAX_VALUE + 1) : (short) getRandomLong(this.range);
 
-        } else if (this.type.isAssignableFrom(Integer.class)) {
+        } else if (this.type.isAssignableFrom(Integer.class) || this.type.equals(int.class)) {
             result = this.range == null ? random.nextInt() : (int) getRandomLong(this.range);
 
-        } else if (this.type.isAssignableFrom(Long.class)) {
+        } else if (this.type.isAssignableFrom(Long.class) || this.type.equals(long.class)) {
             result = this.range == null ? random.nextLong() : getRandomLong(this.range);
 
-        } else if (this.type.isAssignableFrom(Float.class)) {
+        } else if (this.type.isAssignableFrom(Float.class) || this.type.equals(float.class)) {
             result = this.range == null ? random.nextFloat() : (float) getRandomDouble(this.range);
 
-        } else if (this.type.isAssignableFrom(Double.class)) {
+        } else if (this.type.isAssignableFrom(Double.class) || this.type.equals(double.class)) {
             result = this.range == null ? random.nextDouble() : getRandomDouble(this.range);
 
-        } else if (this.type.isAssignableFrom(Boolean.class)) {
+        } else if (this.type.isAssignableFrom(Boolean.class) || this.type.equals(boolean.class)) {
             result = random.nextBoolean();
 
         } else if (this.type.isAssignableFrom(BigDecimal.class)) {
