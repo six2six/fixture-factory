@@ -39,43 +39,35 @@ public class SetTransformerTest {
 
     @Test
     public void shouldTrasformAnyInstanceOfSet() {
-       assertEquals(new SetTransformer().transform(new LinkedHashSet<String>(Arrays.asList("A", "B")), HashSet.class).size(), 2);
-       assertEquals(new SetTransformer().transform(new TreeSet<String>(Arrays.asList("A", "B")), SortedSet.class).size(), 2);
+       assertEquals(new SetTransformer().transform(new HashSet<String>(Arrays.asList("A", "B")), HashSet.class).size(), 2);
        assertEquals(new SetTransformer().transform(new HashSet<String>(Arrays.asList("A", "B")), Set.class).size(), 2);
        assertEquals(new SetTransformer().transform(EnumSet.of(Letters.A, Letters.B), EnumSet.class).size(), 2);
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    public void shoudTransformToSet() {
-        List<String> value = Arrays.asList("A", "B");
-        Set<String> result = new SetTransformer().transform(value, Set.class);
-
-        assertTrue(result.containsAll(value));
-        assertEquals(2, result.size());
+       assertEquals(new SetTransformer().transform(new LinkedHashSet<String>(Arrays.asList("A", "B")), SortedSet.class).size(), 2);
+       assertEquals(new SetTransformer().transform(Arrays.asList("A", "B"), Set.class).size(), 2);
+       assertEquals(new SetTransformer().transform(new HashSet<Letters>(Arrays.asList(Letters.A, Letters.B)), EnumSet.class).size(), 2);
+       assertEquals(new SetTransformer().transform(new TreeSet<String>(Arrays.asList("A", "B")), HashSet.class).size(), 2);
+       assertEquals(new SetTransformer().transform(Arrays.asList("A", "B"), LinkedHashSet.class).size(), 2);
     }
 
     private static enum Letters { A, B }
 
-	@Test
-	@SuppressWarnings("unchecked")
-	public void shoudTransformToNavigableSet() {
-		List<String> value = Arrays.asList("A", "B");
-		NavigableSet<String> resultNavigableSet = new SetTransformer().transform(Arrays.asList("A", "B"), NavigableSet.class);
+    @Test
+    @SuppressWarnings("unchecked")
+    public void shoudTransformToNavigableSet() {
+        List<String> value = Arrays.asList("A", "B");
+        NavigableSet<String> resultNavigableSet = new SetTransformer().transform(Arrays.asList("A", "B"), NavigableSet.class);
 
-		assertTrue(resultNavigableSet.containsAll(value));
-		assertEquals(2, resultNavigableSet.size());
+        assertTrue(resultNavigableSet.containsAll(value));
+        assertEquals(2, resultNavigableSet.size());
+    }
 
-	}
+    @Test
+    @SuppressWarnings("unchecked")
+    public void shoudTransformToSortedSet() {
+        List<String> value = Arrays.asList("A", "B");
+        SortedSet<String> resultSortedSet = new SetTransformer().transform(Arrays.asList("A", "B"), SortedSet.class);
 
-	@Test
-	@SuppressWarnings("unchecked")
-	public void shoudTransformToSortedSet() {
-		List<String> value = Arrays.asList("A", "B");
-		SortedSet<String> resultSortedSet = new SetTransformer().transform(Arrays.asList("A", "B"),	SortedSet.class);
-
-		assertTrue(resultSortedSet.containsAll(value));
-		assertEquals(2, resultSortedSet.size());
-
-	}
+        assertTrue(resultSortedSet.containsAll(value));
+        assertEquals(2, resultSortedSet.size());
+    }
 }
