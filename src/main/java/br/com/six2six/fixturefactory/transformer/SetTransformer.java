@@ -8,7 +8,7 @@ public class SetTransformer implements Transformer {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public <T> T transform(Object value, Class<T> type) {
-        return type.cast(new HashSet((Collection) value));
+        return Set.class.isAssignableFrom(value.getClass()) ? type.cast(value) : type.cast(new HashSet((Collection) value));
     }
 
     public boolean accepts(Object value, Class<?> type) {
