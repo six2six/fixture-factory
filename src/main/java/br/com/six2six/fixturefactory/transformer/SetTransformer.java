@@ -2,12 +2,18 @@ package br.com.six2six.fixturefactory.transformer;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.NavigableSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class SetTransformer implements Transformer {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public <T> T transform(Object value, Class<T> type) {
+    	if (SortedSet.class.isAssignableFrom(type) || NavigableSet.class.isAssignableFrom(type)) {
+    		return type.cast(new TreeSet((Collection) value));
+    	}
         return Set.class.isAssignableFrom(value.getClass()) ? type.cast(value) : type.cast(new HashSet((Collection) value));
     }
 

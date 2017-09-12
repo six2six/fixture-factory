@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -20,20 +21,20 @@ import org.junit.Test;
 
 
 public class SetTransformerTest {
-    
+
     @Test
     public void shouldNotAcceptNonCollectionValue() {
         assertFalse(new SetTransformer().accepts(new HashMap<String, Object>(), Set.class));
     }
-    
+
     @Test
     public void shoudNotAcceptNonSetTarget() {
         assertFalse(new SetTransformer().accepts(new ArrayList<String>(), LinkedList.class));
     }
-    
+
     @Test
     public void shouldAcceptCollectionToSet() {
-        assertTrue(new SetTransformer().accepts(Arrays.asList("A", "B"), Set.class));        
+        assertTrue(new SetTransformer().accepts(Arrays.asList("A", "B"), Set.class));
     }
 
     @Test
@@ -49,11 +50,32 @@ public class SetTransformerTest {
     public void shoudTransformToSet() {
         List<String> value = Arrays.asList("A", "B");
         Set<String> result = new SetTransformer().transform(value, Set.class);
-        
+
         assertTrue(result.containsAll(value));
         assertEquals(2, result.size());
     }
 
     private static enum Letters { A, B }
 
+	@Test
+	@SuppressWarnings("unchecked")
+	public void shoudTransformToNavigableSet() {
+		List<String> value = Arrays.asList("A", "B");
+		NavigableSet<String> resultNavigableSet = new SetTransformer().transform(Arrays.asList("A", "B"), NavigableSet.class);
+
+		assertTrue(resultNavigableSet.containsAll(value));
+		assertEquals(2, resultNavigableSet.size());
+
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void shoudTransformToSortedSet() {
+		List<String> value = Arrays.asList("A", "B");
+		SortedSet<String> resultSortedSet = new SetTransformer().transform(Arrays.asList("A", "B"),	SortedSet.class);
+
+		assertTrue(resultSortedSet.containsAll(value));
+		assertEquals(2, resultSortedSet.size());
+
+	}
 }
