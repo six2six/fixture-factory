@@ -14,7 +14,7 @@ public class SetTransformer implements Transformer {
     	if (SortedSet.class.isAssignableFrom(type) || NavigableSet.class.isAssignableFrom(type)) {
     		return type.cast(new TreeSet((Collection) value));
     	}
-    	return type.cast(new HashSet((Collection) value));
+        return Set.class.isAssignableFrom(value.getClass()) ? type.cast(value) : type.cast(new HashSet((Collection) value));
     }
 
     public boolean accepts(Object value, Class<?> type) {
