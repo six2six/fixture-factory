@@ -13,14 +13,22 @@ public class TemplateHolder {
 		this.clazz = clazz;
 	}
 
+    public TemplateHolder addTemplate(Enum<?> label, Rule rule) {
+	    return addTemplate(getLabel(label), rule);
+    }
+
 	public TemplateHolder addTemplate(String label, Rule rule) {
 		rules.put(label, rule);
 		return this;
 	}
-	
-	public ExtendedTemplateHolder addTemplate(String label) {
-		return new ExtendedTemplateHolder(this, label);
-	}
+
+    public ExtendedTemplateHolder addTemplate(Enum<?> label) {
+	    return addTemplate(getLabel(label));
+    }
+
+    public ExtendedTemplateHolder addTemplate(String label) {
+        return new ExtendedTemplateHolder(this, label);
+    }
 
 	public Class<?> getClazz() {
 		return clazz;
@@ -29,4 +37,8 @@ public class TemplateHolder {
 	public Map<String, Rule> getRules() {
 		return rules;
 	}
+
+    private String getLabel(Enum<?> label) {
+        return label.toString();
+    }
 }
