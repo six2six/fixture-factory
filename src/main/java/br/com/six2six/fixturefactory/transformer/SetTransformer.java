@@ -43,10 +43,11 @@ public class SetTransformer implements Transformer {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private <T> T transformToConcreteTarget(Object value, Class<T> type) {
+        Collection collection = (Collection) value;
         if (EnumSet.class.isAssignableFrom(type)) {
-            return type.cast(EnumSet.copyOf((Collection) value));
+            return type.cast(EnumSet.copyOf(collection));
         } else {
-            return ReflectionUtils.newInstance(type, Arrays.asList((Collection) value));
+            return ReflectionUtils.newInstance(type, Arrays.asList(collection));
         }
     }
 }
