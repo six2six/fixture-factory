@@ -1,12 +1,6 @@
 package br.com.six2six.fixturefactory.transformer;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 import br.com.six2six.fixturefactory.util.ReflectionUtils;
 
@@ -45,9 +39,11 @@ public class SetTransformer implements Transformer {
     private <T> T transformToConcreteTarget(Object value, Class<T> type) {
         Collection collection = (Collection) value;
         if (EnumSet.class.isAssignableFrom(type)) {
-            return type.cast(EnumSet.copyOf(collection));
+            EnumSet enumSet = EnumSet.copyOf(collection);
+            return type.cast(enumSet);
         } else {
-            return ReflectionUtils.newInstance(type, Arrays.asList(collection));
+            List<Collection> list = Arrays.asList(collection);
+            return ReflectionUtils.newInstance(type, list);
         }
     }
 }
