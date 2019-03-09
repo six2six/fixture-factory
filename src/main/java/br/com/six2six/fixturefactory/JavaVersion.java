@@ -28,7 +28,7 @@ public class JavaVersion {
 	}
 	
 	public boolean gte(JavaVersion version) {
-		return Double.compare(this.version, version.version) > 0;
+		return Double.compare(this.version, version.version) >= 0;
 	}
 	
 	public static JavaVersion current(){
