@@ -18,7 +18,7 @@ public class Fixture {
 		return template;
 	}
 	
-	public static ObjectFactory from(Class<?> clazz) {
-		return new ObjectFactory(of(clazz));
+	public static<T> ObjectFactory<T> from(Class<T> clazz) {
+		return new ObjectFactory<T>(of(clazz));
 	}
 }

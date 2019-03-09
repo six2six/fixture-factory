@@ -28,7 +28,7 @@ import br.com.six2six.fixturefactory.util.ReflectionUtils;
 import static br.com.six2six.fixturefactory.util.ReflectionUtils.hasDefaultConstructor;
 import static br.com.six2six.fixturefactory.util.ReflectionUtils.newInstance;
 
-public class ObjectFactory {
+public class ObjectFactory<T> {
 	
 	private static final String NO_SUCH_LABEL_MESSAGE = "%s-> No such label: %s";
 	private static final String LABELS_AMOUNT_DOES_NOT_MATCH = "%s-> labels amount does not match asked quantity (%s)";
@@ -57,30 +57,30 @@ public class ObjectFactory {
     }
     
 	@SuppressWarnings("unchecked")
-	public <T> T gimme(String label) {
+	public T gimme(String label) {
 		Rule rule = findRule(label);
 
 		return (T) this.createObject(rule);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T gimme(String label, Rule propertiesToOverride) {
+	public T gimme(String label, Rule propertiesToOverride) {
 		Rule rule = findRule(label);
 
 		return (T) this.createObject(new Rule(rule, propertiesToOverride));
 	}
 
-	public <T> List<T> gimme(Integer quantity, String label) {
+	public List<T> gimme(Integer quantity, String label) {
 		Rule rule = findRule(label);
 
 		return this.createObjects(quantity, rule);
 	}
 	
-	public <T> List<T> gimme(Integer quantity, String... labels) {
+	public List<T> gimme(Integer quantity, String... labels) {
 		return gimme(quantity, Arrays.asList(labels));
 	}
 	
-	public <T> List<T> gimme(Integer quantity, List<String> labels) {
+	public List<T> gimme(Integer quantity, List<String> labels) {
 		if(labels.size() != quantity) throw new IllegalArgumentException(String.format(LABELS_AMOUNT_DOES_NOT_MATCH, templateHolder.getClazz().getName(), StringUtils.join(labels, ",")));
 		
 		List<Rule> rules = findRules(labels);
@@ -88,7 +88,7 @@ public class ObjectFactory {
 		return createObjects(quantity, rules);
 	}
 
-	public <T> List<T> gimme(int quantity, String label, Rule propertiesToOverride) {
+	public List<T> gimme(int quantity, String label, Rule propertiesToOverride) {
 		Rule rule = findRule(label);
 
 		return this.createObjects(quantity, new Rule(rule, propertiesToOverride));
@@ -137,7 +137,7 @@ public class ObjectFactory {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <T> List<T> createObjects(int quantity, Rule rule) {
+	protected List<T> createObjects(int quantity, Rule rule) {
 		List<T> results = new ArrayList<T>(quantity);
 		for (int i = 0; i < quantity; i++) {
 			results.add((T) this.createObject(rule));
@@ -147,7 +147,7 @@ public class ObjectFactory {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected <T> List<T> createObjects(int quantity, List<Rule> rules) {
+	protected List<T> createObjects(int quantity, List<Rule> rules) {
 		List<T> results = new ArrayList<T>(quantity);
 		for (int i = 0; i < quantity; i++) {
 			results.add((T) this.createObject(rules.get(i)));
@@ -192,7 +192,7 @@ public class ObjectFactory {
 		Map<String, Object> processedArguments = processArguments(arguments); 
 		
 		if (owner != null && ReflectionUtils.isInnerClass(templateHolder.getClazz()))  {
-			values.add(owner);	
+			values.add(owner);
 		}
 		
         TransformerChain transformerChain = buildTransformerChain(new ParameterPlaceholderTransformer(processedArguments));
@@ -241,7 +241,7 @@ public class ObjectFactory {
 		return transformerChain.transform(value, fieldType);
 	}
 	
-	protected <T> List<String> lookupConstructorParameterNames(Class<T> target, Set<Property> properties) {
+	protected List<String> lookupConstructorParameterNames(Class<?> target, Set<Property> properties) {
 		Collection<String> propertyNames = ReflectionUtils.map(properties, "rootAttribute");
 		return ReflectionUtils.filterConstructorParameters(target, propertyNames);
 	}
