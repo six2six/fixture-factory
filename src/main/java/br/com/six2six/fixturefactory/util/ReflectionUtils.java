@@ -1,9 +1,6 @@
 package br.com.six2six.fixturefactory.util;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Proxy;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -69,12 +66,24 @@ public class ReflectionUtils {
         try {
             new Mirror().on(bean).set().field(attribute).withValue(value);
         } catch (Exception ex){
+            tryToInvokeSetterByMethodReference(bean, attribute, value, fail);
+        }   
+    }
+
+    private static void tryToInvokeSetterByMethodReference(Object bean, String attribute, Object value, boolean fail) {
+        Method setterMethod = getCorrespondentAccessorMethod(bean.getClass().getMethods(), attribute, Accessor.SETTER);
+        if (setterMethod == null) {
             if(fail) {
                 throw new IllegalArgumentException(String.format(NO_SUCH_ATTRIBUTE_MESSAGE, bean.getClass().getName(), attribute, value.getClass().getName()));
             }
-        }   
+        }
+        try {
+            setterMethod.invoke(bean,value);
+        } catch (IllegalAccessException | InvocationTargetException ex) {
+            throw new IllegalArgumentException(String.format(NO_SUCH_ATTRIBUTE_MESSAGE, bean.getClass().getName(), attribute, value.getClass().getName()));
+        }
     }
-    
+
     public static <T> void invokeSetter(Object bean, String attribute, Object value){
         ReflectionUtils.invokeSetter(bean, attribute, value, true);
     }       
@@ -84,20 +93,49 @@ public class ReflectionUtils {
 	}
     
     public static Class<?> invokeRecursiveType(Class<?> clazz, String attribute) {
-    	return invokeRecursiveField(clazz, attribute).getType();
+    	return invokeRecursiveField(clazz, attribute);
     }
 
-    public static Field invokeRecursiveField(Class<?> clazz, String attribute) {
+    public static Class<?> invokeRecursiveField(Class<?> clazz, String attribute) {
         Field field = null;
         Class<?> targetBeanClass = getTargetClass(clazz);
-        
+        Class<?> fieldType = null;
         for (String propertyItem : attribute.split("\\.")) {
             field = new Mirror().on(targetBeanClass).reflect().field(propertyItem);
-            if (field == null) throw new IllegalArgumentException(String.format("%s-> Field %s doesn't exists", clazz.getName(), attribute));
-            targetBeanClass = field.getType();
+            fieldType = tryToResolveFieldType(field,clazz,attribute);
         }
 
-        return field;
+        return fieldType;
+    }
+
+    private static Class<?> tryToResolveFieldType(Field field, Class<?> clazz, String attribute) {
+        if (field == null) {
+            return resolveTypeByGetterAccessor(clazz,attribute);
+        }
+
+        return field.getType();
+    }
+
+    private static Class<?> resolveTypeByGetterAccessor(Class<?> clazz, String attribute) {
+        Method[] classMethods = clazz.getMethods();
+        Method correspondentGetter = getCorrespondentAccessorMethod(classMethods, attribute,Accessor.GETTER);
+
+        if (correspondentGetter == null) {
+            throw new IllegalArgumentException(String.format("%s-> Field %s doesn't exists", clazz.getName(), attribute));
+        }
+
+        return correspondentGetter.getReturnType();
+    }
+
+    private static Method getCorrespondentAccessorMethod(Method[] classMethods, String attribute, Accessor typeAccessor) {
+        return Arrays.stream(classMethods)
+                                           .filter(m -> m.getName().toLowerCase().equals(buildAcessorName(attribute,typeAccessor)))
+                                           .findFirst()
+                                           .orElse(null);
+    }
+
+    private static String buildAcessorName(String attribute,Accessor typeAccessor) {
+        return typeAccessor.getCode().concat(attribute).toLowerCase();
     }
 
     @SuppressWarnings("unchecked")
