@@ -1,14 +1,7 @@
 package br.com.six2six.fixturefactory.util;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.lang.reflect.*;
+import java.util.*;
 
 import net.vidageek.mirror.dsl.Mirror;
 import net.vidageek.mirror.list.dsl.Matcher;
@@ -35,13 +28,19 @@ public class ReflectionUtils {
     }
     
     @SuppressWarnings("unchecked")
-    public static <T> T invokeGetter(Object bean, String attribute) {
-        return (T) ReflectionUtils.invokeGetter(bean, attribute, true);
+    public static <T> T invokeGetter(Object bean, String attribute, int collectionIndex) {
+        return (T) ReflectionUtils.invokeGetter(bean, attribute, collectionIndex, true);
     }
     
     @SuppressWarnings("unchecked")
-    public static <T> T invokeGetter(Object bean, String attribute, boolean fail) {
+    public static <T> T invokeGetter(Object bean, String attribute, int collectionIndex, boolean fail) {
         try {
+            if(attribute.contains("[") && attribute.contains("]")) {
+                attribute = attribute.split("\\[")[0];
+            }
+            if(bean instanceof Collection) {
+                bean = ((Collection) bean).toArray()[collectionIndex];
+            }
             return (T) getPropertyUtilsBean().getProperty(bean, attribute);
         }catch (Exception e) {
             if (fail) {
@@ -56,7 +55,7 @@ public class ReflectionUtils {
         Object lastValue = null;
         Object lastBean = bean;
         for (String propertyItem : objectsPath.split("\\.")) {
-            lastValue = ReflectionUtils.invokeGetter(lastBean, propertyItem);
+            lastValue = ReflectionUtils.invokeGetter(lastBean, propertyItem, 0);
             lastBean = lastValue;
             if (lastValue == null) {
                 break;
@@ -65,8 +64,12 @@ public class ReflectionUtils {
         return lastValue;
     }
     
-    public static <T> void invokeSetter(Object bean, String attribute, Object value, boolean fail){
+    public static <T> void invokeSetter(Object bean, String attribute, Object value, int collectionIndex, boolean fail){
         try {
+            if(bean instanceof Collection) {
+                Collection iterable = (Collection) bean;
+                bean = iterable.toArray()[collectionIndex];
+            }
             new Mirror().on(bean).set().field(attribute).withValue(value);
         } catch (Exception ex){
             if(fail) {
@@ -76,11 +79,15 @@ public class ReflectionUtils {
     }
     
     public static <T> void invokeSetter(Object bean, String attribute, Object value){
-        ReflectionUtils.invokeSetter(bean, attribute, value, true);
+        ReflectionUtils.invokeSetter(bean, attribute, value, 0, true);
     }       
     
     public static void invokeRecursiveSetter(Object bean, String attribute, Object value) {
-	    ReflectionUtils.invokeSetter(prepareInvokeRecursiveSetter(bean, attribute, value), attribute.substring(attribute.lastIndexOf(".") + 1), value, true);
+        int collectionIndex = 0;
+        if(attribute.contains("[") && attribute.contains("]")) {
+             collectionIndex = Integer.parseInt(attribute.split("\\[")[1].split("\\]")[0]);
+        }
+	    ReflectionUtils.invokeSetter(prepareInvokeRecursiveSetter(bean, attribute, value, collectionIndex), attribute.substring(attribute.lastIndexOf(".") + 1), value, collectionIndex, true);
 	}
     
     public static Class<?> invokeRecursiveType(Class<?> clazz, String attribute) {
@@ -90,11 +97,21 @@ public class ReflectionUtils {
     public static Field invokeRecursiveField(Class<?> clazz, String attribute) {
         Field field = null;
         Class<?> targetBeanClass = getTargetClass(clazz);
-        
+
         for (String propertyItem : attribute.split("\\.")) {
+            if(propertyItem.contains("[") && propertyItem.contains("]")) {
+                propertyItem = propertyItem.split("\\[")[0];
+            }
+
             field = new Mirror().on(targetBeanClass).reflect().field(propertyItem);
             if (field == null) throw new IllegalArgumentException(String.format("%s-> Field %s doesn't exists", clazz.getName(), attribute));
-            targetBeanClass = field.getType();
+
+            if(Collection.class.isAssignableFrom(field.getType())){
+                ParameterizedType parameterizedType = (ParameterizedType) field.getGenericType();
+                targetBeanClass = (Class<?>) parameterizedType.getActualTypeArguments()[0];
+            } else {
+                targetBeanClass = field.getType();
+            }
         }
 
         return field;
@@ -165,7 +182,7 @@ public class ReflectionUtils {
     	return BeanUtilsBean.getInstance().getPropertyUtils();
     }
  
-    private static Object prepareInvokeRecursiveSetter(Object bean, String attribute, Object value) {
+    private static Object prepareInvokeRecursiveSetter(Object bean, String attribute, Object value, int collectionIndex) {
         Object targetBean = bean;
         Object lastBean = null;
         
@@ -179,7 +196,7 @@ public class ReflectionUtils {
         if (path != null) {
             for (String propertyItem : path.split("\\.")) {
                 lastBean = targetBean;
-                targetBean = ReflectionUtils.invokeGetter(targetBean, propertyItem);
+                targetBean = ReflectionUtils.invokeGetter(targetBean, propertyItem, collectionIndex);
                 if(targetBean == null) {
                 	Class<?> type = invokeRecursiveType(lastBean.getClass(), propertyItem);
                     try {
@@ -188,7 +205,7 @@ public class ReflectionUtils {
                             args.add(lastBean);
                         }
                         targetBean = newInstance(type, args);
-                        ReflectionUtils.invokeSetter(lastBean, propertyItem, targetBean, true);                     
+                        ReflectionUtils.invokeSetter(lastBean, propertyItem, targetBean, collectionIndex, true);
                     } catch (Exception e) {
                         throw new IllegalArgumentException(String.format(NO_SUCH_ATTRIBUTE_MESSAGE, lastBean.getClass().getName(), propertyItem, type.getName()));
                     }
@@ -213,7 +230,7 @@ public class ReflectionUtils {
         }
 	    
     	for (T item : collection) {
-    		map.add((U) ReflectionUtils.invokeGetter(item, propertyName, true));
+    		map.add((U) ReflectionUtils.invokeGetter(item, propertyName, 0, true));
 		};
 		return map;
     }
