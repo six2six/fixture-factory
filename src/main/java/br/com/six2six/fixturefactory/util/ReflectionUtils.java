@@ -20,11 +20,15 @@ import org.apache.commons.lang.StringUtils;
 import com.thoughtworks.paranamer.AdaptiveParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 
-public class ReflectionUtils {
+public final class ReflectionUtils {
 
     public static final String CGLIB_CLASS_SEPARATOR = "$$";
     private static final String NO_SUCH_ATTRIBUTE_MESSAGE = "%s-> No such attribute: %s[%s]";
-    
+
+    private ReflectionUtils() throws InstantiationException {
+        throw new InstantiationException("The class can't be instantiated");
+    }
+
     @SuppressWarnings("unchecked")
     public static <T> T cast(Object source){
         try {

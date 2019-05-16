@@ -2,7 +2,11 @@ package br.com.six2six.fixturefactory.loader;
 
 import static br.com.six2six.fixturefactory.util.ClassLoaderUtils.getClassesForPackage;
 
-public class FixtureFactoryLoader {
+public final class FixtureFactoryLoader {
+
+    private FixtureFactoryLoader() throws InstantiationException {
+        throw new InstantiationException("The class can't be instantiated");
+    }
 
 	public static void loadTemplates(String basePackage) {
         for (Class<?> clazz : getClassesForPackage(basePackage)) {
