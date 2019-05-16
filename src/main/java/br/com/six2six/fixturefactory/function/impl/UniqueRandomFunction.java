@@ -18,6 +18,14 @@ public class UniqueRandomFunction implements AtomicFunction{
 		this.shuffleDataset();
 	}
 	
+	public UniqueRandomFunction(int minValue, int maxValue, Class<? extends Number> clazz) {
+		if(minValue >= maxValue) {
+			throw new IllegalArgumentException("maxValue cannot be greater than minValue.");
+		}
+		this.dataset = this.initNumberDataset(minValue, maxValue, clazz);
+		this.shuffleDataset();
+	}
+	
 	public UniqueRandomFunction(Object[] dataset) {
 		if(dataset.length == 0) {
 			throw new IllegalArgumentException("provided dataset has no elements.");
@@ -39,6 +47,29 @@ public class UniqueRandomFunction implements AtomicFunction{
 		int currValue = minValue;
 		for(int i = 0; i < dataset.length; i++) {
 			dataset[i] = currValue;
+			currValue ++;
+		}
+		
+		return dataset;
+	}
+	
+	private Object[] initNumberDataset(int minValue, int maxValue, Class<? extends Number> clazz) {
+		Number[] dataset;
+		if(clazz.equals(Integer.class)) {
+			dataset = new Integer[maxValue - minValue + 1];
+		}else if(clazz.equals(Long.class)) {
+			dataset = new Long[maxValue - minValue + 1];
+		}else {
+			throw new IllegalArgumentException("must be chosen between Integer or Long as type argument.");
+		}
+		
+		Integer currValue = minValue;
+		for(int i = 0; i < dataset.length; i++) {
+			if(clazz.equals(Integer.class)) {
+				dataset[i] = currValue;
+			}else {
+				dataset[i] = currValue.longValue();
+			}
 			currValue ++;
 		}
 		

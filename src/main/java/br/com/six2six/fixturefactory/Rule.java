@@ -109,6 +109,10 @@ public class Rule {
 		return new UniqueRandomFunction(minValue, maxValue);
 	}
 	
+	public <T> Function uniqueRandom(int minValue, int maxValue, Class<? extends Number> clazz) {
+		return new UniqueRandomFunction(minValue, maxValue, clazz);
+	}
+	
 	public Function uniqueRandom(Object... dataset) {
 		return new UniqueRandomFunction(dataset);
 	}
