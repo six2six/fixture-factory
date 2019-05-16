@@ -8,7 +8,7 @@ public class FixtureFactoryLoader {
         for (Class<?> clazz : getClassesForPackage(basePackage)) {
             if (!clazz.isInterface() && TemplateLoader.class.isAssignableFrom(clazz)) {
                 try {
-                	((TemplateLoader) clazz.newInstance()).load();
+                	((TemplateLoader) clazz.getDeclaredConstructor().newInstance()).load();
                 } catch (Exception e) {
                     throw new RuntimeException(String.format("template %s not loaded", clazz.getName()), e);
                 }
