@@ -175,6 +175,13 @@ Note that if this fixture is generated more times than there are available state
 		add("cnpj", cnpj()); // this will generate an unformatted CNPJ e.g. 11111111111111
 		add("cnpj", cnpj(true)); this will generate a formatted CNPJ e.g. 11.111.111/1111-11
 	}});
+	
+### CPF
+
+	Fixture.of(User.class).addTemplate("valid", new Rule() {{
+		add("cpf", cpf()); // this will generate an unformatted CPF e.g. 11111111111
+		add("cpf", cpf(true)); this will generate a formatted CNPJ e.g. 111.111.111-11
+	}});
 
 You can see more utilization on [tests](https://github.com/six2six/fixture-factory/tree/master/src/test/java/br/com/six2six/fixturefactory)!
 
