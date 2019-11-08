@@ -1,10 +1,11 @@
 package br.com.six2six.fixturefactory;
 
-import static br.com.six2six.fixturefactory.function.impl.DateTimeFunction.DateType.AFTER;
-import static br.com.six2six.fixturefactory.function.impl.DateTimeFunction.DateType.BEFORE;
-import static br.com.six2six.fixturefactory.function.impl.NameFunction.NameType.FIRST;
-import static br.com.six2six.fixturefactory.function.impl.NameFunction.NameType.LAST;
-import static br.com.six2six.fixturefactory.util.DateTimeUtils.toCalendar;
+import br.com.six2six.bfgex.Gender;
+import br.com.six2six.fixturefactory.base.*;
+import br.com.six2six.fixturefactory.function.*;
+import br.com.six2six.fixturefactory.function.impl.*;
+import br.com.six2six.fixturefactory.util.ReflectionUtils;
+import com.mdimension.jchronic.Options;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -14,31 +15,11 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import br.com.six2six.bfgex.Gender;
-import br.com.six2six.fixturefactory.base.CalendarInterval;
-import br.com.six2six.fixturefactory.base.CalendarSequence;
-import br.com.six2six.fixturefactory.base.Interval;
-import br.com.six2six.fixturefactory.base.Range;
-import br.com.six2six.fixturefactory.base.Sequence;
-import br.com.six2six.fixturefactory.function.AssociationFunction;
-import br.com.six2six.fixturefactory.function.Chainable;
-import br.com.six2six.fixturefactory.function.DateFunction;
-import br.com.six2six.fixturefactory.function.FixtureFunction;
-import br.com.six2six.fixturefactory.function.Function;
-import br.com.six2six.fixturefactory.function.impl.AssociationFunctionImpl;
-import br.com.six2six.fixturefactory.function.impl.ChronicFunction;
-import br.com.six2six.fixturefactory.function.impl.CnpjFunction;
-import br.com.six2six.fixturefactory.function.impl.DateTimeFunction;
-import br.com.six2six.fixturefactory.function.impl.IdentityFunction;
-import br.com.six2six.fixturefactory.function.impl.NameFunction;
-import br.com.six2six.fixturefactory.function.impl.NumberSequence;
-import br.com.six2six.fixturefactory.function.impl.RandomFunction;
-import br.com.six2six.fixturefactory.function.impl.RegexFunction;
-import br.com.six2six.fixturefactory.function.impl.SequenceFunction;
-import br.com.six2six.fixturefactory.function.impl.UniqueRandomFunction;
-import br.com.six2six.fixturefactory.util.ReflectionUtils;
-
-import com.mdimension.jchronic.Options;
+import static br.com.six2six.fixturefactory.function.impl.DateTimeFunction.DateType.AFTER;
+import static br.com.six2six.fixturefactory.function.impl.DateTimeFunction.DateType.BEFORE;
+import static br.com.six2six.fixturefactory.function.impl.NameFunction.NameType.FIRST;
+import static br.com.six2six.fixturefactory.function.impl.NameFunction.NameType.LAST;
+import static br.com.six2six.fixturefactory.util.DateTimeUtils.toCalendar;
 
 public class Rule {
 
@@ -192,6 +173,14 @@ public class Rule {
     
     public Function cnpj(boolean formatted) {
     	return new CnpjFunction(formatted);
+    }
+
+    public Function cpf() {
+        return new CpfFunction();
+    }
+
+    public Function cpf(boolean formatted) {
+        return new CpfFunction(formatted);
     }
 	
 	public Interval increment(int interval) {
