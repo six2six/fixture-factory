@@ -62,13 +62,13 @@ public class DateTimeTransformer implements Transformer {
 		return type.cast(returnValue);
 	}
 
-    	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
 	@Override
 	public boolean accepts(Object value, Class<?> type) {
-        	try {
+        try {
 			return value instanceof Calendar && ClassUtils.getClass("java.time.temporal.Temporal").isAssignableFrom(type);
 		} catch (ClassNotFoundException e) {
 			return false;
 		}
-    	}
+    }
 }
