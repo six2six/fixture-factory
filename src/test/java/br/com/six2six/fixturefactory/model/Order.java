@@ -57,5 +57,5 @@ public class Order implements Serializable {
 
 	public void setSendDate(LocalDate sendDate) {
 		this.sendDate = sendDate;
-	}	
+	}
 }
