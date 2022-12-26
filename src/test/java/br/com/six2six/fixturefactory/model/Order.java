@@ -1,9 +1,9 @@
 package br.com.six2six.fixturefactory.model;
 
-import java.io.Serializable;
-import java.util.List;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.io.Serializable;
+import java.util.List;
 
 public class Order implements Serializable {
 
