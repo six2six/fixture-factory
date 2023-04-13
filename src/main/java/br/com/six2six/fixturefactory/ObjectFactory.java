@@ -29,18 +29,18 @@ import static br.com.six2six.fixturefactory.util.ReflectionUtils.hasDefaultConst
 import static br.com.six2six.fixturefactory.util.ReflectionUtils.newInstance;
 
 public class ObjectFactory {
-	
+
 	private static final String NO_SUCH_LABEL_MESSAGE = "%s-> No such label: %s";
 	private static final String LABELS_AMOUNT_DOES_NOT_MATCH = "%s-> labels amount does not match asked quantity (%s)";
-	
+
 	private TemplateHolder templateHolder;
 	private Object owner;
     private Processor processor;
-	
+
 	public ObjectFactory(TemplateHolder templateHolder) {
 		this.templateHolder = templateHolder;
 	}
-	
+
 	public ObjectFactory(TemplateHolder templateHolder, Object owner) {
 		this(templateHolder);
 		this.owner = owner;
@@ -55,7 +55,7 @@ public class ObjectFactory {
         this.processor = processor;
         return this;
     }
-    
+
 	@SuppressWarnings("unchecked")
 	public <T> T gimme(String label) {
 		Rule rule = findRule(label);
@@ -75,16 +75,16 @@ public class ObjectFactory {
 
 		return this.createObjects(quantity, rule);
 	}
-	
+
 	public <T> List<T> gimme(Integer quantity, String... labels) {
 		return gimme(quantity, Arrays.asList(labels));
 	}
-	
+
 	public <T> List<T> gimme(Integer quantity, List<String> labels) {
 		if(labels.size() != quantity) throw new IllegalArgumentException(String.format(LABELS_AMOUNT_DOES_NOT_MATCH, templateHolder.getClazz().getName(), StringUtils.join(labels, ",")));
-		
+
 		List<Rule> rules = findRules(labels);
-		
+
 		return createObjects(quantity, rules);
 	}
 
@@ -102,7 +102,7 @@ public class ObjectFactory {
 
         List<String> parameterNames = !hasDefaultConstructor(clazz) ?
 										lookupConstructorParameterNames(clazz, properties) : new ArrayList<String>();
-		
+
 		for (Property property : properties) {
 			if(parameterNames.contains(property.getRootAttribute())) {
 				constructorArguments.put(property.getName(), property);
@@ -110,18 +110,18 @@ public class ObjectFactory {
 				deferredProperties.add(property);
 			}
 		}
-		
+
 		Object result = newInstance(clazz, processConstructorArguments(parameterNames, constructorArguments));
-		
+
 		Set<Property> propertiesNotUsedInConstructor = getPropertiesNotUsedInConstructor(constructorArguments, parameterNames);
 		if(propertiesNotUsedInConstructor.size() > 0) {
 			deferredProperties.addAll(propertiesNotUsedInConstructor);
 		}
-		
+
 		for (Property property : deferredProperties) {
 			ReflectionUtils.invokeRecursiveSetter(result, property.getName(), processPropertyValue(result, property));
 		}
-		
+
 		if (processor != null) {
 		    processor.execute(result);
 		}
@@ -135,23 +135,23 @@ public class ObjectFactory {
 		}
 		return new HashSet<Property>(propertiesNotUsedInConstructor.values());
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected <T> List<T> createObjects(int quantity, Rule rule) {
 		List<T> results = new ArrayList<T>(quantity);
 		for (int i = 0; i < quantity; i++) {
 			results.add((T) this.createObject(rule));
-		}	
+		}
 
 		return results;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected <T> List<T> createObjects(int quantity, List<Rule> rules) {
 		List<T> results = new ArrayList<T>(quantity);
 		for (int i = 0; i < quantity; i++) {
 			results.add((T) this.createObject(rules.get(i)));
-		}	
+		}
 
 		return results;
 	}
@@ -165,17 +165,17 @@ public class ObjectFactory {
 
 		return rule;
 	}
-	
+
 	private List<Rule> findRules(List<String> labels) {
 		List<Rule> rules = new ArrayList<Rule>();
-		
+
 		for(String label : labels) {
 			Rule rule = templateHolder.getRules().get(label);
 			if(rule == null) throw new IllegalArgumentException(String.format(NO_SUCH_LABEL_MESSAGE, templateHolder.getClazz().getName(), label));
-			
+
 			rules.add(rule);
 		}
-		
+
 		return rules;
 	}
 
@@ -189,31 +189,31 @@ public class ObjectFactory {
 
 	protected List<Object> processConstructorArguments(List<String> parameterNames, Map<String, Property> arguments) {
 		List<Object> values = new ArrayList<Object>();
-		Map<String, Object> processedArguments = processArguments(arguments); 
-		
+		Map<String, Object> processedArguments = processArguments(arguments);
+
 		if (owner != null && ReflectionUtils.isInnerClass(templateHolder.getClazz()))  {
-			values.add(owner);	
+			values.add(owner);
 		}
-		
+
         TransformerChain transformerChain = buildTransformerChain(new ParameterPlaceholderTransformer(processedArguments));
-		
+
 		for (String parameterName : parameterNames) {
 			Class<?> fieldType = ReflectionUtils.invokeRecursiveType(templateHolder.getClazz(), parameterName);
 			Object result = processedArguments.get(parameterName);
 			if (result == null) {
-				result = processChainedProperty(parameterName, fieldType, processedArguments);	
+				result = processChainedProperty(parameterName, fieldType, processedArguments);
 			}
 			values.add(transformerChain.transform(result, fieldType));
 		}
 		return values;
 	}
-	
+
 	private Map<String, Object> processArguments(Map<String, Property> arguments) {
 		Map<String, Object> processedArguments = new HashMap<String, Object>();
 		for(Entry<String, Property> entry : arguments.entrySet()) {
 			processedArguments.put(entry.getKey(), generateConstructorParamValue(entry.getValue()));
 		}
-		
+
 		return processedArguments;
 	}
 
@@ -230,7 +230,7 @@ public class ObjectFactory {
 
 	protected Object processPropertyValue(Object object, Property property) {
 		Class<?> fieldType = ReflectionUtils.invokeRecursiveType(object.getClass(), property.getName());
-		
+
 		Object value = null;
 		if (property.hasRelationFunction() || ReflectionUtils.isInnerClass(fieldType)) {
 		    value = processor != null ? property.getValue(object, processor) : property.getValue(object);
@@ -240,25 +240,25 @@ public class ObjectFactory {
 	    TransformerChain transformerChain = buildTransformerChain(new PropertyPlaceholderTransformer(object));
 		return transformerChain.transform(value, fieldType);
 	}
-	
+
 	protected <T> List<String> lookupConstructorParameterNames(Class<T> target, Set<Property> properties) {
 		Collection<String> propertyNames = ReflectionUtils.map(properties, "rootAttribute");
 		return ReflectionUtils.filterConstructorParameters(target, propertyNames);
 	}
-	
+
 	protected TransformerChain buildTransformerChain(Transformer transformer) {
 	    TransformerChain transformerChain = new TransformerChain(transformer);
-	    
+
 	    transformerChain.add(new CalendarTransformer());
         transformerChain.add(new SetTransformer());
         transformerChain.add(new PrimitiveTransformer());
         transformerChain.add(new WrapperTransformer());
-        
-        if(JavaVersion.current().gte(JavaVersion.JAVA_8)){
+
+        if(JavaVersion.current().gte(JavaVersion.JAVA_17)){
 	    	transformerChain.add(new DateTimeTransformer());
 	    }
-        
+
         return transformerChain;
 	}
-	
+
 }
