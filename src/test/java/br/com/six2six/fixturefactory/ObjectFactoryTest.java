@@ -14,20 +14,19 @@ import br.com.six2six.fixturefactory.model.User;
 
 public class ObjectFactoryTest {
 
-	private TemplateHolder templateHolder;
 	private ObjectFactory objectFactory;
-	
+
 	@Before
 	public void setUp() {
-		templateHolder = mockTemplateHolder();
+		TemplateHolder templateHolder = mockTemplateHolder();
 		objectFactory = new ObjectFactory(templateHolder);
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void shouldThrowExceptionForGimmeWithQuantityAndWrongNumberOfTemplates() {
 		objectFactory.gimme(3, Arrays.asList("template1", "template2"));
 	}
-	
+
 	//hack to workaround Mockito error when trying to return a Class<?>
 	private TemplateHolder mockTemplateHolder() {
 		TemplateHolder templateHolder = mock(TemplateHolder.class);
@@ -38,8 +37,8 @@ public class ObjectFactoryTest {
 				return clazz;
 			}
 		});
-		
+
 		return templateHolder;
 	}
-	
+
 }
