@@ -3,7 +3,11 @@ package br.com.six2six.fixturefactory;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Fixture {
+public final class Fixture {
+
+	private Fixture() throws InstantiationException {
+		throw new InstantiationException("The class can't be instantiated");
+	}
 
 	private static Map<Class<?>, TemplateHolder> templates = new LinkedHashMap<Class<?>, TemplateHolder>();
 	
